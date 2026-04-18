@@ -26,7 +26,7 @@ export function VocabDetailCard({ card }: VocabDetailCardProps) {
   const isPlaying = Boolean(resolvedAudioUrl && playingAudioUrl === resolvedAudioUrl)
 
   return (
-    <Card className="border-none py-0 section-card-surface section-card-elevation">
+    <Card className="py-0 feature-card">
       <CardContent className="p-5 flex flex-col gap-5">
         {/* Section header */}
         <span className="section-title-text">

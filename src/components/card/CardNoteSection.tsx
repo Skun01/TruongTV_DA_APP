@@ -87,7 +87,7 @@ export function CardNoteSection({
   if (myNote) {
     return (
       <div className="flex flex-col gap-3">
-        <Card className="border-none py-0 section-card-surface section-card-elevation">
+        <Card className="py-0 feature-card">
           <CardContent className="p-4 flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <span className="section-title-text">Ghi chú của bạn</span>

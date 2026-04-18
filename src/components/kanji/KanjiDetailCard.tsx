@@ -51,7 +51,7 @@ function RadicalChip({ radical }: { radical: KanjiRadicalItem }) {
 
 export function KanjiDetailCard({ card }: KanjiDetailCardProps) {
   return (
-    <Card className="border-none py-0 section-card-surface section-card-elevation">
+    <Card className="py-0 feature-card">
       <CardContent className="p-5 flex flex-col gap-6">
 
         {/* ── Kanji showcase + stroke order ── */}

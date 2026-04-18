@@ -9,7 +9,7 @@ import { VOCAB_DETAIL_COPY } from '@/constants/vocabularyDetail'
  */
 export function CardProgress() {
   return (
-    <Card className="border-none py-0 section-card-surface section-card-elevation">
+    <Card className="py-0 feature-card">
       <CardContent className="p-5 flex flex-col gap-4">
         {/* Header */}
         <div className="flex items-center justify-between">

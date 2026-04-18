@@ -13,7 +13,7 @@ export function GrammarResources({ resources }: GrammarResourcesProps) {
       <span className="section-title-text">{GRAMMAR_DETAIL_COPY.sections.resources}</span>
 
       {resources.length === 0 ? (
-        <Card className="border-none py-0 section-card-surface section-card-elevation">
+        <Card className="py-0 feature-card">
           <CardContent className="p-6">
             <p className="text-sm text-muted-foreground">{GRAMMAR_DETAIL_COPY.empty.noResources}</p>
           </CardContent>
@@ -22,7 +22,7 @@ export function GrammarResources({ resources }: GrammarResourcesProps) {
         <div className="flex flex-col gap-3">
           {resources.map((resource) => (
             <a key={resource.id} href={resource.url} target="_blank" rel="noreferrer">
-              <Card className="border-none py-0 section-card-surface section-card-elevation hover:section-card-elevation-hover transition-all duration-300">
+              <Card className="py-0 feature-card hover:feature-card-hover transition-all duration-300">
                 <CardContent className="p-4 flex items-center justify-between gap-3">
                   <span className="text-sm text-foreground">{resource.title}</span>
                   <LinkSimpleIcon size={16} className="text-muted-foreground" />

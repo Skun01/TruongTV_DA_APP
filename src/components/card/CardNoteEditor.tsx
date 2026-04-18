@@ -51,7 +51,7 @@ export function CardNoteEditor({
   }
 
   return (
-    <Card className="border-none py-0 section-card-surface section-card-elevation">
+    <Card className="py-0 feature-card">
       <CardContent className="p-4 flex flex-col gap-3">
         {/* Toolbar */}
         <div className="flex items-center gap-1">

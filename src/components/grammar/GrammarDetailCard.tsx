@@ -35,7 +35,7 @@ function StructureBlock({ structure }: { structure: GrammarStructureItem }) {
 
 export function GrammarDetailCard({ card }: GrammarDetailCardProps) {
   return (
-    <Card className="border-none py-0 section-card-surface section-card-elevation">
+    <Card className="py-0 feature-card">
       <CardContent className="p-5 flex flex-col gap-5">
         <span className="section-title-text">{GRAMMAR_DETAIL_COPY.detail.title}</span>
 

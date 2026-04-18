@@ -19,8 +19,8 @@ export function QuickLearnDeckCard({
       onClick={onSelect}
       className={`group flex w-full flex-col gap-3 rounded-2xl p-4 text-left transition-all duration-200 ${
         isSelected
-          ? 'ring-2 ring-primary bg-primary/5 shadow-md dark:bg-primary/10'
-          : 'section-card-surface section-card-elevation hover:section-card-elevation-hover'
+          ? 'feature-card-selected'
+          : 'feature-card hover:feature-card-hover'
       }`}
     >
       <div className="flex items-start gap-3">

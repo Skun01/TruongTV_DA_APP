@@ -41,7 +41,7 @@ export function DueCardsSummary({
 
   if (isLoading) {
     return (
-      <div className="h-28 animate-pulse rounded-2xl bg-[#e5eff0] dark:bg-secondary-container/30" />
+      <div className="h-28 animate-pulse rounded-2xl feature-card" />
     )
   }
 
@@ -69,10 +69,10 @@ export function DueCardsSummary({
             ? (e) => { if (e.key === 'Enter') setShowModeDialog(true) }
             : undefined
         }
-        className={`flex flex-col rounded-2xl shadow-[0_2px_16px_0_rgba(29,28,19,0.06)] transition-shadow ${
+        className={`flex flex-col rounded-2xl ${
           dueCount > 0
-            ? 'cursor-pointer bg-[#e5eff0] hover:shadow-[0_4px_24px_0_rgba(74,98,103,0.18)] dark:bg-secondary-container/30'
-            : 'bg-surface-container-low dark:bg-surface-container'
+            ? 'cursor-pointer feature-card bg-secondary-container/45 hover:feature-card-hover dark:bg-secondary-container/35'
+            : 'feature-card bg-surface-container-low dark:bg-surface-container'
         }`}
       >
         {/* Header row */}
@@ -128,7 +128,7 @@ export function DueCardsSummary({
               <div className="flex flex-col gap-2">
                 {/* Summary stats */}
                 <div className="flex gap-3">
-                  <div className="flex flex-1 flex-col gap-0.5 rounded-xl bg-background/60 p-3 dark:bg-surface-container-highest/40">
+                   <div className="flex flex-1 flex-col gap-0.5 rounded-xl border border-border/60 bg-background/60 p-3 dark:bg-surface-container-highest/40">
                     <span className="text-xs text-muted-foreground">
                       {LEARNING_COPY.dueCardsLabel}
                     </span>
@@ -136,7 +136,7 @@ export function DueCardsSummary({
                       {dueCardIds.length}
                     </span>
                   </div>
-                  <div className="flex flex-1 flex-col gap-0.5 rounded-xl bg-background/60 p-3 dark:bg-surface-container-highest/40">
+                   <div className="flex flex-1 flex-col gap-0.5 rounded-xl border border-border/60 bg-background/60 p-3 dark:bg-surface-container-highest/40">
                     <span className="text-xs text-muted-foreground">
                       {LEARNING_COPY.totalCardsScope}
                     </span>

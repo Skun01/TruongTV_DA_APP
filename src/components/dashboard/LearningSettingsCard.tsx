@@ -45,7 +45,7 @@ export function LearningSettingsCard({
 
   if (isLoading) {
     return (
-      <div className="h-48 animate-pulse rounded-2xl section-card-surface" />
+      <div className="h-48 animate-pulse rounded-2xl feature-card" />
     )
   }
 
@@ -91,7 +91,7 @@ export function LearningSettingsCard({
       : 'Vietnamese'
 
   return (
-    <div className="space-y-4 rounded-2xl p-5 section-card-surface section-card-elevation">
+    <div className="space-y-4 rounded-2xl p-5 feature-card">
       <SettingRow label={LEARNING_COPY.defaultFlashcardFrontLabel}>
         <SelectField
           value={flashcardFrontLanguage}

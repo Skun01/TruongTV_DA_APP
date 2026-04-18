@@ -40,7 +40,7 @@ export function RecentSessionsList({
           {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
-              className="h-20 animate-pulse rounded-2xl section-card-surface"
+              className="h-20 animate-pulse rounded-2xl feature-card"
             />
           ))}
         </div>
@@ -56,7 +56,7 @@ export function RecentSessionsList({
       </h2>
 
       {sessions.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 rounded-2xl px-6 py-10 section-card-surface">
+        <div className="flex flex-col items-center gap-3 rounded-2xl px-6 py-10 feature-card">
           <StackIcon size={28} className="text-muted-foreground/40" />
           <p className="text-sm text-muted-foreground">
             {LEARNING_COPY.noSessions}
@@ -83,7 +83,7 @@ export function RecentSessionsList({
             return (
               <div
                 key={session.id}
-                className="flex items-center gap-4 rounded-2xl px-4 py-3 section-card-surface section-card-elevation"
+                className="flex items-center gap-4 rounded-2xl px-4 py-3 feature-card"
               >
                 <div
                   className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"

@@ -32,13 +32,13 @@ export function QuickLearnDeckList({
           {Array.from({ length: 3 }).map((_, index) => (
             <div
               key={index}
-              className="h-28 animate-pulse rounded-2xl section-card-surface"
+              className="h-28 animate-pulse rounded-2xl feature-card"
             />
           ))}
         </div>
       ) : decks.length === 0 ? (
         <div
-          className="flex flex-col items-center gap-3 rounded-2xl px-6 py-10 section-card-surface"
+          className="flex flex-col items-center gap-3 rounded-2xl px-6 py-10 feature-card"
         >
           <BooksIcon size={32} className="text-muted-foreground/40" />
           <p className="text-sm text-muted-foreground">{emptyMessage}</p>

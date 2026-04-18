@@ -33,7 +33,7 @@ export function StudySettingsPanel({
         {LEARNING_COPY.settingsTitle}
       </h3>
 
-      <div className="space-y-3 rounded-2xl p-4 section-card-surface section-card-elevation">
+      <div className="space-y-3 rounded-2xl p-4 feature-card">
         {showFlashcardSettings && (
           <>
             <SettingRow label={LEARNING_COPY.flashcardFrontLabel}>

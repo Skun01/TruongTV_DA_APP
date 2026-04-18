@@ -113,7 +113,7 @@ export function FolderCardSelector({
           return (
             <div
               key={folder.id}
-              className="overflow-hidden rounded-2xl section-card-surface section-card-elevation"
+              className="overflow-hidden rounded-2xl feature-card"
             >
               {/* Folder header */}
               <div className="flex items-center gap-2 px-4 py-3">
@@ -166,7 +166,7 @@ export function FolderCardSelector({
 
               {/* Card list */}
               {isExpanded && (
-                <div className="border-t border-border/50 px-4 py-2">
+                <div className="border-t border-border/60 px-4 py-2">
                   {sortedCards.length === 0 ? (
                     <p className="py-3 text-center text-xs text-muted-foreground">
                       {LEARNING_COPY.noCardsInFolder}
@@ -234,7 +234,7 @@ export function FolderCardSelector({
         })}
 
         {sortedFolders.length === 0 && (
-          <div className="flex flex-col items-center gap-2 rounded-2xl px-6 py-10 section-card-surface">
+          <div className="flex flex-col items-center gap-2 rounded-2xl px-6 py-10 feature-card">
             <StackIcon size={28} className="text-muted-foreground/40" />
             <p className="text-sm text-muted-foreground">
               {DECK_COPY.emptyFolders}

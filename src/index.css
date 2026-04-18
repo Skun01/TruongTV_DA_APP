@@ -226,6 +226,24 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--section-card-surface);
   }
 
+  .feature-card {
+    background-color: color-mix(in srgb, var(--section-card-surface) 92%, var(--surface-container-high) 8%);
+    border: 1px solid color-mix(in srgb, var(--outline-variant) 72%, transparent);
+    box-shadow: var(--elevation-section-card);
+    transition: box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease;
+  }
+
+  .feature-card-hover {
+    box-shadow: var(--elevation-section-card-hover);
+    border-color: color-mix(in srgb, var(--outline-variant) 92%, transparent);
+  }
+
+  .feature-card-selected {
+    background-color: color-mix(in srgb, var(--primary) 8%, var(--section-card-surface));
+    border: 1px solid color-mix(in srgb, var(--primary) 36%, var(--outline-variant));
+    box-shadow: var(--elevation-section-card-hover);
+  }
+
   .section-title-text {
     font-size: 1rem;
     font-weight: 700;

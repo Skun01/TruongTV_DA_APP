@@ -45,6 +45,13 @@ export const LEARNING_COPY = {
   flashcardBackLabel: 'Mặt sau',
   mcqDirectionLabel: 'Hướng câu hỏi',
   shuffleLabel: 'Trộn đáp án',
+  defaultFlashcardFrontLabel: 'Mặt trước flashcard',
+  defaultMcqQuestionLabel: 'Câu hỏi trắc nghiệm',
+  defaultShuffleFlashcardLabel: 'Trộn thẻ flashcard',
+  languageOptionLabels: {
+    Vietnamese: 'Tiếng Việt',
+    Japanese: 'Tiếng Nhật',
+  },
 
   flashcardSideLabels: {
     Title: 'Tiêu đề (Nhật)',
@@ -115,6 +122,7 @@ export const LEARNING_COPY = {
   deleteSessionConfirm: 'Xóa',
   sessionDeleted: 'Đã xóa phiên học.',
   settingsSectionTitle: 'Cài đặt học tập mặc định',
+  settingsModalDescription: 'Tuỳ chỉnh mặc định cho Flashcard và Trắc nghiệm.',
   settingsSaved: 'Đã lưu cài đặt.',
   saveSettings: 'Lưu cài đặt',
 

@@ -1,5 +1,13 @@
-import { GearIcon, SpinnerGapIcon } from '@phosphor-icons/react'
+import { SpinnerGapIcon } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
 import { LEARNING_COPY } from '@/constants/learning'
 import type {
   FlashcardSide,
@@ -15,6 +23,8 @@ interface LearningSettingsCardProps {
   onSave: (payload: StudySessionSettingsRequest) => void
   isPending: boolean
 }
+
+type LanguageOption = 'Japanese' | 'Vietnamese'
 
 export function LearningSettingsCard({
   settings,
@@ -35,10 +45,7 @@ export function LearningSettingsCard({
 
   if (isLoading) {
     return (
-      <section className="space-y-3">
-        <h2 className="section-title-text">{LEARNING_COPY.settingsSectionTitle}</h2>
-        <div className="h-48 animate-pulse rounded-2xl section-card-surface" />
-      </section>
+      <div className="h-48 animate-pulse rounded-2xl section-card-surface" />
     )
   }
 
@@ -57,81 +64,82 @@ export function LearningSettingsCard({
     }))
   }
 
+  function toLanguageOption(side: FlashcardSide): LanguageOption {
+    return side === 'Title' ? 'Japanese' : 'Vietnamese'
+  }
+
+  function toFlashcardSides(frontLanguage: LanguageOption): Pick<
+    StudySessionSettingsRequest,
+    'flashcardFront' | 'flashcardBack'
+  > {
+    return frontLanguage === 'Japanese'
+      ? { flashcardFront: 'Title', flashcardBack: 'Summary' }
+      : { flashcardFront: 'Summary', flashcardBack: 'Title' }
+  }
+
+  function toMcqDirection(questionLanguage: LanguageOption): MultipleChoiceDirection {
+    return questionLanguage === 'Japanese'
+      ? 'TitleToSummary'
+      : 'SummaryToTitle'
+  }
+
+  const flashcardFrontLanguage = toLanguageOption(
+    current.flashcardFront ?? 'Title',
+  )
+  const mcqQuestionLanguage: LanguageOption = (current.multipleChoiceQuestion ?? 'TitleToSummary') === 'TitleToSummary'
+      ? 'Japanese'
+      : 'Vietnamese'
+
   return (
-    <section className="space-y-3">
-      <h2 className="section-title-text flex items-center gap-2">
-        <GearIcon size={20} weight="duotone" />
-        {LEARNING_COPY.settingsSectionTitle}
-      </h2>
+    <div className="space-y-4 rounded-2xl p-5 section-card-surface section-card-elevation">
+      <SettingRow label={LEARNING_COPY.defaultFlashcardFrontLabel}>
+        <SelectField
+          value={flashcardFrontLanguage}
+          options={LEARNING_COPY.languageOptionLabels}
+          onChange={(v) => updateDraft(toFlashcardSides(v))}
+        />
+      </SettingRow>
 
-      <div className="space-y-4 rounded-2xl p-5 section-card-surface section-card-elevation">
-        <SettingRow label={LEARNING_COPY.flashcardFrontLabel}>
-          <SelectField
-            value={(current.flashcardFront as string) ?? 'Title'}
-            options={LEARNING_COPY.flashcardSideLabels}
-            onChange={(v) => updateDraft({ flashcardFront: v as FlashcardSide })}
-          />
-        </SettingRow>
+      <SettingRow label={LEARNING_COPY.defaultMcqQuestionLabel}>
+        <SelectField
+          value={mcqQuestionLanguage}
+          options={LEARNING_COPY.languageOptionLabels}
+          onChange={(v) =>
+            updateDraft({
+              multipleChoiceQuestion: toMcqDirection(v),
+            })
+          }
+        />
+      </SettingRow>
 
-        <SettingRow label={LEARNING_COPY.flashcardBackLabel}>
-          <SelectField
-            value={(current.flashcardBack as string) ?? 'Summary'}
-            options={LEARNING_COPY.flashcardSideLabels}
-            onChange={(v) => updateDraft({ flashcardBack: v as FlashcardSide })}
-          />
-        </SettingRow>
+      <SettingRow label={LEARNING_COPY.defaultShuffleFlashcardLabel}>
+        <Switch
+          checked={current.shuffleOptions ?? true}
+          onCheckedChange={(checked) =>
+            updateDraft({
+              shuffleOptions: checked,
+            })}
+        />
+      </SettingRow>
 
-        <SettingRow label={LEARNING_COPY.mcqDirectionLabel}>
-          <SelectField
-            value={(current.multipleChoiceQuestion as string) ?? 'TitleToSummary'}
-            options={LEARNING_COPY.mcqDirectionLabels}
-            onChange={(v) =>
-              updateDraft({ multipleChoiceQuestion: v as MultipleChoiceDirection })
+      {isDirty && (
+        <Button
+          onClick={() => {
+            if (draft) {
+              onSave(draft)
+              setDraft(null)
             }
-          />
-        </SettingRow>
-
-        <SettingRow label={LEARNING_COPY.shuffleLabel}>
-          <button
-            type="button"
-            onClick={() =>
-              updateDraft({
-                shuffleOptions: !(current.shuffleOptions ?? true),
-              })
-            }
-            className={`relative h-6 w-11 rounded-full transition-colors ${
-              (current.shuffleOptions ?? true)
-                ? 'bg-primary'
-                : 'bg-muted-foreground/20'
-            }`}
-          >
-            <span
-              className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
-                (current.shuffleOptions ?? true) ? 'translate-x-5' : ''
-              }`}
-            />
-          </button>
-        </SettingRow>
-
-        {isDirty && (
-          <Button
-            onClick={() => {
-              if (draft) {
-                onSave(draft)
-                setDraft(null)
-              }
-            }}
-            disabled={isPending}
-            className="w-full rounded-full"
-          >
-            {isPending && (
-              <SpinnerGapIcon size={16} className="animate-spin" />
-            )}
-            {LEARNING_COPY.saveSettings}
-          </Button>
-        )}
-      </div>
-    </section>
+          }}
+          disabled={isPending}
+          className="w-full rounded-full"
+        >
+          {isPending && (
+            <SpinnerGapIcon size={16} className="animate-spin" />
+          )}
+          {LEARNING_COPY.saveSettings}
+        </Button>
+      )}
+    </div>
   )
 }
 
@@ -155,21 +163,29 @@ function SelectField({
   options,
   onChange,
 }: {
-  value: string
-  options: Record<string, string>
-  onChange: (value: string) => void
+  value: LanguageOption
+  options: Record<LanguageOption, string>
+  onChange: (value: LanguageOption) => void
 }) {
   return (
-    <select
+    <Select
       value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="rounded-lg border border-border/70 bg-background px-3 py-1.5 text-sm font-medium text-foreground outline-none focus:ring-2 focus:ring-ring/20"
+      onValueChange={(nextValue) => {
+        if (nextValue === 'Japanese' || nextValue === 'Vietnamese') {
+          onChange(nextValue)
+        }
+      }}
     >
-      {Object.entries(options).map(([key, label]) => (
-        <option key={key} value={key}>
-          {label}
-        </option>
-      ))}
-    </select>
+      <SelectTrigger className="h-10 w-[180px] rounded-lg border-border/70 px-3 py-1.5 text-sm font-medium">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {Object.entries(options).map(([key, label]) => (
+          <SelectItem key={key} value={key}>
+            {label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }

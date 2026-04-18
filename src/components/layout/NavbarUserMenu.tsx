@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router'
-import { CaretDownIcon, HouseIcon, UserIcon, SignOutIcon, MoonIcon, SunIcon } from '@phosphor-icons/react'
+import { CaretDownIcon, HouseIcon, UserIcon, SignOutIcon, MoonIcon, SunIcon, GearIcon } from '@phosphor-icons/react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,12 +34,12 @@ export function NavbarUserMenu() {
       <DropdownMenuTrigger asChild>
         <button
           className="flex items-center gap-2 rounded-xl px-2 py-1.5 transition-colors hover:bg-surface-container outline-none focus-visible:ring-1 focus-visible:ring-ring"
-          aria-label="Tài khoản"
+          aria-label={NAVBAR_COPY.profileMenuAriaLabel}
         >
           <Avatar className="h-8 w-8">
             <AvatarImage
               src={user?.avatarUrl ?? undefined}
-              alt={user?.displayName ?? 'User'}
+              alt={user?.displayName ?? NAVBAR_COPY.avatarFallbackAlt}
             />
             <AvatarFallback
               className="text-xs font-bold"
@@ -106,6 +106,15 @@ export function NavbarUserMenu() {
           {NAVBAR_COPY.profileMenu.profile}
         </DropdownMenuItem>
 
+        <DropdownMenuItem
+          onClick={() => navigate('/dashboard?modal=learning-settings')}
+          className="gap-2 cursor-pointer"
+          style={{ color: 'var(--on-surface)' }}
+        >
+          <GearIcon size={15} weight="duotone" style={{ color: 'var(--secondary)' }} />
+          {NAVBAR_COPY.profileMenu.learningSettings}
+        </DropdownMenuItem>
+
         <DropdownMenuSeparator />
 
         {/* Theme toggle — dùng div thay MenuItem để không đóng dropdown khi click switch */}
@@ -124,7 +133,7 @@ export function NavbarUserMenu() {
           <Switch
             checked={isDark}
             onCheckedChange={toggleTheme}
-            aria-label="Chuyển giao diện tối/sáng"
+            aria-label={NAVBAR_COPY.themeSwitchAriaLabel}
             onClick={(e) => e.stopPropagation()}
           />
         </div>
@@ -138,7 +147,7 @@ export function NavbarUserMenu() {
           style={{ color: 'var(--destructive)' }}
         >
           <SignOutIcon size={15} style={{ color: 'var(--destructive)' }} />
-          {isLoggingOut ? 'Đang đăng xuất...' : NAVBAR_COPY.profileMenu.logout}
+          {isLoggingOut ? NAVBAR_COPY.logoutLoading : NAVBAR_COPY.profileMenu.logout}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

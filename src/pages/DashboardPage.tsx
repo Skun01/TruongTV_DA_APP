@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
+import { useSearchParams } from 'react-router'
 import NProgress from 'nprogress'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { PageHelmet } from '@/components/seo/PageHelmet'
 import { DueCardsSummary } from '@/components/dashboard/DueCardsSummary'
 import { RecentSessionsList } from '@/components/dashboard/RecentSessionsList'
-import { LearningSettingsCard } from '@/components/dashboard/LearningSettingsCard'
+import { LearningSettingsModal } from '@/components/dashboard/LearningSettingsModal'
 import { LEARNING_COPY } from '@/constants/learning'
 import { useAuthStore } from '@/stores/authStore'
 import {
@@ -20,6 +21,7 @@ import type { StudyMode } from '@/types/learning'
 
 export function DashboardPage() {
   const user = useAuthStore((s) => s.user)
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const reviewTodayQuery = useReviewToday()
   const dueCardsQuery = useDueCards(false)
@@ -28,6 +30,7 @@ export function DashboardPage() {
   const updateSettingsMutation = useUpdateLearningSettings()
   const createSessionMutation = useCreateSession()
   const deleteSessionMutation = useDeleteSession()
+  const isSettingsModalOpen = searchParams.get('modal') === 'learning-settings'
 
   const isPageLoading =
     reviewTodayQuery.isLoading || historyQuery.isLoading
@@ -54,6 +57,18 @@ export function DashboardPage() {
       cardIds,
       mode,
     })
+  }
+
+  function handleSettingsModalChange(isOpen: boolean) {
+    const nextParams = new URLSearchParams(searchParams)
+
+    if (isOpen) {
+      nextParams.set('modal', 'learning-settings')
+    } else {
+      nextParams.delete('modal')
+    }
+
+    setSearchParams(nextParams, { replace: true })
   }
 
   return (
@@ -102,14 +117,16 @@ export function DashboardPage() {
             isDeleting={deleteSessionMutation.isPending}
           />
 
-          {/* Learning settings */}
-          <LearningSettingsCard
-            settings={settingsQuery.data}
-            isLoading={settingsQuery.isLoading}
-            onSave={(payload) => updateSettingsMutation.mutate(payload)}
-            isPending={updateSettingsMutation.isPending}
-          />
         </div>
+
+        <LearningSettingsModal
+          isOpen={isSettingsModalOpen}
+          onOpenChange={handleSettingsModalChange}
+          settings={settingsQuery.data}
+          isLoading={settingsQuery.isLoading}
+          onSave={(payload) => updateSettingsMutation.mutate(payload)}
+          isPending={updateSettingsMutation.isPending}
+        />
       </AppLayout>
     </>
   )

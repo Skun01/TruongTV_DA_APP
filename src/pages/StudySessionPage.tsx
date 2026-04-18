@@ -1,12 +1,20 @@
 import { useState, useCallback, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { useQueryClient } from '@tanstack/react-query'
+import { WarningCircleIcon } from '@phosphor-icons/react'
 import { StudyHeader } from '@/components/study/StudyHeader'
 import { FlashcardQuestion } from '@/components/study/FlashcardQuestion'
 import { MultipleChoiceQuestion } from '@/components/study/MultipleChoiceQuestion'
 import { FillInBlankQuestion } from '@/components/study/FillInBlankQuestion'
 import { AnswerFeedback } from '@/components/study/AnswerFeedback'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { LEARNING_COPY } from '@/constants/learning'
 import {
@@ -203,29 +211,39 @@ export function StudySessionPage() {
 
       {/* Exit confirmation dialog */}
       <Dialog open={showExitDialog} onOpenChange={setShowExitDialog}>
-        <DialogContent className="max-w-sm" showCloseButton>
-          <DialogHeader>
-            <DialogTitle>{LEARNING_COPY.exitConfirmTitle}</DialogTitle>
-            <p className="text-sm text-muted-foreground">
-              {LEARNING_COPY.exitConfirmMessage}
-            </p>
+        <DialogContent className="max-w-sm overflow-hidden p-0" showCloseButton={false}>
+          <DialogHeader className="gap-3 px-6 pt-6">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-50 dark:bg-rose-950/30">
+              <WarningCircleIcon size={24} className="text-rose-500" weight="fill" />
+            </div>
+            <div className="space-y-1">
+              <DialogTitle className="text-base font-bold">
+                {LEARNING_COPY.exitConfirmTitle}
+              </DialogTitle>
+              <DialogDescription>
+                {LEARNING_COPY.exitConfirmMessage}
+              </DialogDescription>
+            </div>
           </DialogHeader>
-          <div className="flex gap-2 pt-2">
+
+          <DialogFooter className="gap-3 px-6 pb-6 pt-2 sm:grid sm:grid-cols-2">
             <Button
-              variant="outline"
-              className="flex-1 rounded-full"
+              type="button"
+              variant="secondary"
+              className="w-full rounded-xl py-2.5 text-sm font-semibold"
               onClick={() => setShowExitDialog(false)}
             >
               {LEARNING_COPY.exitCancelAction}
             </Button>
             <Button
+              type="button"
               variant="destructive"
-              className="flex-1 rounded-full"
+              className="w-full rounded-xl py-2.5 text-sm font-semibold"
               onClick={handleExit}
             >
               {LEARNING_COPY.exitConfirmAction}
             </Button>
-          </div>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

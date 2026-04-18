@@ -30,7 +30,7 @@ export function MultipleChoiceQuestion({
       <p className="text-sm text-muted-foreground">{question.prompt}</p>
 
       {/* Question text */}
-      <div className="flex min-h-[120px] w-full max-w-lg flex-col items-center justify-center rounded-3xl p-8 section-card-surface section-card-elevation">
+      <div className="feature-card flex min-h-[120px] w-full max-w-lg flex-col items-center justify-center rounded-3xl p-8">
         <p className="font-heading-jp text-2xl font-medium text-foreground">
           {question.questionText}
         </p>
@@ -48,15 +48,15 @@ export function MultipleChoiceQuestion({
           const isCorrect = hasAnswered && option.id === correctOptionId
           const isWrong = hasAnswered && isSelected && option.id !== correctOptionId
 
-          let optionClass =
-            'section-card-surface section-card-elevation hover:section-card-elevation-hover'
+          let optionClass = 'feature-card hover:feature-card-hover'
           if (isCorrect) {
             optionClass =
-              'ring-2 ring-emerald-400 bg-emerald-50 dark:bg-emerald-950/30'
+              'feature-card border-emerald-300 bg-emerald-50 dark:border-emerald-700 dark:bg-emerald-950/30'
           } else if (isWrong) {
-            optionClass = 'ring-2 ring-rose-400 bg-rose-50 dark:bg-rose-950/30'
+            optionClass =
+              'feature-card border-rose-300 bg-rose-50 dark:border-rose-700 dark:bg-rose-950/30'
           } else if (hasAnswered) {
-            optionClass = 'opacity-50 section-card-surface'
+            optionClass = 'feature-card opacity-50'
           }
 
           return (

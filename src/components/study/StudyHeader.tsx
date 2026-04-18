@@ -29,7 +29,7 @@ export function StudyHeader({
         />
       </div>
 
-      <div className="flex h-12 items-center justify-between bg-background/90 px-4 backdrop-blur-md">
+      <div className="flex h-12 items-center justify-between border-b border-border/70 bg-background/90 px-4 shadow-sm backdrop-blur-md">
         <button
           type="button"
           onClick={onExit}

@@ -33,9 +33,9 @@ export function FillInBlankQuestion({
 
   const barBorderClass = hasAnswered
     ? isCorrect
-      ? 'border-emerald-400 bg-emerald-50/80 dark:bg-emerald-950/30'
-      : 'border-rose-400 bg-rose-50/80 dark:bg-rose-950/30'
-    : 'border-border/80 bg-background'
+      ? 'border-emerald-300 bg-emerald-50/80 dark:border-emerald-700 dark:bg-emerald-950/30'
+      : 'border-rose-300 bg-rose-50/80 dark:border-rose-700 dark:bg-rose-950/30'
+    : ''
 
   const inputTextClass = hasAnswered
     ? isCorrect
@@ -49,7 +49,7 @@ export function FillInBlankQuestion({
       <p className="text-sm text-muted-foreground">{question.prompt}</p>
 
       {/* Question */}
-      <div className="flex min-h-[120px] w-full max-w-lg flex-col items-center justify-center rounded-3xl p-8 section-card-surface section-card-elevation">
+      <div className="feature-card flex min-h-[120px] w-full max-w-lg flex-col items-center justify-center rounded-3xl p-8">
         <p className="font-heading-jp text-2xl font-medium text-foreground">
           {question.questionText}
         </p>
@@ -67,7 +67,7 @@ export function FillInBlankQuestion({
 
       {/* Accepted answers feedback */}
       {hasAnswered && !isCorrect && acceptedAnswers.length > 0 && (
-        <div className="w-full max-w-lg rounded-2xl bg-rose-50 px-4 py-3 dark:bg-rose-950/20">
+        <div className="feature-card w-full max-w-lg rounded-2xl border-rose-200 bg-rose-50 px-4 py-3 dark:border-rose-800 dark:bg-rose-950/20">
           <p className="text-xs font-semibold text-rose-600 dark:text-rose-400">
             {LEARNING_COPY.acceptedAnswers}
           </p>
@@ -80,7 +80,7 @@ export function FillInBlankQuestion({
       {/* Input bar */}
       <div className="w-full max-w-lg">
         <div
-          className={`flex items-center gap-3 rounded-2xl border px-4 py-3.5 shadow-sm transition-all duration-200 ${barBorderClass}`}
+          className={`feature-card flex items-center gap-3 rounded-2xl px-4 py-3.5 transition-all duration-200 ${barBorderClass}`}
         >
           <input
             ref={inputRef}

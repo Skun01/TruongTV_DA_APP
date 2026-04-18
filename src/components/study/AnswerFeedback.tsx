@@ -15,10 +15,10 @@ export function AnswerFeedback({ result, onNext }: AnswerFeedbackProps) {
       <div className="mx-auto max-w-lg space-y-3">
         {/* SRS feedback */}
         <div
-          className={`flex items-center justify-between rounded-2xl px-4 py-3 ${
+          className={`feature-card flex items-center justify-between rounded-2xl px-4 py-3 ${
             isCorrect
-              ? 'bg-emerald-50 dark:bg-emerald-950/30'
-              : 'bg-rose-50 dark:bg-rose-950/30'
+              ? 'border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/30'
+              : 'border-rose-200 bg-rose-50 dark:border-rose-800 dark:bg-rose-950/30'
           }`}
         >
           <div className="flex items-center gap-2">

@@ -36,20 +36,20 @@ export function FlashcardQuestion({
         >
           {/* Front */}
           <div
-            className="flex min-h-[240px] flex-col items-center justify-center rounded-3xl p-8 section-card-surface section-card-elevation"
+            className="feature-card flex min-h-[240px] flex-col items-center justify-center rounded-3xl p-8"
             style={{ backfaceVisibility: 'hidden' }}
           >
             <p className="font-heading-jp text-3xl font-medium text-foreground">
               {question.frontText}
             </p>
             <p className="mt-4 text-sm text-muted-foreground/60">
-              Nhấn để lật thẻ
+              {LEARNING_COPY.flipCardHint}
             </p>
           </div>
 
           {/* Back */}
           <div
-            className="absolute inset-0 flex min-h-[240px] flex-col items-center justify-center rounded-3xl p-8 section-card-surface section-card-elevation"
+            className="feature-card absolute inset-0 flex min-h-[240px] flex-col items-center justify-center rounded-3xl p-8"
             style={{
               backfaceVisibility: 'hidden',
               transform: 'rotateY(180deg)',

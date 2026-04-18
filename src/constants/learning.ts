@@ -69,6 +69,7 @@ export const LEARNING_COPY = {
   known: 'Đã biết',
   learning: 'Đang học',
   checkAnswer: 'Kiểm tra',
+  flipCardHint: 'Nhấn để lật thẻ',
   inputPlaceholder: 'Nhập câu trả lời...',
   correct: 'Chính xác!',
   incorrect: 'Chưa đúng',

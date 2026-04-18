@@ -105,7 +105,7 @@ export function StudyResultPage() {
           </div>
 
           {/* Accuracy big number */}
-          <div className={`mb-4 rounded-3xl px-6 py-6 text-center ${accentBg}`}>
+          <div className={`feature-card mb-4 rounded-3xl px-6 py-6 text-center ${accentBg}`}>
             <p className={`text-6xl font-bold tracking-tight ${accentColor}`}>
               {accuracy}%
             </p>
@@ -131,7 +131,7 @@ export function StudyResultPage() {
 
           {/* Deck info */}
           {result.deckTitle && (
-            <div className="mb-6 rounded-2xl px-4 py-3 section-card-surface">
+            <div className="feature-card mb-6 rounded-2xl px-4 py-3">
               <p className="text-xs text-muted-foreground">
                 {LEARNING_COPY.sessionModeLabel[result.mode]}
               </p>
@@ -155,7 +155,7 @@ export function StudyResultPage() {
             <button
               type="button"
               onClick={() => navigate('/quick-learn')}
-              className="flex items-center justify-center gap-2 rounded-2xl border border-border/70 px-4 py-3 text-sm font-medium text-secondary transition-colors hover:bg-surface-container"
+              className="feature-card hover:feature-card-hover flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-medium text-secondary transition-colors"
             >
               <LightningIcon size={14} weight="fill" />
               {LEARNING_COPY.backToQuickLearn}
@@ -185,7 +185,7 @@ function StatCard({
   color?: string
 }) {
   return (
-    <div className="rounded-2xl bg-surface-container-low px-2 py-3 text-center">
+    <div className="feature-card rounded-2xl px-2 py-3 text-center">
       <p className={`text-2xl font-bold ${color}`}>{value}</p>
       <p className="mt-0.5 text-[10px] text-muted-foreground">{label}</p>
     </div>

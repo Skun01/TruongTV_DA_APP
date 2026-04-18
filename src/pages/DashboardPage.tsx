@@ -40,6 +40,10 @@ export function DashboardPage() {
     NProgress.done()
   }, [isPageLoading])
 
+  function handleFetchDueCards() {
+    dueCardsQuery.refetch()
+  }
+
   async function handleStartReview(mode: StudyMode) {
     const result = await dueCardsQuery.refetch()
     const cardIds = result.data?.cardIds ?? []
@@ -79,11 +83,14 @@ export function DashboardPage() {
             </h1>
           </div>
 
-          {/* Due cards summary */}
+          {/* Due cards review — expandable card like sample app */}
           <DueCardsSummary
             review={reviewTodayQuery.data}
+            dueCards={dueCardsQuery.data}
             isLoading={reviewTodayQuery.isLoading}
+            isDueCardsLoading={dueCardsQuery.isFetching}
             onStartReview={handleStartReview}
+            onFetchDueCards={handleFetchDueCards}
             isPending={createSessionMutation.isPending || dueCardsQuery.isFetching}
           />
 

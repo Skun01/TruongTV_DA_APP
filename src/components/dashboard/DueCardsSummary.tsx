@@ -1,78 +1,167 @@
 import { useState } from 'react'
-import { LightningIcon, SpinnerGapIcon } from '@phosphor-icons/react'
+import {
+  ArrowsClockwiseIcon,
+  CaretDownIcon,
+  LightningIcon,
+  SpinnerGapIcon,
+  StackIcon,
+} from '@phosphor-icons/react'
 import { LEARNING_COPY } from '@/constants/learning'
 import { StudyModeSelector } from '@/components/learning/StudyModeSelector'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import type { ReviewTodayResponse } from '@/types/learning'
-import type { StudyMode } from '@/types/learning'
+import type { ReviewDueCardsResponse, ReviewTodayResponse, StudyMode } from '@/types/learning'
 
 interface DueCardsSummaryProps {
   review: ReviewTodayResponse | undefined
+  dueCards: ReviewDueCardsResponse | undefined
   isLoading: boolean
+  isDueCardsLoading: boolean
   onStartReview: (mode: StudyMode) => void
+  onFetchDueCards: () => void
   isPending: boolean
 }
 
 export function DueCardsSummary({
   review,
+  dueCards,
   isLoading,
+  isDueCardsLoading,
   onStartReview,
+  onFetchDueCards,
   isPending,
 }: DueCardsSummaryProps) {
+  const [expanded, setExpanded] = useState(false)
   const [showModeDialog, setShowModeDialog] = useState(false)
   const [selectedMode, setSelectedMode] = useState<StudyMode>('MultipleChoice')
+
   const dueCount = review?.dueCount ?? 0
+  const totalCards = review?.totalCards ?? 0
+  const dueCardIds = dueCards?.cardIds ?? []
 
   if (isLoading) {
     return (
-      <div className="h-32 animate-pulse rounded-3xl section-card-surface" />
+      <div className="h-28 animate-pulse rounded-2xl bg-[#e5eff0] dark:bg-secondary-container/30" />
     )
+  }
+
+  function handleExpand() {
+    if (!expanded) {
+      onFetchDueCards()
+    }
+    setExpanded((v) => !v)
+  }
+
+  function handleStartReviewClick(e: React.MouseEvent) {
+    e.stopPropagation()
+    setShowModeDialog(true)
   }
 
   return (
     <>
-      <div className="relative overflow-hidden rounded-3xl px-6 py-6 section-card-surface section-card-elevation">
-        {/* Decorative background */}
-        <div
-          className="absolute -right-8 -top-8 h-32 w-32 rounded-full opacity-10"
-          style={{ backgroundColor: 'var(--primary)' }}
-        />
-
-        <div className="relative flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-muted-foreground">
-              {LEARNING_COPY.dueToday}
-            </p>
-            {dueCount > 0 ? (
-              <p className="mt-1 text-3xl font-bold text-foreground">
-                {dueCount}{' '}
-                <span className="text-base font-normal text-muted-foreground">
-                  {LEARNING_COPY.dueCardsLabel}
-                </span>
+      {/* Review Card — styled like sample app */}
+      <div
+        onClick={dueCount > 0 ? handleStartReviewClick : undefined}
+        role={dueCount > 0 ? 'button' : undefined}
+        tabIndex={dueCount > 0 ? 0 : undefined}
+        onKeyDown={
+          dueCount > 0
+            ? (e) => { if (e.key === 'Enter') setShowModeDialog(true) }
+            : undefined
+        }
+        className={`flex flex-col rounded-2xl shadow-[0_2px_16px_0_rgba(29,28,19,0.06)] transition-shadow ${
+          dueCount > 0
+            ? 'cursor-pointer bg-[#e5eff0] hover:shadow-[0_4px_24px_0_rgba(74,98,103,0.18)] dark:bg-secondary-container/30'
+            : 'bg-surface-container-low dark:bg-surface-container'
+        }`}
+      >
+        {/* Header row */}
+        <div className="flex items-start justify-between p-5 pb-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/70">
+              <ArrowsClockwiseIcon size={16} className="text-secondary" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-foreground">
+                {LEARNING_COPY.dueToday}
               </p>
-            ) : (
-              <p className="mt-1 text-sm text-muted-foreground">
-                {LEARNING_COPY.noDueCards}
+              <p className="text-xs text-muted-foreground">
+                {LEARNING_COPY.reviewSubtitle}
               </p>
-            )}
+            </div>
           </div>
 
-          {dueCount > 0 && (
-            <Button
-              onClick={() => setShowModeDialog(true)}
-              className="shrink-0 rounded-full"
-              disabled={isPending}
-            >
-              {isPending ? (
-                <SpinnerGapIcon size={16} className="animate-spin" />
-              ) : (
-                <LightningIcon size={16} weight="fill" />
-              )}
-              {LEARNING_COPY.reviewNow}
-            </Button>
-          )}
+          {/* Due badge + expand caret */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleExpand()
+            }}
+            aria-label={LEARNING_COPY.expandReviewAriaLabel}
+            className="flex items-center gap-1 text-sm font-semibold text-foreground"
+          >
+            <span>{dueCount}</span>
+            <CaretDownIcon
+              size={14}
+              className={`text-muted-foreground transition-transform duration-200 ${
+                expanded ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
         </div>
+
+        {/* Expanded: due cards detail */}
+        {expanded ? (
+          <div className="px-5 pb-4">
+            {isDueCardsLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <SpinnerGapIcon size={20} className="animate-spin text-muted-foreground" />
+              </div>
+            ) : dueCardIds.length === 0 ? (
+              <div className="flex flex-col items-center gap-2 py-4">
+                <StackIcon size={24} className="text-muted-foreground/40" />
+                <p className="text-xs text-muted-foreground">
+                  {LEARNING_COPY.noDueCards}
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {/* Summary stats */}
+                <div className="flex gap-3">
+                  <div className="flex flex-1 flex-col gap-0.5 rounded-xl bg-background/60 p-3 dark:bg-surface-container-highest/40">
+                    <span className="text-xs text-muted-foreground">
+                      {LEARNING_COPY.dueCardsLabel}
+                    </span>
+                    <span className="text-lg font-bold text-primary">
+                      {dueCardIds.length}
+                    </span>
+                  </div>
+                  <div className="flex flex-1 flex-col gap-0.5 rounded-xl bg-background/60 p-3 dark:bg-surface-container-highest/40">
+                    <span className="text-xs text-muted-foreground">
+                      {LEARNING_COPY.totalCardsScope}
+                    </span>
+                    <span className="text-lg font-bold text-secondary">
+                      {totalCards}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Quick review CTA */}
+                <button
+                  onClick={handleStartReviewClick}
+                  className="mt-1 flex items-center justify-center gap-2 rounded-xl bg-secondary/10 px-4 py-2.5 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/20 dark:bg-secondary/20 dark:hover:bg-secondary/30"
+                >
+                  <LightningIcon size={14} weight="fill" />
+                  {LEARNING_COPY.reviewNow}
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <p className="px-5 pb-5 text-xs text-muted-foreground">
+            {LEARNING_COPY.reviewHint}
+          </p>
+        )}
       </div>
 
       {/* Mode selection dialog */}

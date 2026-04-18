@@ -1,4 +1,11 @@
 import { GearIcon } from '@phosphor-icons/react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { LEARNING_COPY } from '@/constants/learning'
 import type {
   FlashcardSide,
@@ -43,7 +50,7 @@ export function StudySettingsPanel({
                 onChange={(v) =>
                   onSettingsChange({
                     ...settings,
-                    flashcardFront: v as FlashcardSide,
+                    flashcardFront: v,
                   })
                 }
               />
@@ -55,7 +62,7 @@ export function StudySettingsPanel({
                 onChange={(v) =>
                   onSettingsChange({
                     ...settings,
-                    flashcardBack: v as FlashcardSide,
+                    flashcardBack: v,
                   })
                 }
               />
@@ -71,7 +78,7 @@ export function StudySettingsPanel({
               onChange={(v) =>
                 onSettingsChange({
                   ...settings,
-                  multipleChoiceQuestion: v as MultipleChoiceDirection,
+                  multipleChoiceQuestion: v,
                 })
               }
             />
@@ -127,21 +134,45 @@ function SelectField({
   options,
   onChange,
 }: {
-  value: string
-  options: Record<string, string>
-  onChange: (value: string) => void
+  value: FlashcardSide
+  options: Record<FlashcardSide, string>
+  onChange: (value: FlashcardSide) => void
+}): React.ReactElement
+function SelectField({
+  value,
+  options,
+  onChange,
+}: {
+  value: MultipleChoiceDirection
+  options: Record<MultipleChoiceDirection, string>
+  onChange: (value: MultipleChoiceDirection) => void
+}): React.ReactElement
+function SelectField<T extends string>({
+  value,
+  options,
+  onChange,
+}: {
+  value: T
+  options: Record<T, string>
+  onChange: (value: T) => void
 }) {
+  const optionEntries = Object.entries(options) as Array<[T, string]>
+
   return (
-    <select
+    <Select
       value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="rounded-lg border border-border/70 bg-background px-3 py-1.5 text-sm font-medium text-foreground outline-none focus:ring-2 focus:ring-ring/20"
+      onValueChange={(nextValue) => onChange(nextValue as T)}
     >
-      {Object.entries(options).map(([key, label]) => (
-        <option key={key} value={key}>
-          {label}
-        </option>
-      ))}
-    </select>
+      <SelectTrigger className="h-10 w-[172px] rounded-lg border-border/70 px-3 py-1.5 text-sm font-medium">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {optionEntries.map(([key, label]) => (
+          <SelectItem key={key} value={key}>
+            {label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }

@@ -10,11 +10,10 @@ interface StudyModeSelectorProps {
 const MODES: Array<{
   mode: StudyMode
   icon: typeof CardsThreeIcon
-  iconWeight: 'duotone'
 }> = [
-  { mode: 'Flashcard', icon: CardsThreeIcon, iconWeight: 'duotone' },
-  { mode: 'MultipleChoice', icon: ListChecksIcon, iconWeight: 'duotone' },
-  { mode: 'FillInBlank', icon: PencilLineIcon, iconWeight: 'duotone' },
+  { mode: 'Flashcard', icon: CardsThreeIcon },
+  { mode: 'MultipleChoice', icon: ListChecksIcon },
+  { mode: 'FillInBlank', icon: PencilLineIcon },
 ]
 
 export function StudyModeSelector({ value, onChange }: StudyModeSelectorProps) {
@@ -22,7 +21,7 @@ export function StudyModeSelector({ value, onChange }: StudyModeSelectorProps) {
     <section className="space-y-3">
       <h3 className="section-label-text">{LEARNING_COPY.selectModeTitle}</h3>
 
-      <div className="grid gap-2 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         {MODES.map(({ mode, icon: Icon }) => {
           const isSelected = value === mode
 
@@ -30,8 +29,9 @@ export function StudyModeSelector({ value, onChange }: StudyModeSelectorProps) {
             <button
               key={mode}
               type="button"
+              aria-pressed={isSelected}
               onClick={() => onChange(mode)}
-              className={`flex flex-col items-start gap-2 rounded-2xl p-4 text-left transition-all duration-200 ${
+              className={`flex min-h-[104px] flex-col items-center justify-center gap-3 rounded-2xl px-4 py-5 text-center transition-all duration-200 ${
                 isSelected
                   ? 'feature-card-selected'
                   : 'feature-card hover:feature-card-hover'
@@ -49,9 +49,6 @@ export function StudyModeSelector({ value, onChange }: StudyModeSelectorProps) {
                   }`}
                 >
                   {LEARNING_COPY.modeLabels[mode]}
-                </p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {LEARNING_COPY.modeDescriptions[mode]}
                 </p>
               </div>
             </button>

@@ -19,6 +19,9 @@ import { KanjiDetailPage } from './pages/KanjiDetailPage'
 import { LibraryPage } from './pages/LibraryPage'
 import { DeckDetailPage } from './pages/DeckDetailPage'
 import { DeckEditPage } from './pages/DeckEditPage'
+import { QuickLearnPage } from './pages/QuickLearnPage'
+import { StudySessionPage } from './pages/StudySessionPage'
+import { StudyResultPage } from './pages/StudyResultPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +59,9 @@ function App() {
                 <Route path="/vocabulary/:id" element={<VocabularyDetailPage />} />
                 <Route path="/grammar/:id" element={<GrammarDetailPage />} />
                 <Route path="/kanji/:id" element={<KanjiDetailPage />} />
+                <Route path="/quick-learn" element={<QuickLearnPage />} />
+                <Route path="/study/:sessionId" element={<StudySessionPage />} />
+                <Route path="/study/:sessionId/result" element={<StudyResultPage />} />
               </Route>
             </Routes>
           </AppInit>

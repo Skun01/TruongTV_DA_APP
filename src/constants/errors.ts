@@ -12,8 +12,20 @@ export const DECK_ERROR_MESSAGES: Record<string, string> = {
   default: 'Không thể xử lý thao tác với bộ thẻ. Vui lòng thử lại.',
 }
 
+export const LEARNING_ERROR_MESSAGES: Record<string, string> = {
+  Learning_SessionNotFound_404: 'Không tìm thấy phiên học.',
+  Learning_SessionCompleted_400: 'Phiên học đã hoàn thành.',
+  Learning_InvalidMode_400: 'Chế độ học không hợp lệ.',
+  Learning_InvalidScope_400: 'Phạm vi thẻ không hợp lệ.',
+  Learning_CardNotInSession_400: 'Thẻ không thuộc phiên học này.',
+  Learning_InvalidSubmission_400: 'Câu trả lời không hợp lệ hoặc đã nộp rồi.',
+  Learning_NoCardsAvailable_400: 'Không có thẻ nào để học.',
+  default_learning: 'Không thể xử lý thao tác học tập. Vui lòng thử lại.',
+}
+
 export const ERROR_MESSAGES = {
   ...API_ERROR_MESSAGES,
   ...DECK_ERROR_MESSAGES,
+  ...LEARNING_ERROR_MESSAGES,
 } as const
 

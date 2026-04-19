@@ -45,6 +45,9 @@ export const VOCAB_DETAIL_COPY = {
   // Ghi chú cộng đồng
   notes: {
     title: 'GHI CHÚ CỘNG ĐỒNG',
+    myNoteTitle: 'Ghi chú của bạn',
+    edit: 'Sửa',
+    viewOthers: 'Xem của người khác',
     placeholder: 'Viết ghi chú để chia sẻ mẹo nhớ, cách dùng, hay bất cứ gì hữu ích...',
     submit: 'Gửi ghi chú',
     empty: 'Chưa có ghi chú nào',
@@ -56,6 +59,27 @@ export const VOCAB_DETAIL_COPY = {
     play: 'Phát âm',
     unavailable: 'Chưa có audio',
     playError: 'Không thể phát audio. Vui lòng thử lại.',
+  },
+
+  deckDialog: {
+    title: 'Thêm vào bộ thẻ cá nhân',
+    readyStatus: 'Sẵn sàng thêm',
+    existedStatus: 'Đã có trong bộ thẻ',
+    deckLabel: 'Bộ thẻ',
+    deckHint: 'Chọn bộ thẻ muốn lưu thẻ này',
+    deckPlaceholder: 'Chọn bộ thẻ',
+    folderLabel: 'Thư mục',
+    folderHint: 'Chọn thư mục đích trong bộ thẻ',
+    folderPlaceholder: 'Chọn thư mục',
+    addAction: 'Thêm vào bộ thẻ',
+    removeAction: 'Xóa khỏi bộ thẻ',
+    cancel: 'Hủy',
+    emptyDeckTitle: 'Bạn chưa có bộ thẻ cá nhân',
+    emptyDeckHint: 'Hãy tạo một bộ thẻ trong thư viện để lưu thẻ học này.',
+    openLibrary: 'Mở thư viện',
+    emptyFolderHint: 'Bộ thẻ này chưa có thư mục. Vui lòng tạo thư mục trước khi thêm thẻ.',
+    openDeckEditor: 'Mở trang chỉnh sửa bộ thẻ',
+    existsInFolder: (folderTitle: string) => `Thẻ này đã có trong thư mục "${folderTitle}". Bạn có thể xóa khỏi bộ thẻ.`,
   },
 
   notFound: 'Không tìm thấy từ vựng',

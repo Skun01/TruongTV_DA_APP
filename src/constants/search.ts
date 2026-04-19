@@ -2,6 +2,17 @@ export const SEARCH_COPY = {
   pageTitle: 'Tìm kiếm',
   pageDescription: 'Tìm kiếm thẻ học tiếng Nhật trên Tacho.',
   inputPlaceholder: 'Tìm kiếm từ vựng, ngữ pháp, kanji...',
+  handwriting: {
+    triggerButton: 'Vẽ Kanji',
+    canvasHint: 'Vẽ Kanji',
+    loading: 'Đang tải bộ nhận diện chữ viết tay...',
+    loadError: 'Không thể tải bộ nhận diện Kanji. Vui lòng thử lại.',
+    recognizeButton: 'Tìm',
+    clearButton: 'Xóa nét',
+    undoButton: 'Xóa nét cuối',
+    noCandidates: 'Chưa nhận diện được ký tự phù hợp.',
+    recognizeError: 'Không thể nhận diện Kanji. Vui lòng thử lại.',
+  },
   emptyQuery: 'Nhập từ khóa để bắt đầu tìm kiếm',
   resultCount: (count: number, query: string) =>
     `${count} kết quả cho "${query}"`,

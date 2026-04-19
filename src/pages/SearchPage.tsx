@@ -9,6 +9,7 @@ import { SearchHeader } from '@/components/search/SearchHeader'
 import { SearchFilters } from '@/components/search/SearchFilters'
 import { SearchResultCard } from '@/components/search/SearchResultCard'
 import { SearchEmptyState } from '@/components/search/SearchEmptyState'
+import { KanjiDrawPanel } from '@/components/search/KanjiDrawDialog'
 import { useCardSearch } from '@/hooks/useCardSearch'
 import { SEARCH_COPY } from '@/constants/search'
 import type { SearchCardSummary, SearchCardType } from '@/types/search'
@@ -30,6 +31,7 @@ export function SearchPage() {
 
   const [query, setQuery] = useState(initialQuery)
   const [submittedQuery, setSubmittedQuery] = useState(initialQuery)
+  const [isKanjiDrawOpen, setIsKanjiDrawOpen] = useState(false)
   const [selectedCardType, setSelectedCardType] = useState<SearchCardType | undefined>()
   const [selectedLevel, setSelectedLevel] = useState<JlptLevel | undefined>()
 
@@ -86,6 +88,15 @@ export function SearchPage() {
     setSubmittedQuery(trimmed)
   }
 
+  const handlePickKanji = (kanjiCharacter: string) => {
+    const normalizedKanji = kanjiCharacter.trim()
+    if (!normalizedKanji) {
+      return
+    }
+
+    setQuery((previousQuery) => `${previousQuery}${normalizedKanji}`)
+  }
+
   useEffect(() => {
     setQuery(initialQuery)
     setSubmittedQuery(initialQuery)
@@ -133,11 +144,20 @@ export function SearchPage() {
       >
         <div className="mx-auto max-w-4xl px-6 lg:px-8">
           <div className="flex flex-col gap-6 py-8">
-            <SearchHeader
-              query={query}
-              onQueryChange={setQuery}
-              onSubmit={handleSubmit}
-            />
+            <div className="relative">
+              <SearchHeader
+                query={query}
+                onQueryChange={setQuery}
+                onSubmit={handleSubmit}
+                isKanjiDrawOpen={isKanjiDrawOpen}
+                onToggleKanjiDraw={() => setIsKanjiDrawOpen((previous) => !previous)}
+              />
+              {isKanjiDrawOpen && (
+                <div className="absolute right-0 top-[calc(100%+8px)] z-[100] max-w-[calc(100vw-3rem)]">
+                  <KanjiDrawPanel open={isKanjiDrawOpen} onPickKanji={handlePickKanji} />
+                </div>
+              )}
+            </div>
 
             {!submittedQuery.trim() ? (
               <p className="py-24 text-center text-sm text-muted-foreground">

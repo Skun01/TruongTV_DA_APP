@@ -1,16 +1,21 @@
-import { MagnifyingGlassIcon } from '@phosphor-icons/react'
+import { MagnifyingGlassIcon, PencilSimpleLineIcon } from '@phosphor-icons/react'
+import { Button } from '@/components/ui/button'
 import { SEARCH_COPY } from '@/constants/search'
 
 interface SearchHeaderProps {
   query: string
   onQueryChange: (value: string) => void
   onSubmit: () => void
+  isKanjiDrawOpen: boolean
+  onToggleKanjiDraw: () => void
 }
 
 export function SearchHeader({
   query,
   onQueryChange,
   onSubmit,
+  isKanjiDrawOpen,
+  onToggleKanjiDraw,
 }: SearchHeaderProps) {
   return (
     <div
@@ -29,6 +34,16 @@ export function SearchHeader({
         placeholder={SEARCH_COPY.inputPlaceholder}
         className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
       />
+      <Button
+        type="button"
+        variant={isKanjiDrawOpen ? 'secondary' : 'ghost'}
+        size="icon-sm"
+        onClick={onToggleKanjiDraw}
+        className="shrink-0 rounded-full"
+      >
+        <PencilSimpleLineIcon size={20} weight="regular" />
+        <span className="sr-only">{SEARCH_COPY.handwriting.triggerButton}</span>
+      </Button>
     </div>
   )
 }

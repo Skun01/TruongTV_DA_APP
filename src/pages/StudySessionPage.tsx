@@ -129,7 +129,7 @@ export function StudySessionPage() {
   // ── Exit ─────────────────────────────────────────────────────────────────────
   function handleExit() {
     setShowExitDialog(false)
-    navigate('/dashboard')
+    navigate(-1)
   }
 
   // ── Loading ──────────────────────────────────────────────────────────────────

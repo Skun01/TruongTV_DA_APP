@@ -25,7 +25,7 @@ export function SearchResultCard({ card }: SearchResultCardProps) {
 
   return (
     <Link to={href} className="block group">
-      <Card className="border-none transition-all duration-300 py-0 section-card-surface section-card-elevation group-hover:scale-[1.01] group-hover:section-card-elevation-hover">
+      <Card className="rounded-3xl border border-border/70 bg-card py-0 shadow-[0_2px_12px_0_rgba(29,28,19,0.07)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_4px_16px_0_rgba(29,28,19,0.10)] dark:bg-surface-container-high dark:shadow-[0_8px_22px_0_rgba(0,0,0,0.24)] dark:group-hover:shadow-[0_10px_26px_0_rgba(0,0,0,0.32)]">
         <CardContent className="flex items-start justify-between gap-4 p-4">
           <div className="flex flex-col gap-1 min-w-0">
             <div className="flex items-baseline gap-2 flex-wrap">

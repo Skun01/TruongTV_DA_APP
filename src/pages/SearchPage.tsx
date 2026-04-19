@@ -104,10 +104,7 @@ export function SearchPage() {
 
     if (items.length === 0) {
       return (
-        <div
-          className="rounded-3xl px-6 py-8 text-center shadow-[0_1px_8px_0_rgba(29,28,19,0.06)]"
-          style={{ backgroundColor: 'var(--background)' }}
-        >
+        <div className="rounded-3xl border border-border/70 bg-card px-6 py-8 text-center shadow-[0_2px_12px_0_rgba(29,28,19,0.06)] dark:bg-surface-container-high dark:shadow-[0_8px_20px_0_rgba(0,0,0,0.24)]">
           <p className="text-sm text-muted-foreground">
             {SEARCH_COPY.emptySection(sectionLabel, submittedQuery)}
           </p>

@@ -103,7 +103,7 @@ export function DueCardsSummary({
             <span>{dueCount}</span>
             <CaretDownIcon
               size={14}
-              className={`text-muted-foreground transition-transform duration-200 ${
+              className={`text-muted-foreground transition-transform duration-300 ease-out ${
                 expanded ? 'rotate-180' : ''
               }`}
             />
@@ -111,7 +111,11 @@ export function DueCardsSummary({
         </div>
 
         {/* Expanded: due cards detail */}
-        {expanded ? (
+        <div
+          className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
+            expanded ? 'max-h-[420px] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
           <div className="px-5 pb-4">
             {isDueCardsLoading ? (
               <div className="flex items-center justify-center py-4">
@@ -128,7 +132,7 @@ export function DueCardsSummary({
               <div className="flex flex-col gap-2">
                 {/* Summary stats */}
                 <div className="flex gap-3">
-                   <div className="flex flex-1 flex-col gap-0.5 rounded-xl border border-border/60 bg-background/60 p-3 dark:bg-surface-container-highest/40">
+                  <div className="flex flex-1 flex-col gap-0.5 rounded-xl border border-border/60 bg-background/60 p-3 dark:bg-surface-container-highest/40">
                     <span className="text-xs text-muted-foreground">
                       {LEARNING_COPY.dueCardsLabel}
                     </span>
@@ -136,7 +140,7 @@ export function DueCardsSummary({
                       {dueCardIds.length}
                     </span>
                   </div>
-                   <div className="flex flex-1 flex-col gap-0.5 rounded-xl border border-border/60 bg-background/60 p-3 dark:bg-surface-container-highest/40">
+                  <div className="flex flex-1 flex-col gap-0.5 rounded-xl border border-border/60 bg-background/60 p-3 dark:bg-surface-container-highest/40">
                     <span className="text-xs text-muted-foreground">
                       {LEARNING_COPY.totalCardsScope}
                     </span>
@@ -157,16 +161,25 @@ export function DueCardsSummary({
               </div>
             )}
           </div>
-        ) : (
+        </div>
+
+        <div
+          className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
+            expanded ? 'max-h-0 opacity-0' : 'max-h-16 opacity-100'
+          }`}
+        >
           <p className="px-5 pb-5 text-xs text-muted-foreground">
             {LEARNING_COPY.reviewHint}
           </p>
-        )}
+        </div>
       </div>
 
       {/* Mode selection dialog */}
       <Dialog open={showModeDialog} onOpenChange={setShowModeDialog}>
-        <DialogContent className="max-w-md" showCloseButton>
+        <DialogContent
+          className="max-w-md border border-border/70 bg-card shadow-[0_8px_30px_0_rgba(29,28,19,0.14)] dark:bg-surface-container-high dark:shadow-[0_18px_40px_0_rgba(0,0,0,0.4)]"
+          showCloseButton
+        >
           <DialogHeader>
             <DialogTitle>{LEARNING_COPY.reviewModeTitle}</DialogTitle>
             <p className="text-sm text-muted-foreground">
@@ -177,7 +190,7 @@ export function DueCardsSummary({
             </p>
           </DialogHeader>
 
-          <div className="space-y-4 pt-2">
+          <div className="space-y-4 px-6 pb-6 pt-2">
             <StudyModeSelector
               value={selectedMode}
               onChange={setSelectedMode}

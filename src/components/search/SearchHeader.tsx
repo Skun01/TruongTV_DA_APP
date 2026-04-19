@@ -14,8 +14,7 @@ export function SearchHeader({
 }: SearchHeaderProps) {
   return (
     <div
-      className="flex items-center gap-3 rounded-full px-5 py-3 shadow-[0_2px_12px_0_rgba(29,28,19,0.08)]"
-      style={{ backgroundColor: 'var(--background)' }}
+      className="flex items-center gap-3 rounded-full border border-border/70 bg-card px-5 py-3 shadow-[0_2px_12px_0_rgba(29,28,19,0.08)] dark:bg-surface-container-high dark:shadow-[0_8px_22px_0_rgba(0,0,0,0.28)]"
     >
       <MagnifyingGlassIcon
         size={16}

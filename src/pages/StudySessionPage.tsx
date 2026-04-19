@@ -7,6 +7,7 @@ import { FlashcardQuestion } from '@/components/study/FlashcardQuestion'
 import { MultipleChoiceQuestion } from '@/components/study/MultipleChoiceQuestion'
 import { FillInBlankQuestion } from '@/components/study/FillInBlankQuestion'
 import { AnswerFeedback } from '@/components/study/AnswerFeedback'
+import { StudyKeyboardShortcuts } from '@/components/study/StudyKeyboardShortcuts'
 import {
   Dialog,
   DialogContent,
@@ -53,22 +54,6 @@ export function StudySessionPage() {
     }
   }, [question, session, sessionId, navigate])
 
-  // ── Flashcard submit ─────────────────────────────────────────────────────────
-  const handleFlashcardAnswer = useCallback(
-    async (result: 'Known' | 'Learning') => {
-      if (!question) return
-
-      const response = await submitMutation.mutateAsync({
-        cardId: question.cardId,
-        answers: [],
-        selectedOptionIds: [],
-        flashcardResult: result,
-      })
-      setAnswerResult(response)
-    },
-    [question, submitMutation],
-  )
-
   // ── MCQ submit ───────────────────────────────────────────────────────────────
   const handleMcqAnswer = useCallback(
     async (selectedOptionId: string) => {
@@ -111,7 +96,7 @@ export function StudySessionPage() {
   )
 
   // ── Next question ────────────────────────────────────────────────────────────
-  function handleNext() {
+  const handleNext = useCallback(() => {
     setVisible(false)
     setTimeout(() => {
       setAnswerResult(null)
@@ -123,7 +108,23 @@ export function StudySessionPage() {
       setVisible(true)
       window.scrollTo({ top: 0, behavior: 'instant' })
     }, 150)
-  }
+  }, [queryClient, sessionId])
+
+  // ── Flashcard submit ─────────────────────────────────────────────────────────
+  const handleFlashcardAnswer = useCallback(
+    async (result: 'Known' | 'Learning') => {
+      if (!question) return
+
+      await submitMutation.mutateAsync({
+        cardId: question.cardId,
+        answers: [],
+        selectedOptionIds: [],
+        flashcardResult: result,
+      })
+      handleNext()
+    },
+    [handleNext, question, submitMutation],
+  )
 
   // ── Exit ─────────────────────────────────────────────────────────────────────
   function handleExit() {
@@ -207,7 +208,11 @@ export function StudySessionPage() {
       </main>
 
       {/* Answer feedback overlay */}
-      {answerResult && question && <AnswerFeedback result={answerResult} onNext={handleNext} />}
+      {answerResult && question && question.mode !== 'Flashcard' && (
+        <AnswerFeedback result={answerResult} onNext={handleNext} />
+      )}
+
+      <StudyKeyboardShortcuts visible={session.mode === 'Flashcard'} />
 
       {/* Exit confirmation dialog */}
       <Dialog open={showExitDialog} onOpenChange={setShowExitDialog}>

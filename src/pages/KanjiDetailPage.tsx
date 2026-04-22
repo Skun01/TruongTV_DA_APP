@@ -123,7 +123,7 @@ export function KanjiDetailPage() {
 
                 {/* ── Right column: Actions + Community notes ── */}
                 <div className="flex flex-col gap-4">
-                  <CardProgress />
+                  <CardProgress cardId={card.id} />
                   <CardNoteSection
                     cardId={card.id}
                     myNote={myNote}

@@ -106,7 +106,7 @@ export function VocabularyDetailPage() {
 
                 {/* Right column */}
                 <div className="flex flex-col gap-4">
-                  <CardProgress />
+                  <CardProgress cardId={card.id} />
                   <CardNoteSection
                     cardId={card.id}
                     myNote={myNote}

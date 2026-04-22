@@ -18,13 +18,23 @@ export const VOCAB_DETAIL_COPY = {
     addToDeck: 'Thêm vào bộ thẻ',
   },
 
-  // Tiến trình học (placeholder — data SRS chưa có)
+  // Tiến trình học
   progress: {
     title: 'TIẾN TRÌNH HỌC',
     nextReview: 'Ôn tập tiếp theo',
-    firstLearned: 'Học lần đầu',
-    reviewCount: 'Số lần đã ôn',
-    comingSoon: 'Sắp ra mắt',
+    lastReviewed: 'Lần ôn gần nhất',
+    correctStreak: 'Chuỗi đúng',
+    srsLevel: 'Cấp độ SRS',
+    levelProgress: 'Tiến độ cấp độ',
+    levelProgressValue: (current: number, total: number) => `Mức ${current}/${total}`,
+    streakValue: (value: number) => `${value} lần đúng liên tiếp`,
+    learningState: 'Trạng thái học',
+    reviewStateDue: 'Đến hạn ôn',
+    reviewStateUpcoming: 'Sắp đến hạn',
+    mastered: 'Đã thành thạo',
+    inProgress: 'Đang học',
+    notReviewedYet: 'Chưa ôn lần nào',
+    loadFailed: 'Không tải được tiến trình',
   },
 
   // Ví dụ

@@ -23,9 +23,22 @@ export const LEARNING_ERROR_MESSAGES: Record<string, string> = {
   default_learning: 'Không thể xử lý thao tác học tập. Vui lòng thử lại.',
 }
 
+export const SHADOWING_ERROR_MESSAGES: Record<string, string> = {
+  Shadowing_TopicNotFound_404: 'Không tìm thấy chủ đề luyện phát âm.',
+  Shadowing_AttemptNotFound_404: 'Không tìm thấy bản ghi luyện tập.',
+  Shadowing_SentenceNotFound_404: 'Không tìm thấy câu luyện tập.',
+  Shadowing_SentenceNotAttached_404: 'Câu này không thuộc chủ đề đã chọn.',
+  Shadowing_InvalidAudio_400: 'File âm thanh không hợp lệ. Vui lòng thử lại.',
+  Shadowing_AssessmentFailed_500: 'Không thể đánh giá phát âm. Vui lòng thử lại sau.',
+  Shadowing_AzureNotConfigured_500: 'Hệ thống đánh giá phát âm đang bảo trì.',
+  Validation_400: 'Dữ liệu chưa hợp lệ. Vui lòng kiểm tra lại.',
+  default_shadowing: 'Không thể xử lý thao tác luyện phát âm. Vui lòng thử lại.',
+}
+
 export const ERROR_MESSAGES = {
   ...API_ERROR_MESSAGES,
   ...DECK_ERROR_MESSAGES,
   ...LEARNING_ERROR_MESSAGES,
+  ...SHADOWING_ERROR_MESSAGES,
 } as const
 

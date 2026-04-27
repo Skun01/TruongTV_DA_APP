@@ -8,6 +8,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 import { SHADOWING_COPY } from '@/constants/shadowing'
 import { useShadowingTopics } from '@/hooks/useShadowing'
@@ -206,17 +213,18 @@ export function ShadowingListPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <select
-              value={level}
-              onChange={(e) => handleLevelChange(e.target.value as ShadowingLevel | '')}
-              className="h-9 rounded-md border border-input bg-surface px-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-ring"
-            >
-              {LEVEL_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+            <Select value={level || 'all'} onValueChange={(value) => handleLevelChange(value === 'all' ? '' : (value as ShadowingLevel))}>
+              <SelectTrigger className="h-9 w-auto min-w-[160px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {LEVEL_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value || 'all'} value={opt.value || 'all'}>
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
             <Button
               variant={officialOnly ? 'default' : 'outline'}

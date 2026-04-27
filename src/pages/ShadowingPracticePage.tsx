@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   ArrowLeftIcon,
   CheckCircleIcon,
@@ -18,20 +18,42 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { SHADOWING_COPY } from '@/constants/shadowing'
+import { SHADOWING_ERROR_MESSAGES } from '@/constants/errors'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { useAudioPlayer } from '@/hooks/useAudioPlayer'
+import { useRecorder } from '@/hooks/useRecorder'
 import {
   useShadowingTopic,
   useShadowingTopicSentenceProgress,
   useSubmitShadowingAttempt,
 } from '@/hooks/useShadowing'
 import type { ShadowingAttemptResponse } from '@/types/shadowing'
-import { convertRecordedAudioToWav, getSupportedRecordingMimeType } from '@/utils/audioConverter'
 
-interface RecorderState {
-  isRecording: boolean
-  mediaRecorder: MediaRecorder | null
+function PracticeSkeleton() {
+  return (
+    <div className="mx-auto max-w-3xl">
+      <Skeleton className="mb-4 h-8 w-32" />
+      <Card className="border-border/50 bg-surface-container-low">
+        <CardContent className="space-y-8 p-6 sm:p-8">
+          <div className="space-y-2 text-center">
+            <Skeleton className="mx-auto h-4 w-16" />
+            <Skeleton className="mx-auto h-2 w-full" />
+          </div>
+          <div className="space-y-4 text-center">
+            <Skeleton className="mx-auto h-32 w-full rounded-3xl" />
+            <Skeleton className="mx-auto h-6 w-2/3" />
+          </div>
+          <div className="flex items-center justify-center gap-4">
+            <Skeleton className="h-12 w-12 rounded-full" />
+            <Skeleton className="h-12 w-12 rounded-full" />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
 }
 
 export function ShadowingPracticePage() {
@@ -40,19 +62,23 @@ export function ShadowingPracticePage() {
   const [searchParams] = useSearchParams()
   const sentenceId = searchParams.get('sentenceId')
 
-  const [recorderState, setRecorderState] = useState<RecorderState>({
-    isRecording: false,
-    mediaRecorder: null,
-  })
-  const [recordedAudio, setRecordedAudio] = useState<Blob | null>(null)
   const [attemptResult, setAttemptResult] = useState<ShadowingAttemptResponse | null>(null)
   const [isPreparingAudio, setIsPreparingAudio] = useState(false)
 
-  const streamRef = useRef<MediaStream | null>(null)
   const submitAttemptMutation = useSubmitShadowingAttempt()
   const { playAudio, playingAudioUrl } = useAudioPlayer({
     playErrorMessage: SHADOWING_COPY.audioPlaybackError,
   })
+
+  const {
+    isRecording,
+    recordedAudio,
+    recordedAudioUrl,
+    startRecording,
+    stopRecording,
+    resetRecording,
+    convertToWav,
+  } = useRecorder()
 
   const topicQuery = useShadowingTopic(topicId ?? '')
   const sentencesQuery = useShadowingTopicSentenceProgress(topicId ?? '')
@@ -65,13 +91,6 @@ export function ShadowingPracticePage() {
   const progressValue = sentences.length > 0 ? ((currentIndex + 1) / sentences.length) * 100 : 0
   const isSampleAudioAvailable = Boolean(currentSentence?.audioUrl)
   const isSampleAudioPlaying = Boolean(currentSentence?.audioUrl && playingAudioUrl === currentSentence.audioUrl)
-  const recordedAudioUrl = useMemo(() => {
-    if (!recordedAudio) {
-      return null
-    }
-
-    return URL.createObjectURL(recordedAudio)
-  }, [recordedAudio])
 
   useEffect(() => {
     if (topicQuery.isFetching || sentencesQuery.isFetching) {
@@ -82,72 +101,28 @@ export function ShadowingPracticePage() {
   }, [topicQuery.isFetching, sentencesQuery.isFetching])
 
   useEffect(() => {
-    return () => {
-      if (recordedAudioUrl) {
-        URL.revokeObjectURL(recordedAudioUrl)
-      }
+    if (topicQuery.isError) {
+      gooeyToast.error(
+        getApiErrorMessage(topicQuery.error, SHADOWING_ERROR_MESSAGES.default_shadowing),
+      )
     }
-  }, [recordedAudioUrl])
+  }, [topicQuery.isError, topicQuery.error])
 
   useEffect(() => {
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop())
-        streamRef.current = null
-      }
+    if (sentencesQuery.isError) {
+      gooeyToast.error(
+        getApiErrorMessage(sentencesQuery.error, SHADOWING_ERROR_MESSAGES.default_shadowing),
+      )
     }
-  }, [])
-
-  const startRecording = async () => {
-    if (typeof MediaRecorder === 'undefined') {
-      gooeyToast.error(SHADOWING_COPY.recordingUnavailable)
-      return
-    }
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      const mimeType = getSupportedRecordingMimeType()
-      const mediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream)
-      const chunks: Blob[] = []
-
-      const resolvedMimeType = mediaRecorder.mimeType || mimeType || 'audio/webm'
-
-      streamRef.current = stream
-      setRecordedAudio(null)
-      setAttemptResult(null)
-
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          chunks.push(event.data)
-        }
-      }
-
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(chunks, { type: resolvedMimeType })
-
-        setRecordedAudio(audioBlob)
-        setRecorderState({ isRecording: false, mediaRecorder: null })
-        stream.getTracks().forEach((track) => track.stop())
-        streamRef.current = null
-      }
-
-      mediaRecorder.start()
-      setRecorderState({ isRecording: true, mediaRecorder })
-    } catch {
-      gooeyToast.error(SHADOWING_COPY.micPermissionDenied)
-    }
-  }
-
-  const stopRecording = () => {
-    recorderState.mediaRecorder?.stop()
-  }
+  }, [sentencesQuery.isError, sentencesQuery.error])
 
   const handleRecordAction = async () => {
-    if (recorderState.isRecording) {
+    if (isRecording) {
       stopRecording()
       return
     }
 
+    setAttemptResult(null)
     await startRecording()
   }
 
@@ -172,7 +147,12 @@ export function ShadowingPracticePage() {
     setIsPreparingAudio(true)
 
     try {
-      const wavFile = await convertRecordedAudioToWav(recordedAudio)
+      const wavFile = await convertToWav()
+      if (!wavFile) {
+        setIsPreparingAudio(false)
+        gooeyToast.error(SHADOWING_COPY.recordingUnavailable)
+        return
+      }
 
       submitAttemptMutation.mutate(
         {
@@ -202,10 +182,17 @@ export function ShadowingPracticePage() {
     }
 
     navigate(`/shadowing/topics/${topicId}/practice?sentenceId=${nextSentence.sentenceId}`)
-    setRecordedAudio(null)
+    resetRecording()
     setAttemptResult(null)
-    setRecorderState({ isRecording: false, mediaRecorder: null })
     setIsPreparingAudio(false)
+  }
+
+  if (topicQuery.isLoading || sentencesQuery.isLoading) {
+    return (
+      <AppLayout mainClassName="min-h-screen bg-surface px-4 pb-24 pt-20 sm:px-6 lg:px-8">
+        <PracticeSkeleton />
+      </AppLayout>
+    )
   }
 
   if (!topic || !currentSentence) {
@@ -257,14 +244,14 @@ export function ShadowingPracticePage() {
             <div className="space-y-4 text-center">
               <div
                 className={`rounded-3xl bg-background px-6 py-12 shadow-sm transition-all duration-200 ${
-                  recorderState.isRecording ? 'blur-md opacity-40 select-none' : ''
+                  isRecording ? 'blur-md opacity-40 select-none' : ''
                 }`}
               >
                 <p className="text-3xl font-bold leading-relaxed text-primary sm:text-4xl">
                   {currentSentence.text}
                 </p>
               </div>
-              {currentSentence.meaning && !recorderState.isRecording && (
+              {currentSentence.meaning && !isRecording && (
                 <p className="text-lg text-secondary">{currentSentence.meaning}</p>
               )}
             </div>
@@ -291,16 +278,16 @@ export function ShadowingPracticePage() {
                 <TooltipTrigger asChild>
                   <Button
                     size="icon-lg"
-                    variant={recorderState.isRecording ? 'destructive' : 'default'}
+                    variant={isRecording ? 'destructive' : 'default'}
                     onClick={() => void handleRecordAction()}
                     disabled={!isSampleAudioAvailable || submitAttemptMutation.isPending || isPreparingAudio}
-                    aria-label={recorderState.isRecording ? SHADOWING_COPY.stopRecording : SHADOWING_COPY.startRecording}
+                    aria-label={isRecording ? SHADOWING_COPY.stopRecording : SHADOWING_COPY.startRecording}
                   >
-                    {recorderState.isRecording ? <StopIcon size={24} /> : <MicrophoneIcon size={24} />}
+                    {isRecording ? <StopIcon size={24} /> : <MicrophoneIcon size={24} />}
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  {recorderState.isRecording ? SHADOWING_COPY.stopRecording : SHADOWING_COPY.startRecording}
+                  {isRecording ? SHADOWING_COPY.stopRecording : SHADOWING_COPY.startRecording}
                 </TooltipContent>
               </Tooltip>
 
@@ -321,11 +308,11 @@ export function ShadowingPracticePage() {
               )}
             </div>
 
-            {(recorderState.isRecording || recordedAudio || submitAttemptMutation.isPending || isPreparingAudio) && (
+            {(isRecording || recordedAudio || submitAttemptMutation.isPending || isPreparingAudio) && (
               <div className="flex items-center justify-center gap-2 text-sm text-secondary">
                 {(submitAttemptMutation.isPending || isPreparingAudio) ? <SpinnerGap size={18} className="animate-spin" /> : null}
                 <span>
-                  {recorderState.isRecording
+                  {isRecording
                     ? SHADOWING_COPY.recordingStatusActive
                     : submitAttemptMutation.isPending || isPreparingAudio
                       ? SHADOWING_COPY.submitRecording
@@ -348,7 +335,7 @@ export function ShadowingPracticePage() {
                 attemptResult={attemptResult}
                 hasNextSentence={Boolean(nextSentence)}
                 onRetry={() => {
-                  setRecordedAudio(null)
+                  resetRecording()
                   setAttemptResult(null)
                   setIsPreparingAudio(false)
                 }}

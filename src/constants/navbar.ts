@@ -2,6 +2,7 @@ export const NAVBAR_COPY = {
   brand: 'Tacho',
   library: 'Thư viện',
   quickLearn: "Học nhanh",
+  shadowing: 'Luyện phát âm',
   searchLabel: 'Tìm kiếm',
   notifications: 'Thông báo',
   noNotifications: 'Không có thông báo mới',

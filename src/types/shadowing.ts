@@ -97,8 +97,16 @@ export interface ShadowingAttemptResponse {
   completenessScore: number | null
   prosodyScore: number | null
   errorTypes: string[]
+  wordAssessments: ShadowingAttemptWordAssessmentResponse[]
   durationMs: number | null
   createdAt: string
+}
+
+export interface ShadowingAttemptWordAssessmentResponse {
+  word: string
+  displayWord: string | null
+  accuracyScore: number | null
+  errorType: string | null
 }
 
 export interface ShadowingAttemptHistoryItemResponse {
@@ -157,3 +165,4 @@ export interface ShadowingTopicResumeResponse {
   latestPronScore: number | null
   lastAttemptAt: string | null
 }
+

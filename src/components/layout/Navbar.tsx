@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
-import { BooksIcon, LightningIcon } from '@phosphor-icons/react'
+import { BooksIcon, LightningIcon, MicrophoneIcon } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { NavbarLogo } from './NavbarLogo'
 import { NavbarSearch } from './NavbarSearch'
@@ -51,6 +51,18 @@ export function Navbar() {
               <Link to="/quick-learn">
                 <LightningIcon size={16} weight="duotone" />
                 {NAVBAR_COPY.quickLearn}
+              </Link>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="items-center gap-1.5 text-secondary hover:text-primary shrink-0"
+            >
+              <Link to="/shadowing">
+                <MicrophoneIcon size={16} weight="duotone" />
+                {NAVBAR_COPY.shadowing}
               </Link>
             </Button>
           </div>

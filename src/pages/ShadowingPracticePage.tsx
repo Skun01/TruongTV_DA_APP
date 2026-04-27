@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import {
   ArrowLeftIcon,
-  CheckCircleIcon,
   MicrophoneIcon,
+  PlayCircleIcon,
   SpeakerHighIcon,
   SpinnerGap,
   StopIcon,
@@ -300,7 +300,7 @@ export function ShadowingPracticePage() {
                       onClick={handleReplayRecordedAudio}
                       aria-label={SHADOWING_COPY.listenToRecording}
                     >
-                      <CheckCircleIcon size={24} />
+                      <PlayCircleIcon size={24} />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>{SHADOWING_COPY.listenToRecording}</TooltipContent>
@@ -315,7 +315,7 @@ export function ShadowingPracticePage() {
                   {isRecording
                     ? SHADOWING_COPY.recordingStatusActive
                     : submitAttemptMutation.isPending || isPreparingAudio
-                      ? SHADOWING_COPY.submitRecording
+                      ? SHADOWING_COPY.submittingRecording
                       : SHADOWING_COPY.recordingStatusCompleted}
                 </span>
               </div>

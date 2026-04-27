@@ -3,7 +3,6 @@ import { ArrowRightIcon } from '@phosphor-icons/react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { SHADOWING_COPY } from '@/constants/shadowing'
 import type { ShadowingAttemptResponse, ShadowingAttemptWordAssessmentResponse } from '@/types/shadowing'
@@ -143,7 +142,7 @@ function WordHighlights({ attemptResult }: { attemptResult: ShadowingAttemptResp
   )
 
   return (
-    <p className="text-lg leading-9 text-primary sm:text-xl">
+    <p className="text-2xl font-bold leading-relaxed text-primary sm:text-3xl">
       {referenceSegments.map((segment) => {
         if (segment.isWhitespace) {
           return <span key={segment.key}>{segment.text}</span>
@@ -153,7 +152,7 @@ function WordHighlights({ attemptResult }: { attemptResult: ShadowingAttemptResp
           return (
             <span
               key={segment.key}
-              className="rounded-xl border border-dashed border-slate-300/80 bg-slate-100/70 px-1.5 py-1 text-slate-700"
+              className="rounded-lg border border-dashed border-slate-300/80 bg-slate-100/70 px-1 py-0.5 text-slate-700"
             >
               {segment.text}
             </span>
@@ -161,23 +160,32 @@ function WordHighlights({ attemptResult }: { attemptResult: ShadowingAttemptResp
         }
 
         const score = segment.assessment.accuracyScore
+        const recognizedDiffers =
+          segment.assessment.displayWord &&
+          segment.assessment.displayWord !== segment.text
 
         return (
           <Tooltip key={segment.key}>
             <TooltipTrigger asChild>
               <span
-                className={`cursor-help rounded-xl border px-1.5 py-1 font-semibold transition-transform hover:-translate-y-0.5 ${getScoreToneClasses(score)}`}
+                className={`relative inline-block cursor-help rounded-lg border px-1 py-0.5 font-bold transition-transform hover:-translate-y-0.5 ${getScoreToneClasses(score)} ${recognizedDiffers ? 'underline decoration-dotted underline-offset-2' : ''}`}
               >
-                {segment.assessment.displayWord ?? segment.text}
+                {segment.text}
               </span>
             </TooltipTrigger>
-            <TooltipContent side="top" className="max-w-64 space-y-1">
-              <p className="font-semibold">{segment.assessment.displayWord ?? segment.text}</p>
-              <p>
+            <TooltipContent side="top" className="max-w-64 space-y-1.5">
+              <p className="font-semibold">{segment.text}</p>
+              {recognizedDiffers && (
+                <p className="text-xs text-secondary">
+                  {SHADOWING_COPY.recognizedTextLabel}:{' '}
+                  <span className="font-medium text-primary">{segment.assessment.displayWord}</span>
+                </p>
+              )}
+              <p className="text-xs">
                 {SHADOWING_COPY.wordAccuracyTooltip}: {score !== null ? Math.round(score) : '-'}
                 {SHADOWING_COPY.scoreOutOf}
               </p>
-              <p>
+              <p className="text-xs">
                 {SHADOWING_COPY.errorTypeLabel}: {getErrorTypeLabel(segment.assessment.errorType)}
               </p>
             </TooltipContent>
@@ -185,6 +193,29 @@ function WordHighlights({ attemptResult }: { attemptResult: ShadowingAttemptResp
         )
       })}
     </p>
+  )
+}
+
+function ScoreLegend() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs text-secondary">
+      <span className="flex items-center gap-1.5">
+        <span className="inline-block size-2.5 rounded border border-emerald-300/70 bg-emerald-100/80" />
+        {SHADOWING_COPY.highScoreLegend}
+      </span>
+      <span className="flex items-center gap-1.5">
+        <span className="inline-block size-2.5 rounded border border-amber-300/80 bg-amber-100/85" />
+        {SHADOWING_COPY.mediumScoreLegend}
+      </span>
+      <span className="flex items-center gap-1.5">
+        <span className="inline-block size-2.5 rounded border border-rose-300/80 bg-rose-100/90" />
+        {SHADOWING_COPY.lowScoreLegend}
+      </span>
+      <span className="flex items-center gap-1.5">
+        <span className="inline-block size-2.5 rounded border border-dashed border-slate-300/80 bg-slate-100/70" />
+        {SHADOWING_COPY.missingScoreLegend}
+      </span>
+    </div>
   )
 }
 
@@ -206,6 +237,8 @@ export function AssessmentResult({ attemptResult, hasNextSentence, onRetry, onNe
       ? [{ label: SHADOWING_COPY.prosodyScore, value: attemptResult.prosodyScore }]
       : []),
   ]
+
+  const hasWordAssessments = attemptResult.wordAssessments.length > 0
 
   return (
     <div className="space-y-6">
@@ -234,27 +267,13 @@ export function AssessmentResult({ attemptResult, hasNextSentence, onRetry, onNe
 
       <Separator />
 
-      {attemptResult.wordAssessments.length > 0 ? (
-        <Tabs defaultValue="reference">
-          <TabsList className="w-full">
-            <TabsTrigger value="reference" className="flex-1">
-              {SHADOWING_COPY.referenceTextLabel}
-            </TabsTrigger>
-            <TabsTrigger value="recognized" className="flex-1">
-              {SHADOWING_COPY.recognizedTextLabel}
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="reference" className="mt-4">
-            <div className="rounded-2xl border border-border/60 bg-background/90 p-4 sm:p-5">
-              <WordHighlights attemptResult={attemptResult} />
-            </div>
-          </TabsContent>
-          <TabsContent value="recognized" className="mt-4">
-            <div className="rounded-2xl border border-dashed border-border/70 bg-surface p-4 text-base leading-8 text-secondary sm:p-5">
-              {attemptResult.recognizedText ?? SHADOWING_COPY.noWordAssessment}
-            </div>
-          </TabsContent>
-        </Tabs>
+      {hasWordAssessments ? (
+        <div className="space-y-4">
+          <div className="rounded-2xl bg-background/90 px-2 py-6 text-center sm:px-4">
+            <WordHighlights attemptResult={attemptResult} />
+          </div>
+          <ScoreLegend />
+        </div>
       ) : (
         <p className="text-center text-sm text-secondary">{SHADOWING_COPY.noWordAssessment}</p>
       )}

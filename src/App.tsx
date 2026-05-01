@@ -26,6 +26,11 @@ import { ShadowingTopicPage } from './pages/ShadowingTopicPage'
 import { StudyResultPage } from './pages/StudyResultPage'
 import { StudySessionPage } from './pages/StudySessionPage'
 import { VocabularyDetailPage } from './pages/VocabularyDetailPage'
+import { JlptExamListPage } from './pages/JlptExamListPage'
+import { JlptExamDetailPage } from './pages/JlptExamDetailPage'
+import { JlptExamSessionPage } from './pages/JlptExamSessionPage'
+import { JlptExamResultPage } from './pages/JlptExamResultPage'
+import { JlptExamHistoryPage } from './pages/JlptExamHistoryPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,6 +69,11 @@ function App() {
                   <Route path="/quick-learn" element={<QuickLearnPage />} />
                   <Route path="/study/:sessionId" element={<StudySessionPage />} />
                   <Route path="/study/:sessionId/result" element={<StudyResultPage />} />
+                  <Route path="/jlpt" element={<JlptExamListPage />} />
+                  <Route path="/jlpt/exams/:examId" element={<JlptExamDetailPage />} />
+                  <Route path="/jlpt/session/:sessionId" element={<JlptExamSessionPage />} />
+                  <Route path="/jlpt/session/:sessionId/result" element={<JlptExamResultPage />} />
+                  <Route path="/jlpt/history" element={<JlptExamHistoryPage />} />
                   <Route path="/shadowing" element={<ShadowingListPage />} />
                   <Route path="/shadowing/topics/:topicId" element={<ShadowingTopicPage />} />
                   <Route path="/shadowing/topics/:topicId/practice" element={<ShadowingPracticePage />} />

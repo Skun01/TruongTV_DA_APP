@@ -35,10 +35,22 @@ export const SHADOWING_ERROR_MESSAGES: Record<string, string> = {
   default_shadowing: 'Không thể xử lý thao tác luyện phát âm. Vui lòng thử lại.',
 }
 
+export const JLPT_EXAM_ERROR_MESSAGES: Record<string, string> = {
+  Exam_NotFound_404: 'Không tìm thấy đề thi.',
+  ExamSession_ExamNotPublished_400: 'Đề thi chưa được xuất bản.',
+  ExamSession_NotFound_404: 'Không tìm thấy phiên thi.',
+  ExamSession_Forbidden_403: 'Bạn không có quyền truy cập phiên thi này.',
+  ExamSession_AlreadySubmitted_400: 'Bài thi đã được nộp.',
+  ExamSession_Expired_400: 'Phiên thi đã hết hạn.',
+  ExamSession_QuestionNotInExam_400: 'Câu hỏi không thuộc đề thi này.',
+  default_jlptExam: 'Không thể xử lý thao tác bài thi. Vui lòng thử lại.',
+}
+
 export const ERROR_MESSAGES = {
   ...API_ERROR_MESSAGES,
   ...DECK_ERROR_MESSAGES,
   ...LEARNING_ERROR_MESSAGES,
   ...SHADOWING_ERROR_MESSAGES,
+  ...JLPT_EXAM_ERROR_MESSAGES,
 } as const
 

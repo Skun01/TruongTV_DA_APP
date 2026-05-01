@@ -91,6 +91,7 @@ export function ShadowingPracticePage() {
   const progressValue = sentences.length > 0 ? ((currentIndex + 1) / sentences.length) * 100 : 0
   const isSampleAudioAvailable = Boolean(currentSentence?.audioUrl)
   const isSampleAudioPlaying = Boolean(currentSentence?.audioUrl && playingAudioUrl === currentSentence.audioUrl)
+  const isRecordedAudioPlaying = Boolean(recordedAudioUrl && playingAudioUrl === recordedAudioUrl)
 
   useEffect(() => {
     if (topicQuery.isFetching || sentencesQuery.isFetching) {
@@ -130,13 +131,8 @@ export function ShadowingPracticePage() {
     await playAudio(currentSentence?.audioUrl)
   }
 
-  const handleReplayRecordedAudio = () => {
-    if (!recordedAudioUrl) {
-      return
-    }
-
-    const audio = new Audio(recordedAudioUrl)
-    void audio.play()
+  const handleReplayRecordedAudio = async () => {
+    await playAudio(recordedAudioUrl)
   }
 
   const handleSubmitRecording = async () => {
@@ -297,26 +293,27 @@ export function ShadowingPracticePage() {
                     <Button
                       size="icon-lg"
                       variant="outline"
-                      onClick={handleReplayRecordedAudio}
-                      aria-label={SHADOWING_COPY.listenToRecording}
+                      onClick={() => void handleReplayRecordedAudio()}
+                      aria-label={
+                        isRecordedAudioPlaying ? SHADOWING_COPY.pauseAudio : SHADOWING_COPY.listenToRecording
+                      }
                     >
                       <PlayCircleIcon size={24} />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>{SHADOWING_COPY.listenToRecording}</TooltipContent>
+                  <TooltipContent>
+                    {isRecordedAudioPlaying ? SHADOWING_COPY.pauseAudio : SHADOWING_COPY.listenToRecording}
+                  </TooltipContent>
                 </Tooltip>
               )}
             </div>
 
-            {(isRecording || recordedAudio || submitAttemptMutation.isPending || isPreparingAudio) && (
+            {(isRecording || recordedAudio) && (
               <div className="flex items-center justify-center gap-2 text-sm text-secondary">
-                {(submitAttemptMutation.isPending || isPreparingAudio) ? <SpinnerGap size={18} className="animate-spin" /> : null}
                 <span>
                   {isRecording
                     ? SHADOWING_COPY.recordingStatusActive
-                    : submitAttemptMutation.isPending || isPreparingAudio
-                      ? SHADOWING_COPY.submittingRecording
-                      : SHADOWING_COPY.recordingStatusCompleted}
+                    : SHADOWING_COPY.recordingStatusCompleted}
                 </span>
               </div>
             )}

@@ -57,7 +57,7 @@ function TopicCard({ topic }: { topic: ShadowingTopicListItemResponse }) {
 
           <div className="flex min-w-0 flex-1 flex-col">
             <div className="flex items-start justify-between gap-2">
-              <h3 className="truncate font-semibold text-primary group-hover:text-accent">
+              <h3 className="truncate font-semibold text-primary transition-all group-hover:font-bold group-hover:text-primary/80">
                 {topic.title}
               </h3>
               {topic.isOfficial && (

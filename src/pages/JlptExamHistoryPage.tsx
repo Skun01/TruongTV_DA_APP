@@ -63,7 +63,7 @@ function HistoryCard({ item }: { item: ExamSessionHistoryItemResponse }) {
       <CardContent className="flex items-center justify-between gap-4 p-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <h3 className="truncate font-semibold text-primary group-hover:text-accent">
+            <h3 className="truncate font-semibold text-primary transition-all group-hover:font-bold group-hover:text-primary/80">
               {item.examTitle}
             </h3>
             <Badge variant="secondary" className="shrink-0 text-xs">

@@ -3,6 +3,7 @@ export const NAVBAR_COPY = {
   library: 'Thư viện',
   quickLearn: "Học nhanh",
   shadowing: 'Luyện phát âm',
+  jlpt: 'Luyện thi JLPT',
   searchLabel: 'Tìm kiếm',
   notifications: 'Thông báo',
   noNotifications: 'Không có thông báo mới',

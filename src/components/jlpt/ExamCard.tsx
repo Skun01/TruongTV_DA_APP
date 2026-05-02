@@ -19,7 +19,7 @@ export function ExamCard({ exam }: ExamCardProps) {
     >
       <CardContent className="p-5">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-semibold text-primary group-hover:text-accent">
+          <h3 className="truncate font-semibold text-primary transition-all group-hover:font-bold group-hover:text-primary/80">
             {exam.title}
           </h3>
           <Badge variant="secondary" className="shrink-0 text-xs">

@@ -81,15 +81,9 @@ export function DashboardPage() {
         mainClassName="min-h-screen pt-24 pb-16"
         mainStyle={{ backgroundColor: 'var(--surface)' }}
       >
-        <div className="mx-auto flex max-w-4xl flex-col gap-8 px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 lg:px-8">
           {/* Greeting */}
           <div className="space-y-1">
-            <p
-              className="text-sm font-medium"
-              style={{ color: 'var(--on-surface-variant)' }}
-            >
-              {LEARNING_COPY.greeting}
-            </p>
             <h1
               className="font-heading-vn text-2xl"
               style={{ color: 'var(--on-surface)' }}

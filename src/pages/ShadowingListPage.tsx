@@ -188,16 +188,17 @@ export function ShadowingListPage() {
   }
 
   return (
-    <AppLayout mainClassName="min-h-screen bg-surface pb-24 pt-20 px-4 sm:px-6 lg:px-8">
-      <PageHelmet title={SHADOWING_COPY.pageTitle} description={SHADOWING_COPY.pageDescription} />
-
-      <div className="mx-auto max-w-6xl">
-        <header className="mb-8">
-          <h1 className="text-2xl font-bold text-primary">{SHADOWING_COPY.pageTitle}</h1>
+    <AppLayout
+      mainClassName="min-h-screen pt-24 pb-16"
+      mainStyle={{ backgroundColor: 'var(--surface)' }}
+    >
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 lg:px-8">
+        <header>
+          <h1 className="text-2xl font-bold text-foreground">{SHADOWING_COPY.pageTitle}</h1>
           <p className="mt-1 text-secondary">{SHADOWING_COPY.pageDescription}</p>
         </header>
 
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="relative flex-1">
             <MagnifyingGlassIcon
               size={18}
@@ -251,17 +252,17 @@ export function ShadowingListPage() {
             </div>
 
             {totalPage > 1 && (
-              <div className="mt-8 flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   disabled={page <= 1}
                   onClick={() => handlePageChange(page - 1)}
                 >
-                  Trước
+                  {SHADOWING_COPY.paginationPrev}
                 </Button>
                 <span className="text-sm text-secondary">
-                  Trang {page} / {totalPage}
+                  {SHADOWING_COPY.paginationPage} {page} / {totalPage}
                 </span>
                 <Button
                   variant="outline"
@@ -269,7 +270,7 @@ export function ShadowingListPage() {
                   disabled={page >= totalPage}
                   onClick={() => handlePageChange(page + 1)}
                 >
-                  Sau
+                  {SHADOWING_COPY.paginationNext}
                 </Button>
               </div>
             )}

@@ -60,17 +60,20 @@ export function JlptExamResultPage() {
     : []
 
   return (
-    <AppLayout mainClassName="min-h-screen bg-surface pb-24 pt-20 px-4 sm:px-6 lg:px-8">
-      <PageHelmet
-        title={result?.examTitle ?? JLPT_EXAM_COPY.resultTitle}
-        description={JLPT_EXAM_COPY.resultDescription}
-      />
+    <AppLayout
+      mainClassName="min-h-screen pt-24 pb-16"
+      mainStyle={{ backgroundColor: 'var(--surface)' }}
+    >
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 lg:px-8">
+        <PageHelmet
+          title={result?.examTitle ?? JLPT_EXAM_COPY.resultTitle}
+          description={JLPT_EXAM_COPY.resultDescription}
+        />
 
-      <div className="mx-auto max-w-3xl">
         <Button
           variant="ghost"
           size="sm"
-          className="mb-6"
+          className="w-fit rounded-full"
           onClick={() => navigate('/jlpt')}
         >
           <ArrowLeftIcon size={16} className="mr-1" />
@@ -84,9 +87,9 @@ export function JlptExamResultPage() {
             <p className="text-secondary">{JLPT_EXAM_COPY.emptyExams}</p>
           </div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-6">
             <header className="text-center">
-              <h1 className="text-2xl font-bold text-primary">{result.examTitle}</h1>
+              <h1 className="text-2xl font-bold text-foreground">{result.examTitle}</h1>
               <Badge variant="secondary" className="mt-2">
                 {result.level}
               </Badge>
@@ -107,7 +110,7 @@ export function JlptExamResultPage() {
             />
 
             <section>
-              <h2 className="mb-4 text-lg font-semibold text-primary">
+              <h2 className="mb-4 text-lg font-semibold text-foreground">
                 {JLPT_EXAM_COPY.sectionScores}
               </h2>
               <div className="grid gap-3 sm:grid-cols-2">

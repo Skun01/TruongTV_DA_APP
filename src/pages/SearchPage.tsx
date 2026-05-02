@@ -142,7 +142,7 @@ export function SearchPage() {
         mainClassName="min-h-screen pt-20 pb-16"
         mainStyle={{ backgroundColor: 'var(--surface)' }}
       >
-        <div className="mx-auto max-w-4xl px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 lg:px-8">
           <div className="flex flex-col gap-6 py-8">
             <div className="relative">
               <SearchHeader

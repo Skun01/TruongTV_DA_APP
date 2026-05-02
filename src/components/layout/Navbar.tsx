@@ -25,7 +25,7 @@ export function Navbar() {
           : 'bg-surface-container-low border-b border-border/50'
       }`}
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-3 lg:px-8">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-3 lg:px-8">
         <div className="flex min-w-0 items-center gap-2 md:gap-3">
           <NavbarLogo />
 

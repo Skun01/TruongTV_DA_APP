@@ -188,19 +188,21 @@ export function JlptExamHistoryPage() {
   }
 
   return (
-    <AppLayout mainClassName="min-h-screen bg-surface pb-24 pt-20 px-4 sm:px-6 lg:px-8">
-      <PageHelmet
-        title={JLPT_EXAM_COPY.historyTitle}
-        description={JLPT_EXAM_COPY.historyDescription}
-      />
+    <AppLayout
+      mainClassName="min-h-screen pt-24 pb-16"
+      mainStyle={{ backgroundColor: 'var(--surface)' }}
+    >
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 lg:px-8">
+        <PageHelmet
+          title={JLPT_EXAM_COPY.historyTitle}
+          description={JLPT_EXAM_COPY.historyDescription}
+        />
 
-      <div className="mx-auto max-w-4xl">
-        <header className="mb-8">
-          <h1 className="text-2xl font-bold text-primary">{JLPT_EXAM_COPY.historyTitle}</h1>
-          <p className="mt-1 text-secondary">{JLPT_EXAM_COPY.historyDescription}</p>
+        <header>
+          <h1 className="text-2xl font-bold text-foreground">{JLPT_EXAM_COPY.historyTitle}</h1>
         </header>
 
-        <div className="mb-6">
+        <div>
           <Select
             value={status || 'all'}
             onValueChange={(value) =>

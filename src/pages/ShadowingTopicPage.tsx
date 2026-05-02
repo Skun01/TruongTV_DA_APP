@@ -165,10 +165,13 @@ export function ShadowingTopicPage() {
 
   if (!topic) {
     return (
-      <AppLayout mainClassName="min-h-screen bg-surface px-4 pb-24 pt-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
+      <AppLayout
+        mainClassName="min-h-screen pt-24 pb-16"
+        mainStyle={{ backgroundColor: 'var(--surface)' }}
+      >
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-6 lg:px-8">
           <p className="text-secondary">{SHADOWING_COPY.loadTopicError}</p>
-          <Button className="mt-4" onClick={() => navigate('/shadowing')}>
+          <Button onClick={() => navigate('/shadowing')}>
             <ArrowLeftIcon size={16} className="mr-2" />
             {SHADOWING_COPY.backToTopics}
           </Button>
@@ -178,14 +181,17 @@ export function ShadowingTopicPage() {
   }
 
   return (
-    <AppLayout mainClassName="min-h-screen bg-surface px-4 pb-24 pt-20 sm:px-6 lg:px-8">
-      <PageHelmet title={topic.title} description={topic.description} />
+    <AppLayout
+      mainClassName="min-h-screen pt-24 pb-16"
+      mainStyle={{ backgroundColor: 'var(--surface)' }}
+    >
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 lg:px-8">
+        <PageHelmet title={topic.title} description={topic.description} />
 
-      <div className="mx-auto max-w-4xl">
         <Button
           variant="ghost"
           size="sm"
-          className="mb-4 -ml-2 text-secondary"
+          className="w-fit rounded-full text-secondary"
           onClick={() => navigate('/shadowing')}
         >
           <ArrowLeftIcon size={16} className="mr-1" />
@@ -196,7 +202,7 @@ export function ShadowingTopicPage() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-primary">{topic.title}</h1>
+                <h1 className="text-2xl font-bold text-foreground">{topic.title}</h1>
                 {topic.isOfficial && <CrownIcon size={20} weight="fill" className="text-amber-500" />}
               </div>
               <p className="mt-1 text-secondary">{topic.description}</p>

@@ -83,7 +83,7 @@ export function QuickLearnPage() {
         mainClassName="min-h-screen pt-24 pb-16"
         mainStyle={{ backgroundColor: 'var(--surface)' }}
       >
-        <div className="mx-auto flex max-w-5xl flex-col gap-8 px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 lg:px-8">
           {/* Header */}
           <div className="flex items-center gap-4">
             {selectedDeckId && (

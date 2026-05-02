@@ -72,13 +72,16 @@ export function JlptExamDetailPage() {
   }
 
   return (
-    <AppLayout mainClassName="min-h-screen bg-surface pb-24 pt-20 px-4 sm:px-6 lg:px-8">
-      <PageHelmet
-        title={exam?.title ?? JLPT_EXAM_COPY.detailTitle}
-        description={JLPT_EXAM_COPY.detailDescription}
-      />
+    <AppLayout
+      mainClassName="min-h-screen pt-24 pb-16"
+      mainStyle={{ backgroundColor: 'var(--surface)' }}
+    >
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 lg:px-8">
+        <PageHelmet
+          title={exam?.title ?? JLPT_EXAM_COPY.detailTitle}
+          description={JLPT_EXAM_COPY.detailDescription}
+        />
 
-      <div className="mx-auto max-w-3xl">
         <Button
           variant="ghost"
           size="sm"
@@ -96,10 +99,10 @@ export function JlptExamDetailPage() {
             <p className="text-secondary">{JLPT_EXAM_COPY.emptyExams}</p>
           </div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-6">
             <header>
               <div className="flex items-start justify-between gap-3">
-                <h1 className="text-2xl font-bold text-primary">{exam.title}</h1>
+                <h1 className="text-2xl font-bold text-foreground">{exam.title}</h1>
                 <Badge variant="secondary" className="shrink-0 text-sm">
                   {exam.level}
                 </Badge>
@@ -160,14 +163,14 @@ export function JlptExamDetailPage() {
             </div>
           </div>
         )}
-      </div>
 
-      <StartExamDialog
-        open={showStartDialog}
-        onOpenChange={setShowStartDialog}
-        isStarting={startMutation.isPending}
-        onConfirm={handleConfirmStart}
-      />
+        <StartExamDialog
+          open={showStartDialog}
+          onOpenChange={setShowStartDialog}
+          isStarting={startMutation.isPending}
+          onConfirm={handleConfirmStart}
+        />
+      </div>
     </AppLayout>
   )
 }

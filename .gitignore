@@ -10,6 +10,8 @@ lerna-debug.log*
 # Claude and MCP
 .claude
 .mcp_data
+
+
 node_modules
 dist
 dist-ssr

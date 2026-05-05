@@ -48,7 +48,8 @@ export function useExamSession(sessionId: string, enabled = true) {
     queryKey: JLPT_EXAM_QUERY_KEYS.session(sessionId),
     queryFn: () => jlptExamService.getSession(sessionId),
     enabled: enabled && Boolean(sessionId),
-    staleTime: Infinity,
+    staleTime: 30 * 1000,
+    refetchInterval: 30 * 1000,
     refetchOnWindowFocus: false,
   })
 }

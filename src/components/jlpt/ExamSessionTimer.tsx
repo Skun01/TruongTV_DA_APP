@@ -9,13 +9,6 @@ interface ExamSessionTimerProps {
   onExpired?: () => void
 }
 
-function computeRemainingSeconds(expiresAt: string, serverNow: string): number {
-  const serverOffset = new Date(serverNow).getTime() - Date.now()
-  const expiresMs = new Date(expiresAt).getTime()
-  const adjustedNow = Date.now() + serverOffset
-  return Math.max(0, Math.floor((expiresMs - adjustedNow) / 1000))
-}
-
 function formatTime(totalSeconds: number): string {
   const hours = Math.floor(totalSeconds / 3600)
   const minutes = Math.floor((totalSeconds % 3600) / 60)
@@ -28,10 +21,23 @@ function formatTime(totalSeconds: number): string {
 }
 
 export function ExamSessionTimer({ expiresAt, serverNow, onExpired }: ExamSessionTimerProps) {
-  const [remaining, setRemaining] = useState(() =>
-    computeRemainingSeconds(expiresAt, serverNow),
-  )
+  const mountTimeMs = useRef(Date.now()).current
+  const expiresAtMs = useRef(new Date(expiresAt).getTime()).current
+  const serverNowInitialMs = useRef(new Date(serverNow).getTime()).current
+  const serverOffset = serverNowInitialMs - mountTimeMs
+
+  const [, setTick] = useState(0)
   const expiredCalled = useRef(false)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTick((t) => t + 1)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const currentServerTime = Date.now() + serverOffset
+  const remaining = Math.max(0, Math.floor((expiresAtMs - currentServerTime) / 1000))
 
   const handleExpired = useCallback(() => {
     if (!expiredCalled.current && onExpired) {
@@ -41,17 +47,10 @@ export function ExamSessionTimer({ expiresAt, serverNow, onExpired }: ExamSessio
   }, [onExpired])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const next = computeRemainingSeconds(expiresAt, serverNow)
-      setRemaining(next)
-      if (next <= 0) {
-        clearInterval(interval)
-        handleExpired()
-      }
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [expiresAt, serverNow, handleExpired])
+    if (remaining <= 0) {
+      handleExpired()
+    }
+  }, [remaining, handleExpired])
 
   const isWarning = remaining > 0 && remaining <= 300
   const isExpired = remaining <= 0

@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { KANJI_DETAIL_COPY } from '@/constants/kanjiDetail'
+import { resolveBackendUrl } from '@/lib/mediaUrl'
 import type { KanjiCardDetail, KanjiRadicalItem } from '@/types/kanji'
 
 interface KanjiDetailCardProps {
@@ -98,7 +99,7 @@ export function KanjiDetailCard({ card }: KanjiDetailCardProps) {
             >
               <span className="section-label-text">{KANJI_DETAIL_COPY.detail.strokeOrder}</span>
               <img
-                src={card.strokeOrderUrl}
+                src={resolveBackendUrl(card.strokeOrderUrl)}
                 alt={KANJI_DETAIL_COPY.strokeOrderAlt(card.kanji)}
                 className="w-full rounded-lg"
               />

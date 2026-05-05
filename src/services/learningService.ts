@@ -2,6 +2,10 @@ import type { ApiResponse } from '@/types/api'
 import type {
   CardProgressResponse,
   CreateSessionPayload,
+  DashboardSummaryResponse,
+  DecksProgressResponse,
+  ExamHistoryResponse,
+  LearnerStreakResponse,
   ReviewDueCardsResponse,
   ReviewTodayResponse,
   StudyQuestionResponse,
@@ -11,6 +15,7 @@ import type {
   StudySessionSettingsResponse,
   SubmitStudyAnswerRequest,
   SubmitStudyAnswerResponse,
+  UpcomingReviewsResponse,
 } from '@/types/learning'
 import api from './api'
 
@@ -131,6 +136,56 @@ export const learningService = {
       throw new Error('Common_404')
     }
     return response.data.data
+  },
+
+  // ── Streak ──────────────────────────────────────────────────────────────────
+
+  async getStreak(): Promise<LearnerStreakResponse> {
+    const response = await api.get<ApiResponse<LearnerStreakResponse>>(
+      '/learning/streak',
+    )
+    return response.data.data ?? { currentStreak: 0, longestStreak: 0, lastStudyDate: null }
+  },
+
+  // ── Upcoming Reviews ────────────────────────────────────────────────────────
+
+  async getUpcomingReviews(days = 7): Promise<UpcomingReviewsResponse> {
+    const response = await api.get<ApiResponse<UpcomingReviewsResponse>>(
+      '/learning/review/upcoming',
+      { params: { days } },
+    )
+    return response.data.data ?? { dueToday: 0, dueTomorrow: 0, dueThisWeek: 0, dueByDay: [] }
+  },
+
+  // ── Deck Progress ───────────────────────────────────────────────────────────
+
+  async getDecksProgress(): Promise<DecksProgressResponse> {
+    const response = await api.get<ApiResponse<DecksProgressResponse>>(
+      '/learning/decks/progress',
+    )
+    return response.data.data ?? { decks: [] }
+  },
+
+  // ── Dashboard Summary ───────────────────────────────────────────────────────
+
+  async getDashboardSummary(): Promise<DashboardSummaryResponse> {
+    const response = await api.get<ApiResponse<DashboardSummaryResponse>>(
+      '/learning/dashboard/summary',
+    )
+    if (!response.data.data) {
+      throw new Error('Common_404')
+    }
+    return response.data.data
+  },
+
+  // ── Exam History ────────────────────────────────────────────────────────────
+
+  async getExamHistory(limit = 5): Promise<ExamHistoryResponse> {
+    const response = await api.get<ApiResponse<ExamHistoryResponse>>(
+      '/learning/dashboard/exam-history',
+      { params: { limit } },
+    )
+    return response.data.data ?? { items: [], stats: { totalExamsTaken: 0, totalPassed: 0, totalFailed: 0, averageScore: 0, passRate: 0 } }
   },
 
   // ── Settings ─────────────────────────────────────────────────────────────────

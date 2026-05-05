@@ -50,6 +50,9 @@ export function StudyModeSelector({ value, onChange }: StudyModeSelectorProps) {
                 >
                   {LEARNING_COPY.modeLabels[mode]}
                 </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {LEARNING_COPY.modeDescriptions[mode]}
+                </p>
               </div>
             </button>
           )

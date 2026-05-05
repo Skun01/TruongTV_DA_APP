@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { ArrowRightIcon, TrendUpIcon, TrendDownIcon, StarIcon } from '@phosphor-icons/react'
 import { LEARNING_COPY } from '@/constants/learning'
 import type { SubmitStudyAnswerResponse } from '@/types/learning'
@@ -10,8 +11,19 @@ interface AnswerFeedbackProps {
 export function AnswerFeedback({ result, onNext }: AnswerFeedbackProps) {
   const isCorrect = result.isCorrect
 
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Enter') {
+        event.preventDefault()
+        onNext()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onNext])
+
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 px-4 pb-6">
+    <div className="fixed inset-x-0 bottom-0 z-40 px-4 pb-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
       <div className="mx-auto max-w-lg space-y-3">
         {/* SRS feedback */}
         <div

@@ -2,6 +2,7 @@ import * as React from "react"
 import { XIcon } from "@phosphor-icons/react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 
+import { LEARNING_COPY } from "@/constants/learning"
 import { cn } from "@/lib/utils"
 
 function Dialog({
@@ -67,7 +68,7 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
             <XIcon size={16} />
-            <span className="sr-only">Đóng</span>
+            <span className="sr-only">{LEARNING_COPY.closeDialog}</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>

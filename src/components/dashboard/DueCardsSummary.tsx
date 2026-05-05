@@ -59,7 +59,6 @@ export function DueCardsSummary({
 
   return (
     <>
-      {/* Review Card — styled like sample app */}
       <div
         onClick={dueCount > 0 ? handleStartReviewClick : undefined}
         role={dueCount > 0 ? 'button' : undefined}
@@ -69,17 +68,17 @@ export function DueCardsSummary({
             ? (e) => { if (e.key === 'Enter') setShowModeDialog(true) }
             : undefined
         }
-        className={`flex flex-col rounded-2xl ${
+        className={`flex h-full flex-col rounded-[1.5rem] border border-border/60 ${
           dueCount > 0
-            ? 'cursor-pointer feature-card bg-secondary-container/45 hover:feature-card-hover dark:bg-secondary-container/35'
-            : 'feature-card bg-surface-container-low dark:bg-surface-container'
+            ? 'cursor-pointer bg-secondary-container/55 transition-colors hover:bg-secondary-container/75 dark:bg-secondary-container/35 dark:hover:bg-secondary-container/50'
+            : 'bg-surface-container dark:bg-surface-container'
         }`}
       >
         {/* Header row */}
         <div className="flex items-start justify-between p-5 pb-3">
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/70">
-              <ArrowsClockwiseIcon size={16} className="text-secondary" />
+              <ArrowsClockwiseIcon size={16} weight="regular" className="text-secondary" />
             </div>
             <div>
               <p className="text-sm font-semibold text-foreground">

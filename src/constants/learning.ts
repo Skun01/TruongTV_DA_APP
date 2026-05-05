@@ -48,6 +48,7 @@ export const LEARNING_COPY = {
   defaultFlashcardFrontLabel: 'Mặt trước flashcard',
   defaultMcqQuestionLabel: 'Câu hỏi trắc nghiệm',
   defaultShuffleFlashcardLabel: 'Trộn thẻ flashcard',
+  noSettingsForMode: 'Chế độ này sử dụng cài đặt mặc định.',
   languageOptionLabels: {
     Vietnamese: 'Tiếng Việt',
     Japanese: 'Tiếng Nhật',
@@ -119,6 +120,7 @@ export const LEARNING_COPY = {
   dashboardTitle: 'Dashboard',
   dashboardDescription: 'Tổng quan học tập của bạn trên Tacho.',
   greeting: 'Xin chào,',
+  closeDialog: 'Đóng',
   dueToday: 'Cần ôn tập',
   reviewSubtitle: 'Nội dung đến hạn học',
   reviewHint: 'Nên ôn tập sớm nhé',
@@ -139,6 +141,45 @@ export const LEARNING_COPY = {
   settingsModalDescription: 'Tuỳ chỉnh mặc định cho Flashcard và Trắc nghiệm.',
   settingsSaved: 'Đã lưu cài đặt.',
   saveSettings: 'Lưu cài đặt',
+
+  // ── Streak widget ──────────────────────────────────────────────────────────
+  streakTitle: 'Chuỗi học tập',
+  currentStreakLabel: 'Hiện tại',
+  longestStreakLabel: 'Kỷ lục',
+  lastStudyDateLabel: 'Ngày học gần nhất',
+  streakUnit: 'ngày',
+  noStreakYet: 'Chưa có chuỗi học tập. Bắt đầu học ngay!',
+
+  // ── Upcoming reviews widget ────────────────────────────────────────────────
+  upcomingTitle: 'Lịch ôn tập sắp tới',
+  dueTodayLabel: 'Hôm nay',
+  dueTomorrowLabel: 'Ngày mai',
+  dueThisWeekLabel: 'Tuần này',
+  noUpcomingReviews: 'Không có thẻ cần ôn trong tuần này.',
+  upcomingChartLabel: 'Dự báo ôn tập',
+
+  // ── Deck progress widget ───────────────────────────────────────────────────
+  deckProgressTitle: 'Tiến trình bộ thẻ',
+  deckProgressViewAll: 'Xem tất cả',
+  deckMasteredLabel: 'Thành thạo',
+  deckDueLabel: 'Cần ôn',
+  deckLearningLabel: 'Đang học',
+  deckCompletionLabel: 'Hoàn thành',
+  noDeckProgress: 'Chưa có tiến trình bộ thẻ nào.',
+
+  // ── Exam history widget ────────────────────────────────────────────────────
+  examHistoryTitle: 'Lịch sử thi',
+  examHistoryViewAll: 'Xem thêm',
+  examsTakenLabel: 'Số lần thi',
+  examPassedLabel: 'Đạt',
+  examFailedLabel: 'Chưa đạt',
+  examPassRateLabel: 'Tỷ lệ đạt',
+  examAvgScoreLabel: 'Điểm trung bình',
+  noExamHistory: 'Chưa có lịch sử thi. Thử sức với đề thi JLPT!',
+  examScoreLabel: 'Điểm',
+  examAccuracyLabel: 'Độ chính xác',
+  examPassedBadge: 'Đạt',
+  examFailedBadge: 'Chưa đạt',
 
   // ── Review mode dialog ───────────────────────────────────────────────────────
   reviewModeTitle: 'Chọn chế độ ôn tập',

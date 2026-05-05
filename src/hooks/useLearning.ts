@@ -24,6 +24,48 @@ export const LEARNING_QUERY_KEYS = {
   dueCards: () => [...LEARNING_QUERY_KEYS.all, 'due-cards'] as const,
   cardProgress: (cardId: string) => [...LEARNING_QUERY_KEYS.all, 'progress', cardId] as const,
   settings: () => [...LEARNING_QUERY_KEYS.all, 'settings'] as const,
+  streak: () => [...LEARNING_QUERY_KEYS.all, 'streak'] as const,
+  upcomingReviews: (days: number) => [...LEARNING_QUERY_KEYS.all, 'upcoming', days] as const,
+  decksProgress: () => [...LEARNING_QUERY_KEYS.all, 'decks-progress'] as const,
+  dashboardSummary: () => [...LEARNING_QUERY_KEYS.all, 'dashboard-summary'] as const,
+  examHistory: (limit: number) => [...LEARNING_QUERY_KEYS.all, 'exam-history', limit] as const,
+}
+
+// ── Dashboard Summary ─────────────────────────────────────────────────────────
+
+export function useDashboardSummary() {
+  return useQuery({
+    queryKey: LEARNING_QUERY_KEYS.dashboardSummary(),
+    queryFn: () => learningService.getDashboardSummary(),
+  })
+}
+
+export function useStreak() {
+  return useQuery({
+    queryKey: LEARNING_QUERY_KEYS.streak(),
+    queryFn: () => learningService.getStreak(),
+  })
+}
+
+export function useUpcomingReviews(days = 7) {
+  return useQuery({
+    queryKey: LEARNING_QUERY_KEYS.upcomingReviews(days),
+    queryFn: () => learningService.getUpcomingReviews(days),
+  })
+}
+
+export function useDecksProgress() {
+  return useQuery({
+    queryKey: LEARNING_QUERY_KEYS.decksProgress(),
+    queryFn: () => learningService.getDecksProgress(),
+  })
+}
+
+export function useExamHistory(limit = 5) {
+  return useQuery({
+    queryKey: LEARNING_QUERY_KEYS.examHistory(limit),
+    queryFn: () => learningService.getExamHistory(limit),
+  })
 }
 
 // ── Review & Dashboard ─────────────────────────────────────────────────────────

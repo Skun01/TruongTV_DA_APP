@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { CheckCircleIcon, XCircleIcon } from '@phosphor-icons/react'
 import type { StudyQuestionResponse } from '@/types/learning'
 
@@ -7,6 +7,7 @@ interface MultipleChoiceQuestionProps {
   onAnswer: (selectedOptionId: string) => void
   correctOptionId: string | null
   isPending: boolean
+  shuffleOptions?: boolean
 }
 
 export function MultipleChoiceQuestion({
@@ -14,9 +15,15 @@ export function MultipleChoiceQuestion({
   onAnswer,
   correctOptionId,
   isPending,
+  shuffleOptions = true,
 }: MultipleChoiceQuestionProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const hasAnswered = correctOptionId !== null
+
+  const displayOptions = useMemo(() => {
+    if (!shuffleOptions) return question.options
+    return [...question.options].sort(() => Math.random() - 0.5)
+  }, [question.options, shuffleOptions])
 
   function handleSelect(optionId: string) {
     if (hasAnswered || isPending) return
@@ -43,7 +50,7 @@ export function MultipleChoiceQuestion({
 
       {/* Options */}
       <div className="grid w-full max-w-lg gap-2 sm:grid-cols-2">
-        {question.options.map((option) => {
+        {displayOptions.map((option) => {
           const isSelected = selectedId === option.id
           const isCorrect = hasAnswered && option.id === correctOptionId
           const isWrong = hasAnswered && isSelected && option.id !== correctOptionId
@@ -56,7 +63,7 @@ export function MultipleChoiceQuestion({
             optionClass =
               'feature-card border-rose-300 bg-rose-50 dark:border-rose-700 dark:bg-rose-950/30'
           } else if (hasAnswered) {
-            optionClass = 'feature-card opacity-50'
+            optionClass = 'feature-card grayscale-[0.6] opacity-70'
           }
 
           return (

@@ -11,7 +11,7 @@ import { StudyModeSelector } from '@/components/learning/StudyModeSelector'
 import { StudySettingsPanel } from '@/components/learning/StudySettingsPanel'
 import { LEARNING_COPY } from '@/constants/learning'
 import { useBookmarkedDecks, useMyDecks, useDeckDetail } from '@/hooks/useDecks'
-import { useCreateSession } from '@/hooks/useLearning'
+import { useCreateSession, useLearningSettings } from '@/hooks/useLearning'
 import type { StudyMode, StudySessionSettingsRequest } from '@/types/learning'
 
 export function QuickLearnPage() {
@@ -27,10 +27,23 @@ export function QuickLearnPage() {
   const myDecksQuery = useMyDecks(myDecksParams)
   const deckDetailQuery = useDeckDetail(selectedDeckId ?? '', Boolean(selectedDeckId))
   const createSessionMutation = useCreateSession()
+  const settingsQuery = useLearningSettings()
 
   const isPageLoading =
     bookmarkedQuery.isFetching || myDecksQuery.isFetching
   const isDeckLoading = deckDetailQuery.isFetching
+
+  // Sync settings from server once available
+  useEffect(() => {
+    if (settingsQuery.data) {
+      setSettings({
+        flashcardFront: settingsQuery.data.flashcardFront,
+        flashcardBack: settingsQuery.data.flashcardBack,
+        multipleChoiceQuestion: settingsQuery.data.multipleChoiceQuestion,
+        shuffleOptions: settingsQuery.data.shuffleOptions,
+      })
+    }
+  }, [settingsQuery.data])
 
   useEffect(() => {
     if (isPageLoading || isDeckLoading) {

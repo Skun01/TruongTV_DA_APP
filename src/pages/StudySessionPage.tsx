@@ -177,6 +177,7 @@ export function StudySessionPage() {
                 onAnswer={handleMcqAnswer}
                 correctOptionId={mcqCorrectId}
                 isPending={submitMutation.isPending}
+                shuffleOptions={session.settings.shuffleOptions}
               />
             )}
 

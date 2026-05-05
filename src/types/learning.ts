@@ -140,6 +140,98 @@ export interface CardProgressResponse {
   lastSentenceId: string | null
 }
 
+// ── Streak ───────────────────────────────────────────────────────────────────
+
+export interface LearnerStreakResponse {
+  currentStreak: number
+  longestStreak: number
+  lastStudyDate: string | null
+}
+
+// ── Upcoming Reviews ─────────────────────────────────────────────────────────
+
+export interface DailyReviewCount {
+  date: string
+  count: number
+}
+
+export interface UpcomingReviewsResponse {
+  dueToday: number
+  dueTomorrow: number
+  dueThisWeek: number
+  dueByDay: DailyReviewCount[]
+}
+
+// ── Deck Progress ────────────────────────────────────────────────────────────
+
+export interface DeckProgressItem {
+  deckId: string
+  deckTitle: string
+  totalCards: number
+  masteredCards: number
+  dueCards: number
+  learningCards: number
+  completionPercent: number
+}
+
+export interface DecksProgressResponse {
+  decks: DeckProgressItem[]
+}
+
+// ── Dashboard Summary ────────────────────────────────────────────────────────
+
+export interface UpcomingReviewsSummary {
+  dueToday: number
+  dueTomorrow: number
+  dueThisWeek: number
+}
+
+export interface RecentSessionSummary {
+  id: string
+  deckTitle: string | null
+  mode: StudyMode
+  correctCount: number
+  incorrectCount: number
+  accuracy: number
+  completedAt: string | null
+}
+
+export interface DashboardSummaryResponse {
+  streak: LearnerStreakResponse
+  todayReview: ReviewTodayResponse
+  upcomingReviews: UpcomingReviewsSummary
+  deckProgress: DeckProgressItem[]
+  recentSessions: RecentSessionSummary[]
+}
+
+// ── Exam History ─────────────────────────────────────────────────────────────
+
+export interface ExamHistoryItem {
+  examSessionId: string
+  examId: string
+  examTitle: string
+  examLevel: string
+  startedAt: string
+  submittedAt: string | null
+  totalScore: number | null
+  maxScore: number
+  isPassed: boolean | null
+  accuracy: number
+}
+
+export interface ExamHistoryStats {
+  totalExamsTaken: number
+  totalPassed: number
+  totalFailed: number
+  averageScore: number
+  passRate: number
+}
+
+export interface ExamHistoryResponse {
+  items: ExamHistoryItem[]
+  stats: ExamHistoryStats
+}
+
 // ── Create Session Payload ───────────────────────────────────────────────────
 
 export interface CreateSessionPayload {

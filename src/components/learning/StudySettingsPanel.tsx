@@ -27,10 +27,22 @@ export function StudySettingsPanel({
 }: StudySettingsPanelProps) {
   const showFlashcardSettings = mode === 'Flashcard'
   const showMcqSettings = mode === 'MultipleChoice'
-  const showShuffle = mode === 'MultipleChoice'
+  const showShuffle = mode === 'MultipleChoice' || mode === 'FillInBlank'
 
   if (!showFlashcardSettings && !showMcqSettings && !showShuffle) {
-    return null
+    return (
+      <section className="space-y-3">
+        <h3 className="section-label-text flex items-center gap-2">
+          <GearIcon size={16} />
+          {LEARNING_COPY.settingsTitle}
+        </h3>
+        <div className="rounded-2xl p-4 feature-card">
+          <p className="text-sm text-muted-foreground">
+            {LEARNING_COPY.noSettingsForMode}
+          </p>
+        </div>
+      </section>
+    )
   }
 
   return (

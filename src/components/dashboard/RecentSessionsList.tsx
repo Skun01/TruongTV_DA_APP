@@ -49,21 +49,21 @@ export function RecentSessionsList({
   }
 
   return (
-    <section className="space-y-3">
+    <section className="space-y-4 rounded-[1.75rem] p-5 feature-card md:p-6">
       <h2 className="section-title-text flex items-center gap-2">
-        <ClockCounterClockwiseIcon size={20} weight="duotone" />
+        <ClockCounterClockwiseIcon size={20} weight="regular" />
         {LEARNING_COPY.recentSessions}
       </h2>
 
       {sessions.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 rounded-2xl px-6 py-10 feature-card">
+        <div className="flex flex-col items-center gap-3 rounded-2xl bg-surface-container-low px-6 py-10">
           <StackIcon size={28} className="text-muted-foreground/40" />
-          <p className="text-sm text-muted-foreground">
+          <p className="text-center text-sm text-muted-foreground">
             {LEARNING_COPY.noSessions}
           </p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {sessions.map((session) => {
             const ModeIcon = MODE_ICONS[session.mode]
             const isCompleted = session.completedAt !== null
@@ -83,7 +83,7 @@ export function RecentSessionsList({
             return (
               <div
                 key={session.id}
-                className="flex items-center gap-4 rounded-2xl px-4 py-3 feature-card"
+                className="flex items-center gap-4 rounded-2xl border border-border/50 bg-surface-container-low px-4 py-4"
               >
                 <div
                   className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"

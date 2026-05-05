@@ -106,9 +106,9 @@ export function ExamHistoryCard({ examHistory, isLoading }: ExamHistoryCardProps
                   key={item.examSessionId}
                   role="button"
                   tabIndex={0}
-                  onClick={() => navigate(`/jlpt/results/${item.examSessionId}`)}
+                  onClick={() => navigate(`/jlpt/session/${item.examSessionId}/result`)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') navigate(`/jlpt/results/${item.examSessionId}`)
+                    if (e.key === 'Enter') navigate(`/jlpt/session/${item.examSessionId}/result`)
                   }}
                   className="flex cursor-pointer items-center gap-4 rounded-2xl border border-border/50 bg-surface-container-low px-4 py-4 transition-colors hover:bg-surface-container"
                 >

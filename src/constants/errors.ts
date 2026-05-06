@@ -46,11 +46,20 @@ export const JLPT_EXAM_ERROR_MESSAGES: Record<string, string> = {
   default_jlptExam: 'Không thể xử lý thao tác bài thi. Vui lòng thử lại.',
 }
 
+export const CONVERSATION_ERROR_MESSAGES: Record<string, string> = {
+  Conversation_NotFound_404: 'Không tìm thấy cuộc hội thoại.',
+  Conversation_AlreadyCompleted_400: 'Cuộc hội thoại đã kết thúc.',
+  Conversation_GenerationFailed_500: 'Không thể tạo phản hồi AI. Vui lòng thử lại.',
+  default: 'Không thể xử lý thao tác hội thoại. Vui lòng thử lại.',
+  conversationDeleted: 'Đã xóa cuộc hội thoại.',
+}
+
 export const ERROR_MESSAGES = {
   ...API_ERROR_MESSAGES,
   ...DECK_ERROR_MESSAGES,
   ...LEARNING_ERROR_MESSAGES,
   ...SHADOWING_ERROR_MESSAGES,
   ...JLPT_EXAM_ERROR_MESSAGES,
+  ...CONVERSATION_ERROR_MESSAGES,
 } as const
 

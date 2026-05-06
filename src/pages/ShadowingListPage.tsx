@@ -3,7 +3,6 @@ import { MagnifyingGlassIcon, MicrophoneIcon, CrownIcon } from '@phosphor-icons/
 import NProgress from 'nprogress'
 import { useNavigate, useSearchParams } from 'react-router'
 import { AppLayout } from '@/components/layout/AppLayout'
-import { PageHelmet } from '@/components/seo/PageHelmet'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'

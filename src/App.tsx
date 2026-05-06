@@ -31,6 +31,9 @@ import { JlptExamDetailPage } from './pages/JlptExamDetailPage'
 import { JlptExamSessionPage } from './pages/JlptExamSessionPage'
 import { JlptExamResultPage } from './pages/JlptExamResultPage'
 import { JlptExamHistoryPage } from './pages/JlptExamHistoryPage'
+import { ConversationListPage } from './pages/ConversationListPage'
+import { ConversationPage } from './pages/ConversationPage'
+import { ConversationResultPage } from './pages/ConversationResultPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -77,6 +80,9 @@ function App() {
                   <Route path="/shadowing" element={<ShadowingListPage />} />
                   <Route path="/shadowing/topics/:topicId" element={<ShadowingTopicPage />} />
                   <Route path="/shadowing/topics/:topicId/practice" element={<ShadowingPracticePage />} />
+                  <Route path="/ai-conversations" element={<ConversationListPage />} />
+                  <Route path="/ai-conversations/:conversationId" element={<ConversationPage />} />
+                  <Route path="/ai-conversations/:conversationId/result" element={<ConversationResultPage />} />
                 </Route>
               </Routes>
             </AppInit>

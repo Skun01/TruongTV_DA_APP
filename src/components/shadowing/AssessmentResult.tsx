@@ -1,4 +1,4 @@
-import { ArrowRightIcon, SpeakerHighIcon } from '@phosphor-icons/react'
+import { ArrowRightIcon } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { SHADOWING_COPY } from '@/constants/shadowing'

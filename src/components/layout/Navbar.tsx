@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
-import { BooksIcon, CertificateIcon, LightningIcon, MicrophoneIcon } from '@phosphor-icons/react'
+import { BooksIcon, CertificateIcon, LightningIcon, MicrophoneIcon, ChatCircleDotsIcon } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { NavbarLogo } from './NavbarLogo'
 import { NavbarSearch } from './NavbarSearch'
@@ -75,6 +75,18 @@ export function Navbar() {
               <Link to="/jlpt">
                 <CertificateIcon size={16} weight="duotone" />
                 {NAVBAR_COPY.jlpt}
+              </Link>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="items-center gap-1.5 text-secondary hover:text-primary shrink-0"
+            >
+              <Link to="/ai-conversations">
+                <ChatCircleDotsIcon size={16} weight="duotone" />
+                {NAVBAR_COPY.aiConversations}
               </Link>
             </Button>
           </div>

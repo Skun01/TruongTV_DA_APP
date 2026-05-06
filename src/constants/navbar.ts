@@ -4,6 +4,7 @@ export const NAVBAR_COPY = {
   quickLearn: "Học nhanh",
   shadowing: 'Luyện phát âm',
   jlpt: 'Luyện thi JLPT',
+  aiConversations: 'Hội thoại AI',
   searchLabel: 'Tìm kiếm',
   notifications: 'Thông báo',
   noNotifications: 'Không có thông báo mới',

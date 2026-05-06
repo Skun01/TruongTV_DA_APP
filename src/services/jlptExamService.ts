@@ -1,6 +1,7 @@
 import type { ApiResponse, PaginatedResponse } from '@/types/api'
 import type {
   ActiveSessionResponse,
+  JlptAiAnalysisResponse,
   ExamResultResponse,
   ExamSessionHistoryItemResponse,
   ExamSessionResponse,
@@ -90,6 +91,16 @@ export const jlptExamService = {
     )
     if (!response.data.data) {
       throw new Error('ExamSession_NotFound_404')
+    }
+    return response.data.data
+  },
+
+  async getAiAnalysis(sessionId: string): Promise<JlptAiAnalysisResponse> {
+    const response = await api.get<ApiResponse<JlptAiAnalysisResponse>>(
+      `/exam-sessions/${sessionId}/ai-analysis`,
+    )
+    if (!response.data.data) {
+      throw new Error('ExamSession_AiAnalysisUnavailable_503')
     }
     return response.data.data
   },

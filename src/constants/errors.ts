@@ -43,6 +43,10 @@ export const JLPT_EXAM_ERROR_MESSAGES: Record<string, string> = {
   ExamSession_AlreadySubmitted_400: 'Bài thi đã được nộp.',
   ExamSession_Expired_400: 'Phiên thi đã hết hạn.',
   ExamSession_QuestionNotInExam_400: 'Câu hỏi không thuộc đề thi này.',
+  ExamSession_NotSubmitted_400: 'Phiên thi này chưa có kết quả để phân tích AI.',
+  ExamSession_AiAnalysisUnavailable_503: 'Phân tích AI hiện chưa khả dụng. Vui lòng thử lại sau.',
+  ExamSession_AiAnalysisInvalid_502: 'Kết quả phân tích AI không hợp lệ. Vui lòng thử lại.',
+  ExamSession_AiAnalysisRateLimited_429: 'Bạn đã yêu cầu phân tích AI quá nhiều lần. Hãy thử lại sau.',
   default_jlptExam: 'Không thể xử lý thao tác bài thi. Vui lòng thử lại.',
 }
 

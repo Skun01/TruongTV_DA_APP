@@ -10,6 +10,7 @@ lerna-debug.log*
 # Claude and MCP
 .claude
 .mcp_data
+docs
 
 
 node_modules

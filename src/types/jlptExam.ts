@@ -8,6 +8,33 @@ export type OptionType = 'Text' | 'Image' | 'TextAndImage'
 
 export type ExamSessionStatus = 'InProgress' | 'Submitted' | 'TimedOut'
 
+export type JlptAiAnalysisStatus = 'Completed' | 'Failed'
+
+export type JlptAiOverallBand = 'Excellent' | 'Good' | 'NeedsPractice' | 'Weak'
+
+export type JlptAiLevelReadiness = 'Ready' | 'Borderline' | 'NotReady'
+
+export type JlptAiPerformanceBand = 'Strong' | 'Stable' | 'Weak' | 'Critical'
+
+export type JlptAiSeverity = 'Low' | 'Medium' | 'High'
+
+export type JlptAiRecommendationType =
+  | 'ReviewWrongQuestions'
+  | 'ReviewSection'
+  | 'StudyVocabulary'
+  | 'StudyGrammar'
+  | 'PracticeReading'
+  | 'PracticeListening'
+  | 'RetakeExam'
+
+export type JlptAiRecommendationPriority = 'Low' | 'Medium' | 'High'
+
+export type JlptAiNextActionType =
+  | 'ReviewWrongQuestions'
+  | 'StartRemedialSession'
+  | 'RetakeExam'
+  | 'BackToExamList'
+
 export interface GetJlptExamsParams {
   keyword?: string
   level?: JlptLevel
@@ -173,6 +200,82 @@ export interface ExamResultResponse {
   submittedAt: string | null
   sectionScores: SectionScoreResponse[]
   questions: ResultQuestionResponse[]
+}
+
+export interface JlptAiAnalysisSummary {
+  headline: string
+  overallBand: JlptAiOverallBand
+  scorePercent: number
+  passed: boolean
+  estimatedLevelReadiness: JlptAiLevelReadiness
+}
+
+export interface JlptAiSectionAnalysis {
+  sectionType: SectionType
+  score: number
+  maxScore: number
+  passScore: number
+  isPassed: boolean
+  performanceBand: JlptAiPerformanceBand
+  diagnosis: string
+  strengths: string[]
+  weaknesses: string[]
+  recommendedFocus: string[]
+}
+
+export interface JlptAiMistakePattern {
+  patternId: string
+  title: string
+  severity: JlptAiSeverity
+  sectionTypes: SectionType[]
+  questionIds: string[]
+  evidence: string
+  advice: string
+}
+
+export interface JlptAiQuestionInsight {
+  questionId: string
+  sectionType: SectionType
+  isCorrect: boolean
+  selectedOptionId: string | null
+  correctOptionId: string
+  rootCause: string
+  explanation: string
+  reviewTags: string[]
+}
+
+export interface JlptAiRecommendation {
+  type: JlptAiRecommendationType
+  priority: JlptAiRecommendationPriority
+  title: string
+  reason: string
+  estimatedMinutes: number
+  targetRoute: string | null
+  targetIds: string[]
+}
+
+export interface JlptAiNextAction {
+  label: string
+  actionType: JlptAiNextActionType
+  targetRoute: string | null
+}
+
+export interface JlptAiAnalysisResponse {
+  analysisId: string
+  sessionId: string
+  examId: string
+  examTitle: string
+  level: JlptLevel
+  status: JlptAiAnalysisStatus
+  generatedAt: string
+  model: string
+  promptVersion: string
+  summary: JlptAiAnalysisSummary
+  sectionAnalyses: JlptAiSectionAnalysis[]
+  mistakePatterns: JlptAiMistakePattern[]
+  questionInsights: JlptAiQuestionInsight[]
+  recommendations: JlptAiRecommendation[]
+  nextActions: JlptAiNextAction[]
 }
 
 export interface ExamSessionHistoryItemResponse {

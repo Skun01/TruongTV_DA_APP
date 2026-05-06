@@ -1,15 +1,21 @@
 import { CheckCircleIcon, XCircleIcon, MinusCircleIcon } from '@phosphor-icons/react'
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
 import { JLPT_EXAM_COPY } from '@/constants/jlptExam'
-import type { ResultQuestionResponse } from '@/types/jlptExam'
+import { cn } from '@/lib/utils'
+import type { JlptAiQuestionInsight, ResultQuestionResponse } from '@/types/jlptExam'
 
 interface ResultQuestionReviewProps {
   question: ResultQuestionResponse
   questionNumber: number
+  aiInsight?: JlptAiQuestionInsight
 }
 
-export function ResultQuestionReview({ question, questionNumber }: ResultQuestionReviewProps) {
+export function ResultQuestionReview({
+  question,
+  questionNumber,
+  aiInsight,
+}: ResultQuestionReviewProps) {
   return (
     <Card className="border-border/50 bg-surface-container-low">
       <CardContent className="p-5">
@@ -89,6 +95,30 @@ export function ResultQuestionReview({ question, questionNumber }: ResultQuestio
                   {JLPT_EXAM_COPY.explanation}
                 </p>
                 <p className="mt-1 text-xs text-blue-600">{question.explanation}</p>
+              </div>
+            )}
+
+            {aiInsight && (
+              <div className="rounded-md border border-violet-200 bg-violet-50/80 p-3">
+                <p className="text-xs font-medium text-violet-700">
+                  {JLPT_EXAM_COPY.aiRootCause}
+                </p>
+                <p className="mt-1 text-xs text-violet-700">{aiInsight.rootCause}</p>
+
+                <p className="mt-3 text-xs font-medium text-violet-700">
+                  {JLPT_EXAM_COPY.aiAdvice}
+                </p>
+                <p className="mt-1 text-xs text-violet-700">{aiInsight.explanation}</p>
+
+                {aiInsight.reviewTags.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {aiInsight.reviewTags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="text-[11px]">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>

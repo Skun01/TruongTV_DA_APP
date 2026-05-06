@@ -17,6 +17,7 @@ export const JLPT_EXAM_QUERY_KEYS = {
   activeSession: (examId: string) => ['jlpt-exams', 'active-session', examId] as const,
   session: (sessionId: string) => ['exam-sessions', sessionId] as const,
   result: (sessionId: string) => ['exam-sessions', 'result', sessionId] as const,
+  aiAnalysis: (sessionId: string) => ['exam-sessions', 'ai-analysis', sessionId] as const,
   history: (params: GetExamSessionsParams) => ['exam-sessions', 'history', params] as const,
 }
 
@@ -98,6 +99,16 @@ export function useExamResult(sessionId: string, enabled = true) {
     queryKey: JLPT_EXAM_QUERY_KEYS.result(sessionId),
     queryFn: () => jlptExamService.getResult(sessionId),
     enabled: enabled && Boolean(sessionId),
+  })
+}
+
+export function useExamAiAnalysis(sessionId: string, enabled = true) {
+  return useQuery({
+    queryKey: JLPT_EXAM_QUERY_KEYS.aiAnalysis(sessionId),
+    queryFn: () => jlptExamService.getAiAnalysis(sessionId),
+    enabled: enabled && Boolean(sessionId),
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
   })
 }
 

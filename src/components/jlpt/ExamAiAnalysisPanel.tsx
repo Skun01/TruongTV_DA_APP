@@ -3,12 +3,17 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import { Skeleton } from '@/components/ui/skeleton'
 import { JLPT_EXAM_COPY } from '@/constants/jlptExam'
 import type {
@@ -17,6 +22,8 @@ import type {
   JlptAiRecommendationPriority,
   JlptAiRecommendation,
   JlptAiSeverity,
+  JlptAiSectionAnalysis,
+  JlptAiMistakePattern,
 } from '@/types/jlptExam'
 
 interface ExamAiAnalysisPanelProps {
@@ -38,6 +45,18 @@ const severityTone: Record<JlptAiSeverity, string> = {
   High: 'bg-red-100 text-red-700',
   Medium: 'bg-amber-100 text-amber-700',
   Low: 'bg-sky-100 text-sky-700',
+}
+
+const severityLabel: Record<JlptAiSeverity, string> = {
+  High: 'Cao',
+  Medium: 'Trung bình',
+  Low: 'Thấp',
+}
+
+const priorityLabel: Record<JlptAiRecommendationPriority, string> = {
+  High: 'Cao',
+  Medium: 'Trung bình',
+  Low: 'Thấp',
 }
 
 const overallBandLabel = {
@@ -79,6 +98,109 @@ function AnalysisSkeleton() {
   )
 }
 
+function SectionAnalysisItem({ section }: { section: JlptAiSectionAnalysis }) {
+  return (
+    <div className="rounded-lg border border-border/60 bg-background/60 p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-primary">
+            {JLPT_EXAM_COPY.sectionTypeLabels[section.sectionType]}
+          </span>
+          <Badge variant={section.isPassed ? 'secondary' : 'destructive'} className="text-xs">
+            {section.score}/{section.maxScore}
+          </Badge>
+        </div>
+        <span className="text-xs text-secondary">{section.diagnosis}</span>
+      </div>
+
+      <div className="mt-3 grid gap-2 sm:grid-cols-3">
+        <div>
+          <p className="text-xs font-medium text-tertiary">{JLPT_EXAM_COPY.aiStrengths}</p>
+          <ul className="mt-1 space-y-0.5 text-xs text-primary">
+            {section.strengths.map((item, i) => (
+              <li key={i} className="list-inside list-disc">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p className="text-xs font-medium text-tertiary">{JLPT_EXAM_COPY.aiWeaknesses}</p>
+          <ul className="mt-1 space-y-0.5 text-xs text-primary">
+            {section.weaknesses.map((item, i) => (
+              <li key={i} className="list-inside list-disc">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p className="text-xs font-medium text-tertiary">{JLPT_EXAM_COPY.aiRecommendedFocus}</p>
+          <ul className="mt-1 space-y-0.5 text-xs text-primary">
+            {section.recommendedFocus.map((item, i) => (
+              <li key={i} className="list-inside list-disc">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function MistakePatternItem({ pattern }: { pattern: JlptAiMistakePattern }) {
+  return (
+    <div className="rounded-lg border border-border/60 bg-background/60 p-3">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-primary">{pattern.title}</span>
+          <Badge
+            variant="outline"
+            className={`text-xs ${severityTone[pattern.severity]}`}
+          >
+            {severityLabel[pattern.severity]}
+          </Badge>
+        </div>
+      </div>
+      <p className="mt-2 text-xs text-secondary">{pattern.evidence}</p>
+      <p className="mt-1 text-xs text-tertiary">
+        <span className="font-medium">{JLPT_EXAM_COPY.aiAdvice}:</span> {pattern.advice}
+      </p>
+    </div>
+  )
+}
+
+function RecommendationItem({
+  recommendation,
+  onOpen,
+}: {
+  recommendation: JlptAiRecommendation
+  onOpen: () => void
+}) {
+  return (
+    <div className="flex items-start justify-between gap-3 rounded-lg border border-border/60 bg-background/60 p-3">
+      <div className="flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-medium text-primary">{recommendation.title}</span>
+          <Badge variant="outline" className={`text-xs ${priorityTone[recommendation.priority]}`}>
+            {priorityLabel[recommendation.priority]}
+          </Badge>
+        </div>
+        <p className="mt-1 text-xs text-secondary">{recommendation.reason}</p>
+        <p className="mt-1 text-xs text-tertiary">
+          {JLPT_EXAM_COPY.aiEstimatedMinutes}: {recommendation.estimatedMinutes} {JLPT_EXAM_COPY.minutesUnit}
+        </p>
+      </div>
+      {recommendation.targetRoute && (
+        <Button variant="ghost" size="sm" onClick={onOpen} className="shrink-0">
+          {JLPT_EXAM_COPY.aiOpenTarget}
+        </Button>
+      )}
+    </div>
+  )
+}
+
 export function ExamAiAnalysisPanel({
   analysis,
   isLoading,
@@ -113,203 +235,135 @@ export function ExamAiAnalysisPanel({
     )
   }
 
+  const accordionDefaultValue = [
+    'section-analyses',
+    ...(analysis.mistakePatterns.length > 0 ? ['mistake-patterns'] : []),
+    ...(analysis.recommendations.length > 0 ? ['recommendations'] : []),
+  ]
+
   return (
     <Card className="border-border/50 bg-surface-container-low">
-      <CardHeader className="border-b border-border/60">
-        <div>
-          <CardTitle>{JLPT_EXAM_COPY.aiAnalysis}</CardTitle>
-          <CardDescription>{JLPT_EXAM_COPY.aiAnalysisDescription}</CardDescription>
+      <CardHeader className="border-b border-border/60 pb-4">
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <div>
+            <CardTitle>{JLPT_EXAM_COPY.aiAnalysis}</CardTitle>
+            <CardDescription>{JLPT_EXAM_COPY.aiAnalysisDescription}</CardDescription>
+          </div>
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-2">
+              <Badge variant="outline">{analysis.level}</Badge>
+              <Badge variant={analysis.summary.passed ? 'default' : 'destructive'}>
+                {analysis.summary.passed ? JLPT_EXAM_COPY.passed : JLPT_EXAM_COPY.failed}
+              </Badge>
+            </div>
+            <span className="text-xs text-tertiary">
+              {formatGeneratedAt(analysis.generatedAt)}
+            </span>
+          </div>
         </div>
-        <CardAction className="flex flex-col items-end gap-2">
-          <Badge variant="outline">{analysis.level}</Badge>
-          <span className="text-xs text-tertiary">
-            {JLPT_EXAM_COPY.aiGeneratedAt}: {formatGeneratedAt(analysis.generatedAt)}
-          </span>
-        </CardAction>
+
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <Badge>{overallBandLabel[analysis.summary.overallBand]}</Badge>
+          <Badge variant="secondary">{readinessLabel[analysis.summary.estimatedLevelReadiness]}</Badge>
+        </div>
+        <p className="mt-2 text-sm font-medium text-primary">{analysis.summary.headline}</p>
+
+        <div className="mt-3 flex flex-wrap gap-4">
+          <div>
+            <span className="text-xs text-tertiary">{JLPT_EXAM_COPY.totalScore}</span>
+            <span className="ml-2 font-semibold text-primary">
+              {analysis.summary.scorePercent.toFixed(1)}%
+            </span>
+          </div>
+          <div>
+            <span className="text-xs text-tertiary">{JLPT_EXAM_COPY.aiPriority}</span>
+            <span className="ml-2 font-semibold text-primary">
+              {analysis.recommendations[0]?.priority
+                ? priorityLabel[analysis.recommendations[0].priority]
+                : 'Trung bình'}
+            </span>
+          </div>
+          <div>
+            <span className="text-xs text-tertiary">{JLPT_EXAM_COPY.aiQuestionInsights}</span>
+            <span className="ml-2 font-semibold text-primary">
+              {analysis.questionInsights.length}
+            </span>
+          </div>
+        </div>
       </CardHeader>
 
-      <CardContent className="space-y-6 pt-6">
-        <section className="rounded-xl border border-border/60 bg-background/60 p-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge>{overallBandLabel[analysis.summary.overallBand]}</Badge>
-            <Badge variant={analysis.summary.passed ? 'default' : 'destructive'}>
-              {analysis.summary.passed ? JLPT_EXAM_COPY.passed : JLPT_EXAM_COPY.failed}
-            </Badge>
-            <Badge variant="secondary">
-              {readinessLabel[analysis.summary.estimatedLevelReadiness]}
-            </Badge>
-          </div>
-          <p className="mt-3 text-base font-semibold text-primary">
-            {analysis.summary.headline}
-          </p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-lg bg-surface-container-low px-3 py-2">
-              <p className="text-xs text-tertiary">{JLPT_EXAM_COPY.totalScore}</p>
-              <p className="text-lg font-semibold text-primary">
-                {analysis.summary.scorePercent.toFixed(1)}%
-              </p>
-            </div>
-            <div className="rounded-lg bg-surface-container-low px-3 py-2">
-              <p className="text-xs text-tertiary">{JLPT_EXAM_COPY.aiPriority}</p>
-              <p className="text-lg font-semibold text-primary">
-                {analysis.recommendations[0]?.priority ?? 'Medium'}
-              </p>
-            </div>
-            <div className="rounded-lg bg-surface-container-low px-3 py-2">
-              <p className="text-xs text-tertiary">{JLPT_EXAM_COPY.aiQuestionInsights}</p>
-              <p className="text-lg font-semibold text-primary">
-                {analysis.questionInsights.length}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {analysis.sectionAnalyses.length > 0 && (
-          <section>
-            <h2 className="mb-3 text-lg font-semibold text-primary">
-              {JLPT_EXAM_COPY.aiSectionFocus}
-            </h2>
-            <div className="grid gap-3 xl:grid-cols-2">
-              {analysis.sectionAnalyses.map((section) => (
-                <div
-                  key={section.sectionType}
-                  className="rounded-xl border border-border/60 bg-background/60 p-4"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div>
-                      <p className="font-semibold text-primary">
-                        {JLPT_EXAM_COPY.sectionTypeLabels[section.sectionType]}
-                      </p>
-                      <p className="text-sm text-secondary">{section.diagnosis}</p>
-                    </div>
-                    <Badge variant={section.isPassed ? 'secondary' : 'destructive'}>
-                      {section.score}/{section.maxScore}
-                    </Badge>
-                  </div>
-
-                  <div className="mt-4 grid gap-3 md:grid-cols-3">
-                    <div>
-                      <p className="text-xs font-medium text-tertiary">
-                        {JLPT_EXAM_COPY.aiStrengths}
-                      </p>
-                      <div className="mt-2 space-y-1 text-sm text-primary">
-                        {section.strengths.map((item) => (
-                          <p key={item}>{item}</p>
-                        ))}
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium text-tertiary">
-                        {JLPT_EXAM_COPY.aiWeaknesses}
-                      </p>
-                      <div className="mt-2 space-y-1 text-sm text-primary">
-                        {section.weaknesses.map((item) => (
-                          <p key={item}>{item}</p>
-                        ))}
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium text-tertiary">
-                        {JLPT_EXAM_COPY.aiRecommendedFocus}
-                      </p>
-                      <div className="mt-2 space-y-1 text-sm text-primary">
-                        {section.recommendedFocus.map((item) => (
-                          <p key={item}>{item}</p>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+      <CardContent className="pt-4">
+        <Accordion type="multiple" defaultValue={accordionDefaultValue} className="w-full">
+          {analysis.sectionAnalyses.length > 0 && (
+            <AccordionItem value="section-analyses">
+              <AccordionTrigger className="py-3">
+                <span className="text-sm font-medium">
+                  {JLPT_EXAM_COPY.aiSectionFocus} ({analysis.sectionAnalyses.length})
+                </span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-2">
+                  {analysis.sectionAnalyses.map((section) => (
+                    <SectionAnalysisItem key={section.sectionType} section={section} />
+                  ))}
                 </div>
-              ))}
-            </div>
-          </section>
-        )}
+              </AccordionContent>
+            </AccordionItem>
+          )}
 
-        <div className="grid gap-4 xl:grid-cols-2">
-          <section>
-            <h2 className="mb-3 text-lg font-semibold text-primary">
-              {JLPT_EXAM_COPY.aiMistakePatterns}
-            </h2>
-            <div className="space-y-3">
-              {analysis.mistakePatterns.map((pattern) => (
-                <div
-                  key={pattern.patternId}
-                  className="rounded-xl border border-border/60 bg-background/60 p-4"
-                >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-semibold text-primary">{pattern.title}</p>
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${severityTone[pattern.severity]}`}
-                    >
-                      {pattern.severity}
-                    </span>
-                  </div>
-                  <p className="mt-3 text-xs font-medium text-tertiary">
-                    {JLPT_EXAM_COPY.aiEvidence}
-                  </p>
-                  <p className="mt-1 text-sm text-primary">{pattern.evidence}</p>
-                  <p className="mt-3 text-xs font-medium text-tertiary">
-                    {JLPT_EXAM_COPY.aiAdvice}
-                  </p>
-                  <p className="mt-1 text-sm text-primary">{pattern.advice}</p>
+          {analysis.mistakePatterns.length > 0 && (
+            <AccordionItem value="mistake-patterns">
+              <AccordionTrigger className="py-3">
+                <span className="text-sm font-medium">
+                  {JLPT_EXAM_COPY.aiMistakePatterns} ({analysis.mistakePatterns.length})
+                </span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-2">
+                  {analysis.mistakePatterns.map((pattern) => (
+                    <MistakePatternItem key={pattern.patternId} pattern={pattern} />
+                  ))}
                 </div>
-              ))}
-            </div>
-          </section>
+              </AccordionContent>
+            </AccordionItem>
+          )}
 
-          <section>
-            <h2 className="mb-3 text-lg font-semibold text-primary">
-              {JLPT_EXAM_COPY.aiRecommendations}
-            </h2>
-            <div className="space-y-3">
-              {analysis.recommendations.map((recommendation) => (
-                <div
-                  key={`${recommendation.type}-${recommendation.title}`}
-                  className="rounded-xl border border-border/60 bg-background/60 p-4"
-                >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-semibold text-primary">{recommendation.title}</p>
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${priorityTone[recommendation.priority]}`}
-                    >
-                      {recommendation.priority}
-                    </span>
-                  </div>
-                  <p className="mt-2 text-sm text-primary">{recommendation.reason}</p>
-                  <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-                    <p className="text-sm text-secondary">
-                      {JLPT_EXAM_COPY.aiEstimatedMinutes}: {recommendation.estimatedMinutes}{' '}
-                      {JLPT_EXAM_COPY.minutesUnit}
-                    </p>
-                    {recommendation.targetRoute && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => onOpenRecommendation(recommendation)}
-                      >
-                        {JLPT_EXAM_COPY.aiOpenTarget}
-                      </Button>
-                    )}
-                  </div>
+          {analysis.recommendations.length > 0 && (
+            <AccordionItem value="recommendations">
+              <AccordionTrigger className="py-3">
+                <span className="text-sm font-medium">
+                  {JLPT_EXAM_COPY.aiRecommendations} ({analysis.recommendations.length})
+                </span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-2">
+                  {analysis.recommendations.map((recommendation) => (
+                    <RecommendationItem
+                      key={`${recommendation.type}-${recommendation.title}`}
+                      recommendation={recommendation}
+                      onOpen={() => onOpenRecommendation(recommendation)}
+                    />
+                  ))}
                 </div>
-              ))}
-            </div>
-          </section>
-        </div>
+              </AccordionContent>
+            </AccordionItem>
+          )}
+        </Accordion>
 
         {analysis.nextActions.length > 0 && (
-          <section className="flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             {analysis.nextActions.map((action) => (
               <Button
                 key={`${action.actionType}-${action.label}`}
                 variant={action.actionType === 'BackToExamList' ? 'outline' : 'default'}
+                size="sm"
                 onClick={() => onOpenAction(action)}
                 disabled={!action.targetRoute}
               >
                 {action.label}
               </Button>
             ))}
-          </section>
+          </div>
         )}
       </CardContent>
     </Card>

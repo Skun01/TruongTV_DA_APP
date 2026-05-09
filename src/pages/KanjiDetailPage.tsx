@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { PageHelmet } from '@/components/seo/PageHelmet'
 import { CardHero } from '@/components/card/CardHero'
+import { CardAiExplanationPanel } from '@/components/card/CardAiExplanationPanel'
 import { CardProgress } from '@/components/card/CardProgress'
 import { CardNoteSection } from '@/components/card/CardNoteSection'
 import { CardCommunityNotes } from '@/components/card/CardCommunityNotes'
@@ -123,6 +124,7 @@ export function KanjiDetailPage() {
 
                 {/* ── Right column: Actions + Community notes ── */}
                 <div className="flex flex-col gap-4">
+                  <CardAiExplanationPanel cardId={card.id} />
                   <CardProgress cardId={card.id} />
                   <CardNoteSection
                     cardId={card.id}

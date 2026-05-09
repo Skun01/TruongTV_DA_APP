@@ -1,4 +1,5 @@
 import type { ApiResponse } from '@/types/api'
+import type { CardAiExplainPayload, CardAiExplanationResponse } from '@/types/card'
 import type { SearchCardSummary, SearchCardsParams } from '@/types/search'
 import api from './api'
 
@@ -17,6 +18,18 @@ export const cardService = {
     const response = await api.get<ApiResponse<SearchCardSummary[]>>('/cards/search', {
       params: buildSearchParams(params),
     })
+
+    return response.data
+  },
+
+  async explain(
+    cardId: string,
+    payload: CardAiExplainPayload = {},
+  ): Promise<ApiResponse<CardAiExplanationResponse>> {
+    const response = await api.post<ApiResponse<CardAiExplanationResponse>>(
+      `/cards/${cardId}/explain`,
+      payload,
+    )
 
     return response.data
   },

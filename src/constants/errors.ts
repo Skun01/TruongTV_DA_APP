@@ -58,6 +58,14 @@ export const CONVERSATION_ERROR_MESSAGES: Record<string, string> = {
   conversationDeleted: 'Đã xóa cuộc hội thoại.',
 }
 
+export const CARD_ERROR_MESSAGES: Record<string, string> = {
+  Card_NotFound_404: 'Không tìm thấy thẻ hoặc thẻ chưa được xuất bản.',
+  Card_AiExplanationUnavailable_503: 'AI giải thích thẻ hiện chưa khả dụng. Vui lòng thử lại sau.',
+  Card_AiExplanationInvalid_502: 'Kết quả giải thích từ AI không hợp lệ. Vui lòng thử lại.',
+  Validation_400: 'Câu hỏi chưa hợp lệ. Vui lòng nhập tối đa 500 ký tự.',
+  default_card: 'Không thể tạo giải thích AI cho thẻ này. Vui lòng thử lại.',
+}
+
 export const ERROR_MESSAGES = {
   ...API_ERROR_MESSAGES,
   ...DECK_ERROR_MESSAGES,
@@ -65,5 +73,5 @@ export const ERROR_MESSAGES = {
   ...SHADOWING_ERROR_MESSAGES,
   ...JLPT_EXAM_ERROR_MESSAGES,
   ...CONVERSATION_ERROR_MESSAGES,
+  ...CARD_ERROR_MESSAGES,
 } as const
-

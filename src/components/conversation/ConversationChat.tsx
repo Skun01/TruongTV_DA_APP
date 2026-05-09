@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowLeftIcon, StopCircleIcon } from '@phosphor-icons/react'
-import { useNavigate } from 'react-router'
 import { CONVERSATION_COPY } from '@/constants/conversation'
 import type { ConversationMessage, AIVocabularyItem } from '@/types/conversation'
 import { ConversationBubble } from './ConversationBubble'
 import { ConversationInput } from './ConversationInput'
-import { ConversationResult } from './ConversationResult'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -14,7 +12,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog'
-import { useSendMessage, useConversationResult } from '@/hooks/useConversation'
+import { useSendMessage, useCompleteConversation } from '@/hooks/useConversation'
 
 interface ConversationChatProps {
   conversationId: string
@@ -29,16 +27,14 @@ export function ConversationChat({
   onEndConversation,
   isEnding,
 }: ConversationChatProps) {
-  const navigate = useNavigate()
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [messages, setMessages] = useState<ConversationMessage[]>(initialMessages)
   const [isTyping, setIsTyping] = useState(false)
   const [showEndDialog, setShowEndDialog] = useState(false)
-  const [showResult, setShowResult] = useState(false)
   const [selectedVocab, setSelectedVocab] = useState<AIVocabularyItem | null>(null)
 
   const sendMessageMutation = useSendMessage(conversationId)
-  const resultQuery = useConversationResult(conversationId, showResult)
+  const completeMutation = useCompleteConversation()
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -86,26 +82,14 @@ export function ConversationChat({
     setShowEndDialog(true)
   }
 
-  const handleConfirmEnd = () => {
+  const handleConfirmEnd = async () => {
     setShowEndDialog(false)
+    try {
+      await completeMutation.mutateAsync(conversationId)
+    } catch (error) {
+      console.error('Failed to complete conversation:', error)
+    }
     onEndConversation()
-    setShowResult(true)
-  }
-
-  const handleResultClose = () => {
-    navigate('/ai-conversations')
-  }
-
-  if (showResult && resultQuery.data) {
-    return (
-      <div className="flex h-full flex-col">
-        <div className="flex-1 overflow-auto">
-          <div className="mx-auto max-w-2xl px-4 py-6">
-            <ConversationResult result={resultQuery.data} onClose={handleResultClose} />
-          </div>
-        </div>
-      </div>
-    )
   }
 
   return (

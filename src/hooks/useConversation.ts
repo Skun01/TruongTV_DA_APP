@@ -41,6 +41,31 @@ export function useConversationResult(conversationId: string, enabled = true) {
   })
 }
 
+export function useConversationDetail(conversationId: string, enabled = true) {
+  return useQuery({
+    queryKey: CONVERSATION_QUERY_KEYS.detail(conversationId),
+    queryFn: () => conversationService.getConversationDetail(conversationId),
+    enabled: enabled && Boolean(conversationId),
+  })
+}
+
+export function useCompleteConversation() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (conversationId: string) =>
+      conversationService.completeConversation(conversationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: CONVERSATION_QUERY_KEYS.all })
+    },
+    onError: (error) => {
+      gooeyToast.error(
+        getApiErrorMessage(error, CONVERSATION_ERROR_MESSAGES.default),
+      )
+    },
+  })
+}
+
 export function useStartConversation() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()

@@ -78,6 +78,21 @@ export interface ConversationListItemResponse {
   score: number | null
 }
 
+export interface ConversationDetailResponse {
+  conversationId: string
+  scenario: string
+  customScenario: string | null
+  scenarioText: string
+  level: ConversationLevel
+  status: ConversationStatus
+  startedAt: string
+  completedAt: string | null
+  totalMessages: number
+  userMessagesCount: number
+  score: number
+  messages: ConversationMessageApi[]
+}
+
 export interface ConversationMessage {
   id: string
   sender: 'User' | 'AI'
@@ -86,6 +101,16 @@ export interface ConversationMessage {
   newVocabulary?: AIVocabularyItem[]
   grammarPoints?: string[]
   timestamp: string
+}
+
+export interface ConversationMessageApi {
+  messageId: string
+  sender: 'User' | 'AI'
+  text: string
+  suggestions: string[]
+  newVocabulary?: AIVocabularyItem[]
+  grammarPoints?: string[]
+  createdAt: string
 }
 
 export interface ConversationSession {

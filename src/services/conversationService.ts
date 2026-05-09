@@ -7,6 +7,7 @@ import type {
   ConversationResultResponse,
   ConversationListItemResponse,
   GetConversationsParams,
+  ConversationDetailResponse,
 } from '@/types/conversation'
 import type { ApiResponse, PaginatedResponse } from '@/types/api'
 import api from './api'
@@ -52,6 +53,26 @@ export const conversationService = {
     )
     if (!response.data.data) {
       throw new Error('Failed to get conversation result')
+    }
+    return response.data.data
+  },
+
+  async getConversationDetail(conversationId: string): Promise<ConversationDetailResponse> {
+    const response = await api.get<ApiResponse<ConversationDetailResponse>>(
+      `/conversations/${conversationId}`,
+    )
+    if (!response.data.data) {
+      throw new Error('Failed to get conversation detail')
+    }
+    return response.data.data
+  },
+
+  async completeConversation(conversationId: string): Promise<ConversationResultResponse> {
+    const response = await api.post<ApiResponse<ConversationResultResponse>>(
+      `/conversations/${conversationId}/complete`,
+    )
+    if (!response.data.data) {
+      throw new Error('Failed to complete conversation')
     }
     return response.data.data
   },

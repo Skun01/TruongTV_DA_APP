@@ -8,9 +8,10 @@ import {
   useDeleteConversation,
 } from '@/hooks/useConversation'
 import {
-  ConversationScenarioSelector,
   ConversationHistoryCard,
+  NewConversationPanel,
 } from '@/components/conversation'
+import { AppLayout } from '@/components/layout/AppLayout'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHelmet } from '@/components/seo/PageHelmet'
@@ -37,18 +38,18 @@ export function ConversationListPage() {
     })
   }
 
-  const handleDeleteConversation = (conversationId: string) => {
-    deleteMutation.mutate(conversationId)
+  const handleDeleteConversation = async (conversationId: string) => {
+    await deleteMutation.mutateAsync(conversationId)
   }
 
   return (
-    <>
+    <AppLayout>
       <PageHelmet
         title={CONVERSATION_COPY.pageTitle}
         description={CONVERSATION_COPY.pageDescription}
       />
 
-      <div className="mx-auto max-w-4xl px-4 pb-16 pt-8 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">
@@ -66,26 +67,13 @@ export function ConversationListPage() {
 
         {/* New Conversation Modal */}
         {showNewConversation && (
-          <div className="mb-8 rounded-2xl border border-border/50 bg-surface-container-low p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-foreground">
-                {CONVERSATION_COPY.startConversation}
-              </h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowNewConversation(false)}
-              >
-                Đóng
-              </Button>
-            </div>
-            <ConversationScenarioSelector
-              scenarios={scenariosQuery.data?.scenarios ?? []}
-              isLoading={scenariosQuery.isLoading}
-              onStart={handleStartConversation}
-              isStarting={startMutation.isPending}
-            />
-          </div>
+          <NewConversationPanel
+            scenarios={scenariosQuery.data?.scenarios ?? []}
+            isLoading={scenariosQuery.isLoading}
+            onStart={handleStartConversation}
+            isStarting={startMutation.isPending}
+            onClose={() => setShowNewConversation(false)}
+          />
         )}
 
         {/* History Section */}
@@ -134,6 +122,6 @@ export function ConversationListPage() {
           )}
         </section>
       </div>
-    </>
+    </AppLayout>
   )
 }

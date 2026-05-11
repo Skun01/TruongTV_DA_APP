@@ -8,16 +8,19 @@ import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog'
 import { useSendMessage, useCompleteConversation } from '@/hooks/useConversation'
+import { gooeyToast } from '@/components/ui/goey-toaster'
 
 interface ConversationChatProps {
   conversationId: string
   initialMessages: ConversationMessage[]
   onEndConversation: () => void
+  onBack: () => void
   isEnding: boolean
 }
 
@@ -25,6 +28,7 @@ export function ConversationChat({
   conversationId,
   initialMessages,
   onEndConversation,
+  onBack,
   isEnding,
 }: ConversationChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -68,7 +72,7 @@ export function ConversationChat({
       }
       setMessages((prev) => [...prev, aiMsg])
     } catch (error) {
-      console.error('Failed to send message:', error)
+      gooeyToast.error(CONVERSATION_COPY.sendFailed)
     } finally {
       setIsTyping(false)
     }
@@ -86,10 +90,10 @@ export function ConversationChat({
     setShowEndDialog(false)
     try {
       await completeMutation.mutateAsync(conversationId)
+      onEndConversation()
     } catch (error) {
-      console.error('Failed to complete conversation:', error)
+      gooeyToast.error(CONVERSATION_COPY.completeFailed)
     }
-    onEndConversation()
   }
 
   return (
@@ -101,7 +105,7 @@ export function ConversationChat({
             variant="ghost"
             size="icon"
             className="h-8 w-8"
-            onClick={() => setShowEndDialog(true)}
+            onClick={onBack}
           >
             <ArrowLeftIcon size={18} />
           </Button>
@@ -168,10 +172,10 @@ export function ConversationChat({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{CONVERSATION_COPY.confirmEndTitle}</DialogTitle>
+            <DialogDescription>
+              {CONVERSATION_COPY.confirmEndMessage}
+            </DialogDescription>
           </DialogHeader>
-          <p className="text-sm text-muted-foreground">
-            {CONVERSATION_COPY.confirmEndMessage}
-          </p>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowEndDialog(false)}>
               {CONVERSATION_COPY.cancel}
@@ -190,7 +194,7 @@ export function ConversationChat({
             <DialogTitle>{CONVERSATION_COPY.newWord}</DialogTitle>
           </DialogHeader>
           {selectedVocab && (
-            <div className="space-y-3">
+            <div className="space-y-3 px-6 pb-6">
               <div className="flex items-center gap-2">
                 <span className="text-2xl font-bold text-foreground">
                   {selectedVocab.word}

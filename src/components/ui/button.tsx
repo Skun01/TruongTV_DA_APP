@@ -10,14 +10,23 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        /** Tacho-flavor primary: gradient ink → ink-container, dùng cho CTA chính. */
+        gradient:
+          "bg-gradient-to-br from-primary to-primary-container text-primary-foreground hover:brightness-110 shadow-[0_6px_24px_-8px_color-mix(in_srgb,var(--primary)_60%,transparent)]",
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40",
         outline:
           "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+        /** Tacho-flavor outline: không shadow, border-[outline-variant]. */
+        "outline-ghost":
+          "border border-outline-variant bg-transparent text-foreground hover:bg-surface-container-high/60",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+        /** Tacho-flavor tertiary: không bg, text primary, hover tonal. */
+        "tertiary-flat":
+          "bg-transparent text-primary hover:bg-surface-container-high/60",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -25,6 +34,8 @@ const buttonVariants = cva(
         xs: "h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
+        /** Hero/landing CTA. */
+        xl: "h-12 rounded-xl px-8 text-base has-[>svg]:px-6 [&_svg:not([class*='size-'])]:size-5",
         icon: "size-9",
         "icon-xs": "size-6 rounded-md [&_svg:not([class*='size-'])]:size-3",
         "icon-sm": "size-8",

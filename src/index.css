@@ -276,4 +276,87 @@ h1, h2, h3, h4, h5, h6 {
   .section-card-elevation-hover {
     box-shadow: var(--elevation-section-card-hover);
   }
+
+  /* ── Tacho Typography Scale ─────────────────────────────────────
+     Map 1-1 với DESIGN.md section 3. Vietnamese line-height ≥ 1.6. */
+
+  .text-display-lg {
+    font-family: "Kiwi Maru", serif;
+    font-size: clamp(2.5rem, 3.5vw + 1rem, 3.5rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+  }
+
+  .text-display-md {
+    font-family: "Kiwi Maru", serif;
+    font-size: clamp(2rem, 2.2vw + 0.75rem, 2.5rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  .text-headline-md {
+    font-family: "Kiwi Maru", serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.35;
+  }
+
+  .text-headline-sm {
+    font-family: "Kiwi Maru", serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+  }
+
+  .text-body-lg {
+    font-family: "Nunito", system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .text-body-md {
+    font-family: "Nunito", system-ui, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .text-label-md {
+    font-family: "Nunito", system-ui, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  /* ── Kanji decoration: vertical writing mode ───────────────────
+     Dùng cho decoration-only, không dùng cho content chính. */
+  .kanji-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: "Kiwi Maru", serif;
+  }
+
+  /* ── Page shell padding: bù navbar fixed 64px ──────────────────
+     Protected pages có Navbar fixed → cần pt-16 mặc định. */
+  .page-shell {
+    padding-top: 4rem;
+    min-height: 100vh;
+    background-color: var(--surface);
+  }
+
+  /* ── Respect prefers-reduced-motion ────────────────────────────
+     Tôn trọng người dùng khi họ tắt motion. */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }

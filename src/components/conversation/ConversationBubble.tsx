@@ -52,6 +52,7 @@ export function ConversationBubble({
                 <button
                   key={idx}
                   type="button"
+                  aria-label={`${CONVERSATION_COPY.sendMessage}: ${suggestion}`}
                   onClick={() => onSuggestionClick?.(suggestion)}
                   className="rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-sm text-primary transition-colors hover:bg-primary/10"
                 >

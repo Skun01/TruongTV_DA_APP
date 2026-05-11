@@ -30,7 +30,7 @@ export function ConversationInput({ onSend, isLoading, disabled }: ConversationI
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-end gap-3">
+    <form onSubmit={handleSubmit} className="flex items-center gap-2">
       <div className="flex-1">
         <Textarea
           ref={textareaRef}
@@ -39,7 +39,7 @@ export function ConversationInput({ onSend, isLoading, disabled }: ConversationI
           onKeyDown={handleKeyDown}
           placeholder={CONVERSATION_COPY.chatPlaceholder}
           disabled={isLoading || disabled}
-          className="min-h-12 max-h-32 resize-none rounded-xl border-border/50 bg-surface-container-low py-3 focus:border-primary focus:ring-1 focus:ring-primary"
+          className="min-h-10 max-h-32 resize-none rounded-full border-border/50 bg-surface-container-low px-4 py-2 text-sm leading-6 focus:border-primary focus:ring-1 focus:ring-primary"
           rows={1}
         />
       </div>
@@ -47,12 +47,12 @@ export function ConversationInput({ onSend, isLoading, disabled }: ConversationI
         type="submit"
         size="icon"
         disabled={!message.trim() || isLoading || disabled}
-        className="h-12 w-12 shrink-0"
+        className="h-10 w-10 shrink-0 rounded-full"
       >
         {isLoading ? (
           <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
         ) : (
-          <PaperPlaneTiltIcon size={20} weight="fill" />
+          <PaperPlaneTiltIcon size={18} weight="fill" />
         )}
       </Button>
     </form>

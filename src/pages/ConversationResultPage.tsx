@@ -3,6 +3,7 @@ import { ArrowLeftIcon } from '@phosphor-icons/react'
 import { CONVERSATION_COPY } from '@/constants/conversation'
 import { useConversationResult } from '@/hooks/useConversation'
 import { ConversationResult } from '@/components/conversation'
+import { AppLayout } from '@/components/layout/AppLayout'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHelmet } from '@/components/seo/PageHelmet'
@@ -14,21 +15,21 @@ export function ConversationResultPage() {
 
   if (resultQuery.isLoading) {
     return (
-      <>
+      <AppLayout>
         <PageHelmet title={CONVERSATION_COPY.resultTitle} />
         <div className="mx-auto max-w-2xl px-4 py-8">
           <Skeleton className="h-96 w-full rounded-2xl" />
         </div>
-      </>
+      </AppLayout>
     )
   }
 
   if (!resultQuery.data) {
     return (
-      <>
+      <AppLayout>
         <PageHelmet title={CONVERSATION_COPY.resultTitle} />
         <div className="mx-auto flex max-w-2xl flex-col items-center px-4 py-16">
-          <p className="text-muted-foreground">Không thể tải kết quả cuộc hội thoại.</p>
+          <p className="text-muted-foreground">{CONVERSATION_COPY.loadFailed}</p>
           <Button
             className="mt-4"
             variant="outline"
@@ -38,12 +39,12 @@ export function ConversationResultPage() {
             {CONVERSATION_COPY.backToList}
           </Button>
         </div>
-      </>
+      </AppLayout>
     )
   }
 
   return (
-    <>
+    <AppLayout>
       <PageHelmet title={CONVERSATION_COPY.resultTitle} />
       <div className="mx-auto max-w-2xl px-4 py-8">
         <Button
@@ -58,6 +59,6 @@ export function ConversationResultPage() {
 
         <ConversationResult result={resultQuery.data} />
       </div>
-    </>
+    </AppLayout>
   )
 }

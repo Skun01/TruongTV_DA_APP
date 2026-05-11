@@ -77,7 +77,14 @@ export const CONVERSATION_COPY = {
   // Empty state
   emptyScenarios: 'Không có kịch bản nào khả dụng',
 
+  // Inline labels
+  messageCount: 'tin nhắn',
+  close: 'Đóng',
+  noVocabLearned: 'Không có từ mới nào được học trong cuộc hội thoại này.',
+  noGrammarLearned: 'Không có cấu trúc ngữ pháp mới nào được học.',
+
   // Errors
   sendFailed: 'Không thể gửi tin nhắn. Vui lòng thử lại.',
   loadFailed: 'Không thể tải cuộc hội thoại. Vui lòng thử lại.',
+  completeFailed: 'Không thể kết thúc cuộc hội thoại. Vui lòng thử lại.',
 } as const

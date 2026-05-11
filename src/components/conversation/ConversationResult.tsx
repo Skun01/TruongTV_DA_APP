@@ -137,7 +137,7 @@ export function ConversationResult({ result, onClose }: ConversationResultProps)
           <div className="space-y-3">
             {result.newVocabulary.length === 0 ? (
               <p className="text-center text-sm text-muted-foreground">
-                Không có từ mới nào được học trong cuộc hội thoại này.
+                {CONVERSATION_COPY.noVocabLearned}
               </p>
             ) : (
               result.newVocabulary.map((vocab, idx) => (
@@ -167,7 +167,7 @@ export function ConversationResult({ result, onClose }: ConversationResultProps)
           <div className="space-y-3">
             {result.grammarPoints.length === 0 ? (
               <p className="text-center text-sm text-muted-foreground">
-                Không có cấu trúc ngữ pháp mới nào được học.
+                {CONVERSATION_COPY.noGrammarLearned}
               </p>
             ) : (
               result.grammarPoints.map((grammar, idx) => (

@@ -32,7 +32,7 @@ const SCENARIO_ICONS: Record<string, React.ReactNode> = {
 
 interface ConversationHistoryCardProps {
   item: ConversationListItemResponse
-  onDelete: (conversationId: string) => void
+  onDelete: (conversationId: string) => Promise<void>
   isDeleting: boolean
 }
 
@@ -60,10 +60,14 @@ export function ConversationHistoryCard({
     }
   }
 
-  const handleDelete = (e: React.MouseEvent) => {
+  const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    onDelete(item.conversationId)
-    setShowDeleteDialog(false)
+    try {
+      await onDelete(item.conversationId)
+      setShowDeleteDialog(false)
+    } catch {
+      // error handled by parent
+    }
   }
 
   return (
@@ -71,6 +75,7 @@ export function ConversationHistoryCard({
       <div
         role="button"
         tabIndex={0}
+        aria-label={`${item.scenario} - ${item.level} - ${item.status === 'Active' ? CONVERSATION_COPY.statusActive : CONVERSATION_COPY.statusCompleted}`}
         onClick={handleClick}
         onKeyDown={(e) => e.key === 'Enter' && handleClick()}
         className="flex cursor-pointer items-center gap-4 rounded-2xl border border-border/50 bg-surface-container-low p-4 transition-colors hover:bg-surface-container"
@@ -102,7 +107,7 @@ export function ConversationHistoryCard({
           <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
             <span>{item.level}</span>
             <span>•</span>
-            <span>{item.totalMessages} tin nhắn</span>
+            <span>{item.totalMessages} {CONVERSATION_COPY.messageCount}</span>
             {item.score !== null && (
               <>
                 <span>•</span>

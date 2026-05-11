@@ -138,6 +138,14 @@ export function useCreateSession() {
       learningService.createSession(payload),
     onSuccess: async (session) => {
       queryClient.setQueryData(LEARNING_QUERY_KEYS.session(session.id), session)
+      if (session.skippedCardIds.length > 0) {
+        gooeyToast.info(
+          LEARNING_COPY.skippedCardsNotice(
+            session.skippedCardIds.length,
+            session.totalCards,
+          ),
+        )
+      }
       await queryClient.invalidateQueries({ queryKey: LEARNING_QUERY_KEYS.sessions() })
       navigate(`/study/${session.id}`)
     },

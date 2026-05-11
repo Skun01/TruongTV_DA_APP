@@ -91,13 +91,6 @@ export function FlashcardQuestion({
     return () => window.removeEventListener('keydown', handleKeyboardShortcut)
   }, [canSubmit, isPending, isSubmitting, triggerSwipe])
 
-  useEffect(() => {
-    setIsFlipped(false)
-    setSwipeResult(null)
-    setIsSubmitting(false)
-    submitLockRef.current = false
-  }, [question.cardId])
-
   return (
     <div className="flex flex-col items-center gap-8">
       {/* Prompt */}

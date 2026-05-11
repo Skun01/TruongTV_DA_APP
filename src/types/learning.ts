@@ -7,6 +7,7 @@ export type FlashcardSide = 'Title' | 'Summary'
 export type MultipleChoiceDirection = 'TitleToSummary' | 'SummaryToTitle'
 
 export type FlashcardResult = 'Known' | 'Learning'
+export type LearningQuestionSource = 'Sentence' | 'CardPrompt'
 
 export type SrsLevel =
   | 'level_1' | 'level_2' | 'level_3' | 'level_4'
@@ -44,6 +45,9 @@ export interface StudySessionResponse {
   remainingCards: number
   correctCount: number
   incorrectCount: number
+  submittedAttempts: number
+  retryCards: number
+  skippedCardIds: string[]
   createdAt: string
   completedAt: string | null
   settings: StudySessionSettingsResponse
@@ -67,6 +71,11 @@ export interface StudyQuestionResponse {
   hint: string | null
   frontText: string | null
   backText: string | null
+  sentenceId: string | null
+  questionSource: LearningQuestionSource
+  attemptNo: number
+  maxAttempts: number
+  acceptedAnswerCount: number
   allowsMultipleSelection: boolean
   options: StudyQuestionOptionResponse[]
   isCompleted: boolean
@@ -86,6 +95,15 @@ export interface SubmitStudyAnswerResponse {
   cardId: string
   mode: StudyMode
   acceptedAnswers: string[]
+  canonicalAnswer: string | null
+  submittedAnswers: string[]
+  normalizedSubmittedAnswers: string[]
+  completedQuestionText: string | null
+  sentenceId: string | null
+  attemptNo: number
+  maxAttempts: number
+  willRepeat: boolean
+  isFinalAttempt: boolean
   srsLevel: SrsLevel
   nextReviewAt: string
   isMastered: boolean

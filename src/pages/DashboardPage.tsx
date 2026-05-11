@@ -133,6 +133,9 @@ export function DashboardPage() {
                   remainingCards: 0,
                   correctCount: s.correctCount,
                   incorrectCount: s.incorrectCount,
+                  submittedAttempts: s.correctCount + s.incorrectCount,
+                  retryCards: 0,
+                  skippedCardIds: [],
                   createdAt: s.completedAt ?? '',
                   completedAt: s.completedAt,
                   settings: {

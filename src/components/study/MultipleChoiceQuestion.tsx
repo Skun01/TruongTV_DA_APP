@@ -10,6 +10,16 @@ interface MultipleChoiceQuestionProps {
   shuffleOptions?: boolean
 }
 
+function stableShuffleWeight(seed: string) {
+  let hash = 0
+
+  for (let index = 0; index < seed.length; index += 1) {
+    hash = (hash * 31 + seed.charCodeAt(index)) >>> 0
+  }
+
+  return hash
+}
+
 export function MultipleChoiceQuestion({
   question,
   onAnswer,
@@ -22,8 +32,21 @@ export function MultipleChoiceQuestion({
 
   const displayOptions = useMemo(() => {
     if (!shuffleOptions) return question.options
-    return [...question.options].sort(() => Math.random() - 0.5)
-  }, [question.options, shuffleOptions])
+    const seedBase = `${question.cardId}:${question.attemptNo}:${question.questionSource}:${question.sentenceId ?? ''}`
+
+    return [...question.options].sort((left, right) => {
+      const leftWeight = stableShuffleWeight(`${seedBase}:${left.id}:${left.text}`)
+      const rightWeight = stableShuffleWeight(`${seedBase}:${right.id}:${right.text}`)
+      return leftWeight - rightWeight
+    })
+  }, [
+    question.attemptNo,
+    question.cardId,
+    question.options,
+    question.questionSource,
+    question.sentenceId,
+    shuffleOptions,
+  ])
 
   function handleSelect(optionId: string) {
     if (hasAnswered || isPending) return
@@ -39,7 +62,7 @@ export function MultipleChoiceQuestion({
       {/* Question text */}
       <div className="feature-card flex min-h-[120px] w-full max-w-lg flex-col items-center justify-center rounded-3xl p-8">
         <p className="font-heading-jp text-2xl font-medium text-foreground">
-          {question.questionText}
+          {question.questionText ?? question.prompt}
         </p>
         {question.secondaryText && (
           <p className="mt-2 text-sm text-muted-foreground">

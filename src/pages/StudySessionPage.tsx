@@ -26,6 +26,36 @@ import {
 } from '@/hooks/useLearning'
 import type { SubmitStudyAnswerResponse } from '@/types/learning'
 
+function buildQuestionKey(sessionId: string, cardId: string, attemptNo: number, questionSource: string, sentenceId: string | null) {
+  return `${sessionId}:${cardId}:${attemptNo}:${questionSource}:${sentenceId ?? 'no-sentence'}`
+}
+
+function resolveCorrectOptionId(
+  response: SubmitStudyAnswerResponse,
+  options: Array<{ id: string; text: string }>,
+  selectedOptionId: string,
+) {
+  const byCanonicalAnswer = response.canonicalAnswer
+    ? options.find((option) => option.text === response.canonicalAnswer)?.id ?? null
+    : null
+
+  if (byCanonicalAnswer) {
+    return byCanonicalAnswer
+  }
+
+  const byAcceptedAnswer = options.find(
+    (option) =>
+      response.acceptedAnswers.includes(option.id) ||
+      response.acceptedAnswers.includes(option.text),
+  )?.id ?? null
+
+  if (byAcceptedAnswer) {
+    return byAcceptedAnswer
+  }
+
+  return response.isCorrect ? selectedOptionId : null
+}
+
 export function StudySessionPage() {
   const navigate = useNavigate()
   const { sessionId = '' } = useParams()
@@ -37,22 +67,27 @@ export function StudySessionPage() {
 
   const [answerResult, setAnswerResult] = useState<SubmitStudyAnswerResponse | null>(null)
   const [mcqCorrectId, setMcqCorrectId] = useState<string | null>(null)
-  const [fibResult, setFibResult] = useState<{
-    isCorrect: boolean
-    acceptedAnswers: string[]
-  } | null>(null)
   const [showExitDialog, setShowExitDialog] = useState(false)
   const [visible, setVisible] = useState(true)
 
   const session = sessionQuery.data
   const question = questionQuery.data
+  const questionKey = question
+    ? buildQuestionKey(
+        question.sessionId,
+        question.cardId,
+        question.attemptNo,
+        question.questionSource,
+        question.sentenceId,
+      )
+    : 'completed'
 
   // Navigate to result when session is completed and no more questions
   useEffect(() => {
-    if (question === null && session?.completedAt !== null && session) {
+    if (question === null && !questionQuery.isFetching) {
       navigate(`/study/${sessionId}/result`, { replace: true })
     }
-  }, [question, session, sessionId, navigate])
+  }, [question, questionQuery.isFetching, sessionId, navigate])
 
   // ── MCQ submit ───────────────────────────────────────────────────────────────
   const handleMcqAnswer = useCallback(
@@ -66,11 +101,7 @@ export function StudySessionPage() {
         flashcardResult: null,
       })
       setAnswerResult(response)
-      // Find correct option from acceptedAnswers
-      const correctId =
-        response.acceptedAnswers[0] ??
-        (response.isCorrect ? selectedOptionId : null)
-      setMcqCorrectId(correctId)
+      setMcqCorrectId(resolveCorrectOptionId(response, question.options, selectedOptionId))
     },
     [question, submitMutation],
   )
@@ -87,10 +118,6 @@ export function StudySessionPage() {
         flashcardResult: null,
       })
       setAnswerResult(response)
-      setFibResult({
-        isCorrect: response.isCorrect,
-        acceptedAnswers: response.acceptedAnswers,
-      })
     },
     [question, submitMutation],
   )
@@ -101,14 +128,15 @@ export function StudySessionPage() {
     setTimeout(() => {
       setAnswerResult(null)
       setMcqCorrectId(null)
-      setFibResult(null)
-      queryClient.invalidateQueries({
-        queryKey: LEARNING_QUERY_KEYS.nextQuestion(sessionId),
+      void questionQuery.refetch().finally(() => {
+        setVisible(true)
       })
-      setVisible(true)
+      void queryClient.invalidateQueries({
+        queryKey: LEARNING_QUERY_KEYS.session(sessionId),
+      })
       window.scrollTo({ top: 0, behavior: 'instant' })
     }, 150)
-  }, [queryClient, sessionId])
+  }, [queryClient, questionQuery, sessionId])
 
   // ── Flashcard submit ─────────────────────────────────────────────────────────
   const handleFlashcardAnswer = useCallback(
@@ -148,6 +176,7 @@ export function StudySessionPage() {
         completedCards={session.completedCards}
         totalCards={session.totalCards}
         correctCount={session.correctCount}
+        retryCards={session.retryCards}
         onExit={() => setShowExitDialog(true)}
       />
 
@@ -158,7 +187,7 @@ export function StudySessionPage() {
       >
         {question ? (
           <div
-            key={question.cardId}
+            key={questionKey}
             className={`w-full max-w-2xl transition-opacity duration-150 ${
               visible ? 'opacity-100' : 'opacity-0'
             }`}
@@ -185,8 +214,7 @@ export function StudySessionPage() {
               <FillInBlankQuestion
                 question={question}
                 onAnswer={handleFibAnswer}
-                isCorrect={fibResult?.isCorrect ?? null}
-                acceptedAnswers={fibResult?.acceptedAnswers ?? []}
+                hasAnswered={Boolean(answerResult)}
                 isPending={submitMutation.isPending}
               />
             )}

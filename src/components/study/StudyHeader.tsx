@@ -7,6 +7,7 @@ interface StudyHeaderProps {
   completedCards: number
   totalCards: number
   correctCount: number
+  retryCards: number
   onExit: () => void
 }
 
@@ -15,6 +16,7 @@ export function StudyHeader({
   completedCards,
   totalCards,
   correctCount,
+  retryCards,
   onExit,
 }: StudyHeaderProps) {
   const progress = totalCards > 0 ? (completedCards / totalCards) * 100 : 0
@@ -48,9 +50,16 @@ export function StudyHeader({
           </p>
         </div>
 
-        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-          <span className="text-emerald-600">✓</span>
-          <span>{correctCount}</span>
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          {retryCards > 0 && (
+            <span className="text-amber-600 dark:text-amber-400">
+              {LEARNING_COPY.retryQueueCount(retryCards)}
+            </span>
+          )}
+          <span className="flex items-center gap-1">
+            <span className="text-emerald-600">✓</span>
+            <span>{correctCount}</span>
+          </span>
         </div>
       </div>
     </header>

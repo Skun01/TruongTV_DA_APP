@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { ArrowRightIcon, TrendUpIcon, TrendDownIcon, StarIcon } from '@phosphor-icons/react'
+import { ArrowRightIcon, TrendUpIcon, TrendDownIcon, StarIcon, ArrowClockwiseIcon } from '@phosphor-icons/react'
 import { LEARNING_COPY } from '@/constants/learning'
 import type { SubmitStudyAnswerResponse } from '@/types/learning'
 
@@ -51,6 +51,13 @@ export function AnswerFeedback({ result, onNext }: AnswerFeedbackProps) {
           </div>
 
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <span>{LEARNING_COPY.attemptProgress(result.attemptNo, result.maxAttempts)}</span>
+            {result.willRepeat && (
+              <span className="flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400">
+                <ArrowClockwiseIcon size={12} />
+                {LEARNING_COPY.retryQueued}
+              </span>
+            )}
             {result.isMastered && (
               <span className="flex items-center gap-1 font-semibold text-amber-600">
                 <StarIcon size={12} weight="fill" />
@@ -62,6 +69,43 @@ export function AnswerFeedback({ result, onNext }: AnswerFeedbackProps) {
             </span>
           </div>
         </div>
+
+        {!isCorrect && (
+          <div className="feature-card space-y-3 rounded-2xl border-rose-200 bg-rose-50 px-4 py-4 dark:border-rose-800 dark:bg-rose-950/20">
+            {result.canonicalAnswer && (
+              <div>
+                <p className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                  {LEARNING_COPY.canonicalAnswer}
+                </p>
+                <p className="mt-1 font-heading-jp text-sm text-rose-700 dark:text-rose-300">
+                  {result.canonicalAnswer}
+                </p>
+              </div>
+            )}
+
+            {result.completedQuestionText && (
+              <div>
+                <p className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                  {LEARNING_COPY.completedQuestionText}
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-rose-700 dark:text-rose-300">
+                  {result.completedQuestionText}
+                </p>
+              </div>
+            )}
+
+            {!result.canonicalAnswer && result.acceptedAnswers.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                  {LEARNING_COPY.acceptedAnswers}
+                </p>
+                <p className="mt-1 font-heading-jp text-sm text-rose-700 dark:text-rose-300">
+                  {result.acceptedAnswers.join(' / ')}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Next button */}
         <button

@@ -12,6 +12,10 @@ lerna-debug.log*
 .mcp_data
 docs
 
+.env
+.env.local
+.env.*.local
+
 
 node_modules
 dist

@@ -181,12 +181,6 @@ export function DueCardsSummary({
         >
           <DialogHeader>
             <DialogTitle>{LEARNING_COPY.reviewModeTitle}</DialogTitle>
-            <p className="text-sm text-muted-foreground">
-              {LEARNING_COPY.reviewModeDescription.replace(
-                '{count}',
-                String(dueCount),
-              )}
-            </p>
           </DialogHeader>
 
           <div className="space-y-4 px-6 pb-6 pt-2">

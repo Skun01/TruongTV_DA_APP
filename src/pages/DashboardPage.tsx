@@ -87,32 +87,27 @@ export function DashboardPage() {
         mainStyle={{ backgroundColor: 'var(--surface)' }}
       >
         <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
-          <section className="grid gap-4 rounded-[2rem] border border-border/60 bg-surface-container-low px-5 py-6 md:grid-cols-[1.2fr_0.8fr] md:px-8 lg:px-10">
-            <div className="flex flex-col justify-center gap-3">
-              <span className="text-sm font-semibold uppercase tracking-[0.18em] text-primary/70">
-                {LEARNING_COPY.greeting}
-              </span>
-              <h1
-                className="font-heading-vn text-3xl leading-tight md:text-4xl"
-                style={{ color: 'var(--on-surface)' }}
-              >
-                {user?.displayName ?? '...'}
-              </h1>
-              <p className="max-w-2xl text-sm leading-6 text-muted-foreground md:text-base">
-                {LEARNING_COPY.dashboardDescription}
-              </p>
-            </div>
-
-            <DueCardsSummary
-              review={summary?.todayReview}
-              dueCards={dueCardsQuery.data}
-              isLoading={isPageLoading}
-              isDueCardsLoading={dueCardsQuery.isFetching}
-              onStartReview={handleStartReview}
-              onFetchDueCards={handleFetchDueCards}
-              isPending={createSessionMutation.isPending || dueCardsQuery.isFetching}
-            />
+          <section className="flex flex-col gap-1">
+            <span className="text-sm font-semibold uppercase tracking-[0.18em] text-primary/70">
+              {LEARNING_COPY.greeting}
+            </span>
+            <h1
+              className="font-heading-vn text-3xl leading-tight md:text-4xl"
+              style={{ color: 'var(--on-surface)' }}
+            >
+              {user?.displayName ?? '...'}
+            </h1>
           </section>
+
+          <DueCardsSummary
+            review={summary?.todayReview}
+            dueCards={dueCardsQuery.data}
+            isLoading={isPageLoading}
+            isDueCardsLoading={dueCardsQuery.isFetching}
+            onStartReview={handleStartReview}
+            onFetchDueCards={handleFetchDueCards}
+            isPending={createSessionMutation.isPending || dueCardsQuery.isFetching}
+          />
 
           <section className="grid gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.85fr)]">
             <div className="flex flex-col gap-6">

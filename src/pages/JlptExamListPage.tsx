@@ -135,7 +135,6 @@ export function JlptExamListPage() {
 
         <header>
           <h1 className="text-2xl font-bold text-foreground">{JLPT_EXAM_COPY.pageTitle}</h1>
-          <p className="mt-1 text-secondary">{JLPT_EXAM_COPY.pageDescription}</p>
         </header>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">

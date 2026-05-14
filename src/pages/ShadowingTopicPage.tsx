@@ -28,6 +28,45 @@ import {
 } from '@/hooks/useShadowing'
 import type { ShadowingTopicSentenceProgressItemResponse } from '@/types/shadowing'
 
+function SentenceScoreRing({ score }: { score: number }) {
+  const radius = 18
+  const strokeWidth = 4
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (score / 100) * circumference
+  const color = score >= 80 ? 'text-green-500' : score >= 50 ? 'text-amber-500' : 'text-red-400'
+
+  return (
+    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center">
+      <svg width={44} height={44} className="-rotate-90">
+        <circle
+          cx={22}
+          cy={22}
+          r={radius}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          className="text-border/40"
+        />
+        <circle
+          cx={22}
+          cy={22}
+          r={radius}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          className={color}
+        />
+      </svg>
+      <span className="absolute text-xs font-bold text-foreground">
+        {Math.round(score)}
+      </span>
+    </div>
+  )
+}
+
 function SentenceProgressItem({
   sentence,
   onClick,
@@ -41,8 +80,8 @@ function SentenceProgressItem({
       onClick={onClick}
     >
       <CardContent className="p-4">
-        <div className="flex items-start gap-3">
-          <div className="mt-0.5 shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="shrink-0">
             {sentence.hasAttempted ? (
               <CheckCircleIcon size={20} weight="fill" className="text-green-500" />
             ) : (
@@ -65,19 +104,18 @@ function SentenceProgressItem({
               )}
             </div>
 
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              {sentence.level && (
+            {sentence.level && (
+              <div className="mt-2">
                 <Badge variant="secondary" className="text-xs">
                   {sentence.level}
                 </Badge>
-              )}
-              {sentence.hasAttempted && sentence.latestPronScore !== null && (
-                <span className="text-xs text-secondary">
-                  {SHADOWING_COPY.sentenceScoreLabel}: {Math.round(sentence.latestPronScore)}/100
-                </span>
-              )}
-            </div>
+              </div>
+            )}
           </div>
+
+          {sentence.hasAttempted && sentence.latestPronScore !== null && (
+            <SentenceScoreRing score={sentence.latestPronScore} />
+          )}
         </div>
       </CardContent>
     </Card>

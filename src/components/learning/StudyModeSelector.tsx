@@ -18,46 +18,37 @@ const MODES: Array<{
 
 export function StudyModeSelector({ value, onChange }: StudyModeSelectorProps) {
   return (
-    <section className="space-y-3">
-      <h3 className="section-label-text">{LEARNING_COPY.selectModeTitle}</h3>
+    <div className="grid gap-3 sm:grid-cols-3">
+      {MODES.map(({ mode, icon: Icon }) => {
+        const isSelected = value === mode
 
-      <div className="grid gap-3 sm:grid-cols-3">
-        {MODES.map(({ mode, icon: Icon }) => {
-          const isSelected = value === mode
-
-          return (
-            <button
-              key={mode}
-              type="button"
-              aria-pressed={isSelected}
-              onClick={() => onChange(mode)}
-              className={`flex min-h-[104px] flex-col items-center justify-center gap-3 rounded-2xl px-4 py-5 text-center transition-all duration-200 ${
-                isSelected
-                  ? 'feature-card-selected'
-                  : 'feature-card hover:feature-card-hover'
+        return (
+          <button
+            key={mode}
+            type="button"
+            aria-pressed={isSelected}
+            onClick={() => onChange(mode)}
+            className={`flex flex-col items-center justify-center gap-2 rounded-2xl px-4 py-4 text-center transition-all duration-200 ${
+              isSelected
+                ? 'feature-card-selected'
+                : 'feature-card hover:feature-card-hover'
+            }`}
+          >
+            <Icon
+              size={24}
+              weight="duotone"
+              className={isSelected ? 'text-primary' : 'text-muted-foreground'}
+            />
+            <p
+              className={`text-sm font-bold ${
+                isSelected ? 'text-primary' : 'text-foreground'
               }`}
             >
-              <Icon
-                size={24}
-                weight="duotone"
-                className={isSelected ? 'text-primary' : 'text-muted-foreground'}
-              />
-              <div>
-                <p
-                  className={`text-sm font-bold ${
-                    isSelected ? 'text-primary' : 'text-foreground'
-                  }`}
-                >
-                  {LEARNING_COPY.modeLabels[mode]}
-                </p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {LEARNING_COPY.modeDescriptions[mode]}
-                </p>
-              </div>
-            </button>
-          )
-        })}
-      </div>
-    </section>
+              {LEARNING_COPY.modeLabels[mode]}
+            </p>
+          </button>
+        )
+      })}
+    </div>
   )
 }

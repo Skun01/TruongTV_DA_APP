@@ -17,71 +17,71 @@
   /* Radius — gentle (md → xl range) */
   --radius: 0.75rem;
 
-  /* ── Tacho Color Palette ──────────────────── */
+  /* ── Tacho Color Palette (Warm Neutral — Washi) ──────────────── */
   /* Surface / Background */
-  --background: #fff9eb;
-  --foreground: #1d1c13;
+  --background: #faf7f2;
+  --foreground: #1a1a2e;
 
-  /* Card = surface-container-low */
-  --card: #f9f3e5;
-  --card-foreground: #1d1c13;
+  /* Card */
+  --card: #f0ebe3;
+  --card-foreground: #1a1a2e;
 
   /* Popover */
-  --popover: #fff9eb;
-  --popover-foreground: #1d1c13;
+  --popover: #faf7f2;
+  --popover-foreground: #1a1a2e;
 
-  /* Primary — Deep Indigo "Ink" */
-  --primary: #002453;
-  --primary-foreground: #fff9eb;
+  /* Primary — Cam đất (torii gate) */
+  --primary: #c0560e;
+  --primary-foreground: #faf7f2;
 
   /* Primary container */
-  --primary-container: #1a3a6d;
+  --primary-container: #a04508;
 
-  /* Secondary — Mist / Grey-Blue */
-  --secondary: #4a6267;
-  --secondary-foreground: #fff9eb;
+  /* Secondary — Tím xám (mực sumi) */
+  --secondary: #5c5470;
+  --secondary-foreground: #faf7f2;
 
   /* Secondary container */
-  --secondary-container: #d0dfe2;
+  --secondary-container: #e8e3f3;
 
-  /* Tertiary — Calligraphy Stamp Red-Brown */
-  --tertiary: #3d1d00;
-  --tertiary-foreground: #fff9eb;
+  /* Tertiary — Vàng gold (kintsugi) */
+  --tertiary: #d4a017;
+  --tertiary-foreground: #1a1a2e;
 
   /* Muted */
-  --muted: #f9f3e5;
-  --muted-foreground: #4a6267;
+  --muted: #f0ebe3;
+  --muted-foreground: #5c5470;
 
-  /* Accent = surface-container-highest */
-  --accent: #e8e2d4;
-  --accent-foreground: #1d1c13;
+  /* Accent */
+  --accent: #f0ebe3;
+  --accent-foreground: #1a1a2e;
 
   /* Destructive */
   --destructive: #b91c1c;
 
-  /* Ghost border — on-surface at 15% opacity */
-  --border: #1d1c1326;
-  --input: #e8e2d4;
-  --ring: #002453;
+  /* Border */
+  --border: #1a1a2e20;
+  --input: #f0ebe3;
+  --ring: #c0560e;
 
   /* Surface hierarchy tokens */
-  --surface: #fff9eb;
-  --surface-container-low: #f9f3e5;
-  --surface-container: #f0ead9;
-  --surface-container-high: #ede8da;
-  --surface-container-highest: #e8e2d4;
-  --on-surface: #1d1c13;
-  --on-surface-variant: #4a4740;
-  --on-secondary-container: #051f24;
-  --outline-variant: #1d1c1326;
+  --surface: #faf7f2;
+  --surface-container-low: #f5f0e8;
+  --surface-container: #f0ebe3;
+  --surface-container-high: #e8e2d8;
+  --surface-container-highest: #ddd7cc;
+  --on-surface: #1a1a2e;
+  --on-surface-variant: #4a4558;
+  --on-secondary-container: #1a1a2e;
+  --outline-variant: #1a1a2e20;
 
   /* Elevation tokens */
   --elevation-section-card:
-    0 1px 2px rgba(29, 28, 19, 0.05),
-    0 6px 16px rgba(29, 28, 19, 0.08);
+    0 1px 2px rgba(26, 26, 46, 0.04),
+    0 6px 16px rgba(26, 26, 46, 0.07);
   --elevation-section-card-hover:
-    0 2px 6px rgba(29, 28, 19, 0.08),
-    0 12px 24px rgba(29, 28, 19, 0.11);
+    0 2px 6px rgba(26, 26, 46, 0.07),
+    0 12px 24px rgba(26, 26, 46, 0.10);
 
   /* Dedicated section card surface for better separation from page background */
   --section-card-surface: var(--surface-container);
@@ -90,58 +90,67 @@
 /* ─── Dark Mode ───────────────────────────────────────────────────────────── */
 /* Áp dụng bằng class 'dark' trên <html> — không dùng prefers-color-scheme */
 .dark {
-  --background: #1d1c13;
-  --foreground: #e8e6d9;
+  --background: #0f0e17;
+  --foreground: #fffffe;
 
-  --card: #222119;
-  --card-foreground: #e8e6d9;
+  --card: #1a1926;
+  --card-foreground: #fffffe;
 
-  --popover: #1d1c13;
-  --popover-foreground: #e8e6d9;
+  --popover: #0f0e17;
+  --popover-foreground: #fffffe;
 
-  --primary: #adc6ff;
-  --primary-foreground: #002453;
+  /* Primary — Orange */
+  --primary: #ff8906;
+  --primary-foreground: #fffffe;
 
-  --primary-container: #003585;
+  /* Primary container */
+  --primary-container: #f25f4c;
 
-  --secondary: #b2ccd1;
-  --secondary-foreground: #051f24;
+  /* Secondary — Pink */
+  --secondary: #e53170;
+  --secondary-foreground: #fffffe;
 
-  --secondary-container: #324b50;
+  /* Secondary container */
+  --secondary-container: #2e2f3e;
 
-  --tertiary: #ffb87a;
-  --tertiary-foreground: #3d1d00;
+  /* Tertiary — Salmon */
+  --tertiary: #f25f4c;
+  --tertiary-foreground: #fffffe;
 
-  --muted: #222119;
-  --muted-foreground: #b2ccd1;
+  /* Muted */
+  --muted: #1a1926;
+  --muted-foreground: #a7a9be;
 
-  --accent: #38372d;
-  --accent-foreground: #e8e6d9;
+  /* Accent */
+  --accent: #2e2f3e;
+  --accent-foreground: #fffffe;
 
+  /* Destructive */
   --destructive: #f87171;
 
-  --border: #e8e6d926;
-  --input: #38372d;
-  --ring: #adc6ff;
+  /* Border */
+  --border: #a7a9be40;
+  --input: #2e2f3e;
+  --ring: #ff8906;
 
   /* Surface hierarchy — dark */
-  --surface: #1d1c13;
-  --surface-container-low: #222119;
-  --surface-container: #272620;
-  --surface-container-high: #2d2c23;
-  --surface-container-highest: #38372d;
-  --on-surface: #e8e6d9;
-  --on-surface-variant: #cac7bb;
-  --on-secondary-container: #e8f3f6;
-  --outline-variant: #4a4740;
+  --surface: #0f0e17;
+  --surface-container-low: #1a1926;
+  --surface-container: #1f1e2b;
+  --surface-container-high: #2e2f3e;
+  --surface-container-highest: #3d3e4f;
+  --on-surface: #fffffe;
+  --on-surface-variant: #a7a9be;
+  --on-secondary-container: #fffffe;
+  --outline-variant: #a7a9be40;
 
   /* Elevation tokens */
   --elevation-section-card:
-    0 1px 2px rgba(0, 0, 0, 0.24),
-    0 8px 20px rgba(0, 0, 0, 0.32);
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 8px 20px rgba(0, 0, 0, 0.4);
   --elevation-section-card-hover:
-    0 2px 6px rgba(0, 0, 0, 0.3),
-    0 14px 28px rgba(0, 0, 0, 0.4);
+    0 2px 6px rgba(0, 0, 0, 0.35),
+    0 14px 28px rgba(0, 0, 0, 0.5);
 
   /* Dedicated section card surface for better separation from page background */
   --section-card-surface: var(--surface-container-high);

@@ -85,7 +85,8 @@ export function JlptExamDetailPage() {
         <Button
           variant="ghost"
           size="sm"
-          className="mb-6"
+          type="button"
+          className="mb-6 self-start"
           onClick={() => navigate('/jlpt')}
         >
           <ArrowLeftIcon size={16} className="mr-1" />

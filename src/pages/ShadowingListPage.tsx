@@ -194,7 +194,6 @@ export function ShadowingListPage() {
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 lg:px-8">
         <header>
           <h1 className="text-2xl font-bold text-foreground">{SHADOWING_COPY.pageTitle}</h1>
-          <p className="mt-1 text-secondary">{SHADOWING_COPY.pageDescription}</p>
         </header>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">

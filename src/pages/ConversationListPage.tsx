@@ -55,9 +55,6 @@ export function ConversationListPage() {
             <h1 className="text-2xl font-bold text-foreground">
               {CONVERSATION_COPY.pageTitle}
             </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {CONVERSATION_COPY.pageDescription}
-            </p>
           </div>
           <Button onClick={() => setShowNewConversation(true)}>
             <ChatCircleDotsIcon size={18} className="mr-2" />

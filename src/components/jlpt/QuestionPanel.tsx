@@ -1,15 +1,18 @@
 import { cn } from '@/lib/utils'
 import { JLPT_EXAM_COPY } from '@/constants/jlptExam'
+import { QuestionTextRenderer } from './QuestionTextRenderer'
 import type {
   ExamOptionResponse,
   ExamQuestionGroupResponse,
   ExamQuestionResponse,
+  SectionType,
 } from '@/types/jlptExam'
 
 interface QuestionPanelProps {
   group: ExamQuestionGroupResponse
   question: ExamQuestionResponse
   questionNumber: number
+  sectionType: SectionType
   selectedOptionId: string | null
   onSelectOption: (questionId: string, optionId: string | null) => void
 }
@@ -65,6 +68,7 @@ export function QuestionPanel({
   group,
   question,
   questionNumber,
+  sectionType,
   selectedOptionId,
   onSelectOption,
 }: QuestionPanelProps) {
@@ -100,9 +104,12 @@ export function QuestionPanel({
         <h3 className="text-base font-semibold text-primary">
           {JLPT_EXAM_COPY.questionLabel} {questionNumber}
         </h3>
-        <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-primary">
-          {question.questionText}
-        </p>
+        <QuestionTextRenderer
+          text={question.questionText}
+          mondaiType={group.mondaiType}
+          sectionType={sectionType}
+          optionTexts={question.options.map((o) => o.text).filter(Boolean) as string[]}
+        />
         {question.imageUrl && (
           <div className="mt-3">
             <img

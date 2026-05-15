@@ -225,6 +225,7 @@ export function JlptExamSessionPage() {
             group={currentFQ.group}
             question={currentFQ.question}
             questionNumber={currentFQ.globalIndex + 1}
+            sectionType={currentFQ.section.sectionType}
             selectedOptionId={answers[currentFQ.question.questionId] ?? null}
             onSelectOption={handleSelectOption}
           />

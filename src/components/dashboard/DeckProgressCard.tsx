@@ -57,9 +57,9 @@ export function DeckProgressCard({ decks, isLoading }: DeckProgressCardProps) {
               key={deck.deckId}
               role="button"
               tabIndex={0}
-              onClick={() => navigate(`/decks/${deck.deckId}`)}
+              onClick={() => navigate(`/library/decks/${deck.deckId}`)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') navigate(`/decks/${deck.deckId}`)
+                if (e.key === 'Enter') navigate(`/library/decks/${deck.deckId}`)
               }}
               className="group cursor-pointer rounded-2xl border border-border/50 bg-surface-container-low px-4 py-4 transition-colors hover:bg-surface-container"
             >

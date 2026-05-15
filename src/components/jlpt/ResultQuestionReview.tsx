@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { JLPT_EXAM_COPY } from '@/constants/jlptExam'
 import { cn } from '@/lib/utils'
+import { QuestionTextRenderer } from './QuestionTextRenderer'
 import type { JlptAiQuestionInsight, ResultQuestionResponse } from '@/types/jlptExam'
 
 interface ResultQuestionReviewProps {
@@ -35,9 +36,12 @@ export function ResultQuestionReview({
               <h4 className="text-sm font-semibold text-primary">
                 {JLPT_EXAM_COPY.questionLabel} {questionNumber}
               </h4>
-              <p className="mt-1 whitespace-pre-wrap text-sm text-primary">
-                {question.questionText}
-              </p>
+              <QuestionTextRenderer
+                text={question.questionText}
+                mondaiType={null}
+                sectionType={question.sectionType}
+                optionTexts={question.options.map((o) => o.text).filter(Boolean) as string[]}
+              />
               {question.imageUrl && (
                 <img
                   src={question.imageUrl}

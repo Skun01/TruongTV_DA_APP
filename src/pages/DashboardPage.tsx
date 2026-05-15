@@ -146,7 +146,7 @@ export function DashboardPage() {
               />
             </div>
 
-            <aside className="flex flex-col gap-6 lg:pt-8">
+            <aside className="flex flex-col gap-6">
               <StreakCard
                 streak={summary?.streak}
                 isLoading={isPageLoading}
